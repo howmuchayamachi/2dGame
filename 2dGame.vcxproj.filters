@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <FxCompile Include="shader_pixel_2d.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="shader_vertex_2d.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Audio.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="audio_manager.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="boss.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="boss_ui.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="clear.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="debug_font.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="debug_ostream.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="debug_text.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="direct3d.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy_spawner.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="game_window.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="key_logger.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="player_ui.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="runner.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite_anim.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="system_timer.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="volume.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="WICTextureLoader11.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="bg.cpp">
+      <Filter>ソースファイル\リソースファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Audio.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="audio_manager.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="bg.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="boss.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="boss_ui.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="clear.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_font.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_ostream.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_text.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="direct3d.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy_spawner.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="game_window.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="key_logger.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="player_ui.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="polygon.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="runner.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite_anim.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="system_timer.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="volume.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WICTextureLoader11.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ソースファイル">
+      <UniqueIdentifier>{2e9f799f-96ba-4d8b-97cd-6d4370bf41ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\ヘッダーファイル">
+      <UniqueIdentifier>{065aafbf-0517-4dae-be27-9320ab0a2a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="シェーダーファイル">
+      <UniqueIdentifier>{ad6a4715-9495-4044-bc2c-ef928b5f0038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\リソースファイル">
+      <UniqueIdentifier>{7c97c68f-d3c4-4195-a72b-5ffe59c41546}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DirectXTex.inl">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </None>
+  </ItemGroup>
+</Project>
