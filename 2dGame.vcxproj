@@ -161,13 +161,10 @@
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="pause.cpp" />
-    <ClCompile Include="player.cpp" />
     <ClCompile Include="player_ui.cpp" />
-    <ClCompile Include="polygon.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="runner.cpp" />
     <ClCompile Include="scene.cpp" />
-    <ClCompile Include="score.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="sprite_anim.cpp" />
@@ -204,13 +201,10 @@
     <ClInclude Include="mouse.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="pause.h" />
-    <ClInclude Include="player.h" />
     <ClInclude Include="player_ui.h" />
-    <ClInclude Include="polygon.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="runner.h" />
     <ClInclude Include="scene.h" />
-    <ClInclude Include="score.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="sprite_anim.h" />

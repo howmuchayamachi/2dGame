@@ -30,8 +30,6 @@
 #include "Audio.h"
 #include "game.h"
 
-#include "polygon.h"
-
 
 
 //ÉÅÉCÉì
@@ -56,8 +54,6 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 	Sprite_Initialize(Direct3D_GetDevice(), Direct3D_GetContext());
 	Fade_Initialize();
 	Scene_Initialize();
-
-	Polygon_Initialize(Direct3D_GetDevice(), Direct3D_GetContext());
 
 #if defined(DEBUG)||defined(_DEBUG)
 	hal::DebugText dt(Direct3D_GetDevice(), Direct3D_GetContext(),
@@ -153,7 +149,6 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 	//èâä˙âªÇ∆ãtèáÇ…å„ï–ïtÇØ
 	Scene_Finalize();
 	Fade_Finalize();
-	Polygon_Finalize();
 	Shader_Finalize();
 	Sprite_Finalize();
 	Texture_Finalize();

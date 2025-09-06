@@ -81,13 +81,7 @@
     <ClCompile Include="pause.cpp">
       <Filter>ソースファイル\リソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>ソースファイル\リソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="player_ui.cpp">
-      <Filter>ソースファイル\リソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="polygon.cpp">
       <Filter>ソースファイル\リソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="result.cpp">
@@ -97,9 +91,6 @@
       <Filter>ソースファイル\リソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="scene.cpp">
-      <Filter>ソースファイル\リソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="score.cpp">
       <Filter>ソースファイル\リソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="shader.cpp">
@@ -209,13 +200,7 @@
     <ClInclude Include="pause.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>ソースファイル\ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="player_ui.h">
-      <Filter>ソースファイル\ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="polygon.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="result.h">
@@ -225,9 +210,6 @@
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="scene.h">
-      <Filter>ソースファイル\ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="score.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="shader.h">

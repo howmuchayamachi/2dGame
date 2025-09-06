@@ -11,7 +11,6 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "polygon.h"
 
 
 struct Circle {

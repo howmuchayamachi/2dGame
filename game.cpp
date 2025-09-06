@@ -8,7 +8,6 @@
 ==============================================================================*/
 #include "game.h"
 #include "bg.h"
-#include "player.h"
 #include "runner.h"
 #include "bullet.h"
 #include "enemy.h"
@@ -16,7 +15,6 @@
 #include "effect.h"
 #include "key_logger.h"
 #include "Audio.h"
-#include "score.h"
 #include "fade.h"
 #include "texture.h"
 #include "scene.h"
@@ -71,7 +69,6 @@ void Game_Initialize(){
 	EnemySpawner_Initialize();
 	Effect_Initialize();
 	Particle_Initialize();
-	Score_Initialize(0.0f,0.0f,5);
 	Enemy_Initialize();
 	Boss_Initialize();
 
@@ -109,7 +106,6 @@ void Game_Finalize(){
 	BossUI_Finalize();
 	Boss_Finalize();
 	PlayerUI_Finalize();
-	Score_Finalize();
 	Particle_Finalize();
 	Effect_Finalize();
 	EnemySpawner_Finalize();
@@ -227,7 +223,6 @@ void Game_Update(double elapsed_time){
 
 		Effect_Update();
 		Particle_Update(elapsed_time);
-		Score_Update();
 		if (!Game_IsPaused()) {
 			PlayerUI_Update(elapsed_time);
 		}
@@ -285,13 +280,6 @@ void hitJudgementBulletVSEnemy(){
 				PlayAudio(g_BulletHitSEId);
 				Bullet_Destroy(bi);
 				Enemy_Damage(ei);
-
-				//eiというインデックスの敵は存在しているか判定して、
-				//いなかったら得点加算
-				if (!Enemy_IsEnable(ei)) {
-					Score_AddScore(100);
-				}
-
 				Set_EnemyInvincibleTime(ei, 0.2f);
 			}
 		}
@@ -299,7 +287,7 @@ void hitJudgementBulletVSEnemy(){
 }
 
 void hitJudgementPlayerVSEnemy(){
-	if (!Player_IsEnable()) return;
+	if (!Runner_IsEnable()) return;
 
 	//プレイヤーと全てのエネミーと当たり判定を見る
 	for (int ei = 0;ei < ENEMY_MAX;ei++) {
@@ -316,7 +304,7 @@ void hitJudgementPlayerVSEnemy(){
 
 void hitJudgementPlayerVSEnemyBullet(){
 	
-	if (!Player_IsEnable()) return;
+	if (!Runner_IsEnable()) return;
 
 	//プレイヤーと全てのエネミーの弾と当たり判定を見る
 	for (int eb = 0;eb < BULLET_MAX;eb++) {
@@ -344,7 +332,6 @@ void hitJudgementAttackVSEnemy(){
 
 		if (Collision_IsOverlapOBBVSCircle(attack_obb, Enemy_GetCollision(ei))) {
 			Enemy_Damage(ei);
-			Score_AddScore(100);
 			PlayAudio(g_SwordHitSEId);
 			Set_EnemyInvincibleTime(ei, 0.2f);
 		}
