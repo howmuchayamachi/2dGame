@@ -83,7 +83,7 @@ void Game_Initialize(){
 	else {
 		Runner_Initialize({ 260.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT });
 	}
-	Runner_Initialize({ 260.0f * MAPCHIP_WIDTH,25.0f * MAPCHIP_HEIGHT });
+	//Runner_Initialize({ 260.0f * MAPCHIP_WIDTH,25.0f * MAPCHIP_HEIGHT });
 
 	PlayerUI_Initialize();
 	BossUI_Initialize();
