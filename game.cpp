@@ -205,7 +205,7 @@ void Game_Update(double elapsed_time){
 
 
 		//プレイヤーのHPチェック
-		if ((!g_GameEnd && Runner_IsDead())|| KeyLogger_IsTrigger(KK_R)) {
+		if (!g_GameEnd && Runner_IsDead()) {
 			Runner_Destroy();
 			Particle_Create(ParticleType::PLAYER_DEATH, { Runner_GetPosition().x + RUNNER_WIDTH / 2.0f,Runner_GetPosition().y + RUNNER_HEIGHT / 2.0f });
 
