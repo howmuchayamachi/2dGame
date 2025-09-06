@@ -125,7 +125,7 @@ void Result_Draw(){
 	float center_y = screen_height / 2.0f;
 
 	// 通常の色と、選択されている時の色を定義
-	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.1f }; // 白色
+	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.2f }; // 白色
 	XMFLOAT4 color_selected = { 1.0f, 1.0f, 1.0f, 1.0f }; // 黄色
 
 	Sprite_Draw(g_GameOverTexture, center_x - 600.0f, center_y - 400.0f, 1000.0f, 250.0f);
@@ -138,6 +138,6 @@ void Result_Draw(){
 		(g_CurrentSelection == RESULT_GOTOTITLE) ? color_selected : color_normal);
 
 	// EXIT の描画
-	Sprite_Draw(g_ExitTexture, center_x - 450.0f, center_y + 300.0f,
+	Sprite_Draw(g_ExitTexture, center_x - 500.0f, center_y + 300.0f,
 		(g_CurrentSelection == RESULT_EXIT) ? color_selected : color_normal);
 }

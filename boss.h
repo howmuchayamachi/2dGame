@@ -55,6 +55,8 @@ bool Boss_IsReinforced();
 
 BossState Get_BossState();
 
+BossState Choose_BossAttack(BossState prev_attack);
+
 void Set_KingsExplosionPosition(DirectX::XMFLOAT2 position);
 DirectX::XMFLOAT2 Get_KingsExplosionPosition();
 

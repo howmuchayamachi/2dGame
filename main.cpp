@@ -155,9 +155,9 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 	Fade_Finalize();
 	Polygon_Finalize();
 	Shader_Finalize();
-	Direct3D_Finalize();
 	Sprite_Finalize();
 	Texture_Finalize();
+	Direct3D_Finalize();
 	UninitAudio();
 	Mouse_Finalize();
 

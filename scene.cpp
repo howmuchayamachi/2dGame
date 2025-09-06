@@ -15,6 +15,7 @@
 #include "clear.h"
 #include <vector>
 #include "map.h"
+#include "texture.h"
 
 static std::vector<Scene> g_SceneStack;
 
@@ -31,7 +32,7 @@ void Scene_Finalize(){
 		break;
 
 	case SCENE_VOLUME:
-		Volume_Initialize();
+		Volume_Finalize();
 		break;
 
 	case SCENE_GAME:

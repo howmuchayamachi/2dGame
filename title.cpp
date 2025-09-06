@@ -127,22 +127,22 @@ void Title_Draw(){
 	float center_y = Direct3D_GetBackBufferHeight() / 2.0f;
 
 	//タイトル
-	Sprite_Draw(g_TitleTexture, center_x - 700, center_y - 300);
+	Sprite_Draw(g_TitleTexture, center_x - 800, center_y - 400,1500.0f,1500.0f/4.0f);
 
 	// 通常の色と、選択されている時の色を定義
-	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.1f }; // 白色
+	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.2f }; // 白色
 	XMFLOAT4 color_selected = { 1.0f, 1.0f, 0.1f, 1.0f }; // 黄色
 
 	// GAMESTART の描画
-	Sprite_Draw(g_GameStartTexture, center_x -500, center_y-100,
+	Sprite_Draw(g_GameStartTexture, center_x -500.0f, center_y,
 		(g_CurrentSelection == TITLE_GAMESTART) ? color_selected : color_normal);
 
 	//音量バー表示
-	Sprite_Draw(g_VolumeTexture, center_x - 500, center_y + 100,
+	Sprite_Draw(g_VolumeTexture, center_x - 500.0f, center_y + 150.0f,
 		(g_CurrentSelection == TITLE_VOLUME) ? color_selected : color_normal);
 
 
 	// EXIT の描画
-	Sprite_Draw(g_ExitTexture, center_x-500, center_y+300,
+	Sprite_Draw(g_ExitTexture, center_x-500.0f, center_y+300.0f,
 		(g_CurrentSelection == TITLE_EXIT) ? color_selected : color_normal);
 }

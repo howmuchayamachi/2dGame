@@ -91,6 +91,7 @@ struct Boss {
 	bool isActive; //使っているかどうか
 	bool isDamage; //ダメージを受けたか
 	BossState state;
+	BossState prev_AttackState; //前攻撃したステート
 	bool isFacingRight; //右を向いているか
 	Box collision;
 	float InvincibleTime; //無敵時間
@@ -99,6 +100,7 @@ struct Boss {
 	bool isReinforce; //HPが半分以下だったら攻撃を強化
 	bool isSuperReinforce; //もっとピンチだったら攻撃をもっと強化
 	bool isDroppedKingsdrop;
+
 };
 
 static Boss g_Boss{};
@@ -109,6 +111,7 @@ void Boss_Initialize() {
 	g_Boss.maxHp = BOSS_MAXHP;
 	g_Boss.hp = g_Boss.maxHp;
 	g_Boss.state = BOSS_STANDBY;
+	g_Boss.prev_AttackState = BOSS_ATTACK;
 	g_Boss.collision = { {BOSS_DISPLAY_WIDTH / 2.0f,BOSS_DISPLAY_HEIGHT / 2.0f},BOSS_WIDTH,BOSS_HEIGHT };
 	g_Boss.InvincibleTime = 0.0f;
 	g_Boss.stateTimer = 0.0f;
@@ -208,9 +211,9 @@ void Boss_Update(double elapsed_time) {
 
 		float BossSTimer = g_Boss.isReinforce ? 1.0f : 2.0f;
 		if (g_Boss.stateTimer > BossSTimer) {
-			int attackType = BOSS_STATEMAX - rand() % 3 - 5;
+
 			//攻撃or魔法or召喚
-			ChangeBossState((BossState)attackType);
+			ChangeBossState(Choose_BossAttack(g_Boss.prev_AttackState));
 		}
 		break;
 	}
@@ -278,9 +281,9 @@ void Boss_Update(double elapsed_time) {
 
 		if (g_Boss.alpha >= 1.0f) {
 			if (!g_BossWantAttack) {
-				int attackType = BOSS_STATEMAX - rand() % 3 - 5;
+				
 				//攻撃or魔法or召喚
-				ChangeBossState((BossState)attackType);
+				ChangeBossState(Choose_BossAttack(g_Boss.prev_AttackState));
 			}
 			else {
 				PlayAudio(g_BossAttackSEId);
@@ -326,6 +329,9 @@ void Boss_Update(double elapsed_time) {
 				ChangeBossState(BOSS_WARP_BEFORE);
 			}
 		}
+
+		g_Boss.prev_AttackState = BOSS_ATTACK;
+
 		break;
 
 	case BOSS_SPELL:
@@ -341,6 +347,9 @@ void Boss_Update(double elapsed_time) {
 			g_ShotTimer = g_ShotRate;
 			ChangeBossState(BOSS_STANDBY);
 		}
+
+		g_Boss.prev_AttackState = BOSS_SPELL;
+
 		break;
 
 	case BOSS_SUMMON:
@@ -371,6 +380,8 @@ void Boss_Update(double elapsed_time) {
 			ChangeBossState(BOSS_WARP_BEFORE);
 		}
 
+		g_Boss.prev_AttackState = BOSS_SUMMON;
+
 		break;
 
 	case BOSS_CHARGE:
@@ -393,7 +404,7 @@ void Boss_Update(double elapsed_time) {
 
 		if (g_Boss.isDroppedKingsdrop) {
 			explosion_alpha += (float)(0.5 * elapsed_time);
-			if (explosion_alpha > 0.3) explosion_alpha = 0.0f;
+			if (explosion_alpha > 0.5) explosion_alpha = 0.0f;
 		}
 
 		if (g_Boss.stateTimer > 4.0) {
@@ -411,6 +422,8 @@ void Boss_Update(double elapsed_time) {
 			g_Boss.InvincibleTime = 0.0f;
 			ChangeBossState(BOSS_STANDBY);
 		}
+
+		g_Boss.prev_AttackState = BOSS_ATTACK;
 
 		break;
 
@@ -611,6 +624,13 @@ bool Boss_IsReinforced() {
 
 BossState Get_BossState() {
 	return g_Boss.state;
+}
+
+BossState Choose_BossAttack(BossState prev_attack){
+	if (prev_attack == BOSS_ATTACK) return BOSS_SPELL;
+	else if (prev_attack == BOSS_SPELL) return BOSS_SUMMON;
+	else if (prev_attack == BOSS_SUMMON) return BOSS_ATTACK;
+	else return BOSS_STANDBY;
 }
 
 void Set_KingsExplosionPosition(DirectX::XMFLOAT2 position) {

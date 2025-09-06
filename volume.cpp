@@ -101,31 +101,31 @@ void Volume_Draw(){
 
 	Sprite_Draw(g_BackTexture, 0.0f, 0.0f, (float)Direct3D_GetBackBufferWidth(), (float)Direct3D_GetBackBufferHeight());
 
-	Sprite_Draw(g_VolumeTexture, center_x - 500.0f, center_y - 400.0f, 1000.0f, 250.0f,{0.0f,0.0f,0.0f,1.0f});
+	Sprite_Draw(g_VolumeTexture, center_x - 600.0f, center_y - 400.0f, 1000.0f, 250.0f,{0.0f,0.0f,0.0f,1.0f});
 
-	Sprite_Draw(g_VolumeBarFrameTexture, center_x - 500.0f, center_y, 1000.0f, 100.0f);
+	Sprite_Draw(g_VolumeBarFrameTexture, center_x - 600.0f, center_y, 1000.0f, 100.0f);
 
-	Sprite_Draw(g_VolumeBarTexture, center_x - 500.0f, center_y, 1000.0f * AudioManager_GetVolume(), 100.0f);
+	Sprite_Draw(g_VolumeBarTexture, center_x - 600.0f, center_y, 1000.0f * AudioManager_GetVolume(), 100.0f);
 
 	//ガイド表示
 	if (KeyLogger_IsPressed(KK_A) || KeyLogger_IsPressed(KK_LEFT)) {
-		Sprite_Draw(g_DownButtonAafterTexture, center_x - 600.0f, center_y + 100.0f, 100.0f, 100.0f);
-		Sprite_Draw(g_DownButtonArrowafterTexture, center_x - 500.0f, center_y + 100.0f, 100.0f, 100.0f);
+		Sprite_Draw(g_DownButtonAafterTexture, center_x - 700.0f, center_y + 100.0f, 100.0f, 100.0f);
+		Sprite_Draw(g_DownButtonArrowafterTexture, center_x - 600.0f, center_y + 100.0f, 100.0f, 100.0f);
 	}
 	else {
-		Sprite_Draw(g_DownButtonAbeforeTexture, center_x - 600.0f, center_y + 100.0f, 100.0f, 100.0f);
-		Sprite_Draw(g_DownButtonArrowbeforeTexture, center_x - 500.0f, center_y + 100.0f, 100.0f, 100.0f);
+		Sprite_Draw(g_DownButtonAbeforeTexture, center_x - 700.0f, center_y + 100.0f, 100.0f, 100.0f);
+		Sprite_Draw(g_DownButtonArrowbeforeTexture, center_x - 600.0f, center_y + 100.0f, 100.0f, 100.0f);
 	} 
 	
 	if (KeyLogger_IsPressed(KK_D) || KeyLogger_IsPressed(KK_RIGHT)) {
-		Sprite_Draw(g_UpButtonDafterTexture, center_x + 400.0f, center_y + 100.0f, 100.0f, 100.0f);
-		Sprite_Draw(g_UpButtonArrowafterTexture, center_x + 500.0f, center_y + 100.0f, 100.0f, 100.0f);
+		Sprite_Draw(g_UpButtonDafterTexture, center_x + 300.0f, center_y + 100.0f, 100.0f, 100.0f);
+		Sprite_Draw(g_UpButtonArrowafterTexture, center_x + 400.0f, center_y + 100.0f, 100.0f, 100.0f);
 	}
 	else {
-		Sprite_Draw(g_UpButtonDbeforeTexture, center_x + 400.0f, center_y + 100.0f, 100.0f, 100.0f);
-		Sprite_Draw(g_UpButtonArrowbeforeTexture, center_x + 500.0f, center_y + 100.0f, 100.0f, 100.0f);
+		Sprite_Draw(g_UpButtonDbeforeTexture, center_x + 300.0f, center_y + 100.0f, 100.0f, 100.0f);
+		Sprite_Draw(g_UpButtonArrowbeforeTexture, center_x + 400.0f, center_y + 100.0f, 100.0f, 100.0f);
 	}
 
 	//エンターキーとエスケープキーで戻る
-	Sprite_Draw(g_ReturnExplanationTexture, center_x - 400.0f, center_y + 300.0f, 800.0f, 100.0f);
+	Sprite_Draw(g_ReturnExplanationTexture, center_x - 500.0f, center_y + 300.0f, 800.0f, 100.0f);
 }

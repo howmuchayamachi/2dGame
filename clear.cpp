@@ -36,7 +36,7 @@ static bool g_ClearEnd = false;
 void Clear_Initialize(){
 	g_ClearBackGroundTexture = Texture_Load(L"resource/texture/bg/house_inforest.png");
 
-	g_GameClearTexture = Texture_Load(L"resource/texture/Font/gameclear.png");
+	g_GameClearTexture = Texture_Load(L"resource/texture/Font/congratulations.png");
 	g_GoToTitleTexture = Texture_Load(L"resource/texture/Font/gototitle.png");
 	g_ExitTexture = Texture_Load(L"resource/texture/Font/exit.png");
 	
@@ -118,12 +118,12 @@ void Clear_Draw(){
 	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.1f }; 
 	XMFLOAT4 color_selected = { 1.0f, 1.0f, 0.1f, 1.0f };
 
-	Sprite_Draw(g_GameClearTexture, center_x - 600.0f, center_y - 400.0f, 1000.0f, 250.0f);
+	Sprite_Draw(g_GameClearTexture, center_x - 800.0f, center_y - 300.0f, 1500.0f, 300.0f);
 
 	Sprite_Draw(g_GoToTitleTexture, center_x - 500.0f, center_y + 100.0f,
 		(g_CurrentSelection == CLEAR_GOTOTITLE) ? color_selected : color_normal);
 
 	// EXIT ‚Ì•`‰æ
-	Sprite_Draw(g_ExitTexture, center_x - 450.0f, center_y + 300.0f,
+	Sprite_Draw(g_ExitTexture, center_x - 500.0f, center_y + 300.0f,
 		(g_CurrentSelection == CLEAR_EXIT) ? color_selected : color_normal);
 }

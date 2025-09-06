@@ -114,7 +114,7 @@ void Pause_Draw(){
 	float center_y = Direct3D_GetBackBufferHeight() / 2.0f;
 
 	// 通常の色と、選択されている時の色を定義
-	XMFLOAT4 color_normal = { 0.0f, 0.0f, 0.0f, 0.1f };
+	XMFLOAT4 color_normal = { 0.0f, 0.0f, 0.0f, 0.2f };
 	XMFLOAT4 color_selected = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	//半透明な背景
