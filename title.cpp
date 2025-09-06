@@ -21,6 +21,8 @@ using namespace DirectX;
 
 
 static int g_TitleBgTexture = -1;
+
+static int g_TitleTexture = -1;
 static int g_GameStartTexture = -1;
 static int g_VolumeTexture = -1;
 static int g_ExitTexture = -1;
@@ -38,7 +40,7 @@ static double g_accumulated_time = 0.0;
 
 void Title_Initialize(){
 	g_TitleBgTexture = Texture_Load(L"resource/texture/bg/title_forest.png");
-
+	g_TitleTexture = Texture_Load(L"resource/texture/Font/intheforest.png");
 	g_GameStartTexture = Texture_Load(L"resource/texture/Font/gamestart.png");
 	g_VolumeTexture= Texture_Load(L"resource/texture/Font/volume.png");
 	g_ExitTexture = Texture_Load(L"resource/texture/Font/exit.png");
@@ -117,11 +119,15 @@ void Title_Draw(){
 	float screen_width = (float)Direct3D_GetBackBufferWidth();
 	float screen_height = (float)Direct3D_GetBackBufferHeight();
 
+	//背景
 	Sprite_Draw(g_TitleBgTexture, 0.0f, 0.0f, screen_width, screen_height);
 
 	// 画面の中央座標を取得
 	float center_x = Direct3D_GetBackBufferWidth() / 2.0f;
 	float center_y = Direct3D_GetBackBufferHeight() / 2.0f;
+
+	//タイトル
+	Sprite_Draw(g_TitleTexture, center_x - 700, center_y - 300);
 
 	// 通常の色と、選択されている時の色を定義
 	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.1f }; // 白色
@@ -132,11 +138,11 @@ void Title_Draw(){
 		(g_CurrentSelection == TITLE_GAMESTART) ? color_selected : color_normal);
 
 	//音量バー表示
-	Sprite_Draw(g_VolumeTexture, center_x - 450, center_y + 100,
+	Sprite_Draw(g_VolumeTexture, center_x - 500, center_y + 100,
 		(g_CurrentSelection == TITLE_VOLUME) ? color_selected : color_normal);
 
 
 	// EXIT の描画
-	Sprite_Draw(g_ExitTexture, center_x-450, center_y+300,
+	Sprite_Draw(g_ExitTexture, center_x-500, center_y+300,
 		(g_CurrentSelection == TITLE_EXIT) ? color_selected : color_normal);
 }

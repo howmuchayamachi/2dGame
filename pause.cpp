@@ -117,17 +117,19 @@ void Pause_Draw(){
 	XMFLOAT4 color_normal = { 0.0f, 0.0f, 0.0f, 0.1f };
 	XMFLOAT4 color_selected = { 0.0f, 0.0f, 0.0f, 1.0f };
 
+	//”¼“§–¾‚È”wŒi
 	Sprite_Draw(g_BackTexture, 0.0f, 0.0f, (float)Direct3D_GetBackBufferWidth(), (float)Direct3D_GetBackBufferHeight(), { 1.0f,1.0f,1.0f,0.8f });
 
-	Sprite_Draw(g_PauseTexture, center_x - 600.0f, center_y - 400.0f, 1000.0f, 250.0f);
+	
+	Sprite_Draw(g_PauseTexture, center_x - 550.0f, center_y - 400.0f, 1000.0f, 250.0f);
 
-	Sprite_Draw(g_BackToGameTexture, center_x - 500.0f, center_y-100.0f,
+	Sprite_Draw(g_BackToGameTexture, center_x - 550.0f, center_y-100.0f,
 		(g_CurrentSelection == PAUSE_BACKTOGAME) ? color_selected : color_normal);
 
-	Sprite_Draw(g_VolumeTexture, center_x - 450, center_y + 100,
+	Sprite_Draw(g_VolumeTexture, center_x - 500, center_y + 100,
 		(g_CurrentSelection == PAUSE_VOLUME) ? color_selected : color_normal);
 
-	Sprite_Draw(g_GoToTitleTexture, center_x - 450.0f, center_y + 300.0f,
+	Sprite_Draw(g_GoToTitleTexture, center_x - 500.0f, center_y + 300.0f,
 		(g_CurrentSelection == PAUSE_GOTOTITLE) ? color_selected : color_normal);
 }
 
