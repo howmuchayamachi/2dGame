@@ -22,7 +22,6 @@ void Bullet_Draw();
 void EnemyBullet_Draw();
 
 void Bullet_Create(const DirectX::XMFLOAT2& position, const DirectX::XMFLOAT2 target_position);
-//’e‚Ìí—ŞAŒ©‚½–ÚA•ûŒü“™‚ğ•Ï‚¦‚éê‡‚Íˆø”‚ğ‘‚â‚·
 
 void EnemyBullet_Create(const DirectX::XMFLOAT2& position, const DirectX::XMFLOAT2 target_position, bool isBossReinforced = false, bool isKingsDrop = false);
 

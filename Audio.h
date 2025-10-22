@@ -11,10 +11,8 @@
 #define AUDIO_H
 
 
-
 void InitAudio();
 void UninitAudio();
-
 
 int LoadAudio(const char* FileName);
 void UnloadAudio(int Index);
@@ -25,8 +23,5 @@ void StopAllAudio();
 
 //再生中のBGMの音量更新
 void Audio_UpdateBGMVolume();
-
-//ボリューム変更等追加
-//Xaudioプログラミングで調べる
 
 #endif //AUDIO_H

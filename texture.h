@@ -17,10 +17,10 @@ void Texture_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 void Texture_Finalize(void);
 
 //テクスチャ画像の読み込み
-//戻り値:管理番号 (読み込めなかった場合-1)
+//戻り値は管理番号 (読み込めなかった場合-1)
 int Texture_Load(const wchar_t* pFilename); //引数はファイル名
 
-//テクスチャの全開放(部分開放したかったら自分で）
+//テクスチャの全開放
 void Texture_AllRelease();
 
 //管理番号を与えるとポリゴンにテクスチャをセットする

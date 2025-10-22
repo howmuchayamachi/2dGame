@@ -26,7 +26,7 @@ struct AUDIO
 	int						PlayLength{};
 };
 
-#define AUDIO_MAX 100
+static constexpr int AUDIO_MAX = 100;
 static AUDIO g_Audio[AUDIO_MAX]{};
 
 static IXAudio2SourceVoice* g_BGMAudio = nullptr;
@@ -63,10 +63,8 @@ int LoadAudio(const char *FileName)
 {
 	int index = -1;
 
-	for (int i = 0; i < AUDIO_MAX; i++)
-	{
-		if (g_Audio[i].SourceVoice == nullptr)
-		{
+	for (int i = 0; i < AUDIO_MAX; i++){
+		if (g_Audio[i].SourceVoice == nullptr){
 			index = i;
 			break;
 		}
@@ -98,12 +96,10 @@ int LoadAudio(const char *FileName)
 		mmckinfo.ckid = mmioFOURCC('f', 'm', 't', ' ');
 		mmioDescend(hmmio, &mmckinfo, &riffchunkinfo, MMIO_FINDCHUNK);
 
-		if (mmckinfo.cksize >= sizeof(WAVEFORMATEX))
-		{
+		if (mmckinfo.cksize >= sizeof(WAVEFORMATEX)){
 			mmioRead(hmmio, (HPSTR)&wfx, sizeof(wfx));
 		}
-		else
-		{
+		else{
 			PCMWAVEFORMAT pcmwf = { 0 };
 			mmioRead(hmmio, (HPSTR)&pcmwf, sizeof(pcmwf));
 			memset(&wfx, 0x00, sizeof(wfx));
@@ -141,8 +137,7 @@ int LoadAudio(const char *FileName)
 
 
 
-void UnloadAudio(int Index)
-{
+void UnloadAudio(int Index){
 	if (Index < 0 || Index >= AUDIO_MAX || g_Audio[Index].SourceVoice == nullptr) return;
 
 	if (g_Audio[Index].SourceVoice) {

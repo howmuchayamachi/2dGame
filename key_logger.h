@@ -14,7 +14,7 @@
 
 void KeyLogger_Initialize();
 void KeyLogger_Update();
-bool KeyLogger_IsPressed(Keyboard_Keys key);
+bool KeyLogger_IsPressed(Keyboard_Keys key); //‰Ÿ‚µ‚Ä‚¢‚éŠÔ
 bool KeyLogger_IsTrigger(Keyboard_Keys key); //‰Ÿ‚µ‚½uŠÔ
 bool KeyLogger_IsReleased(Keyboard_Keys key); //—£‚µ‚½uŠÔ
 

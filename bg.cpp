@@ -39,7 +39,6 @@ void BG_Initialize(){
 }
 
 void BG_Finalize(){
-
 }
 
 void BG_Update(){

@@ -17,7 +17,7 @@ void EnemySpawner_Finalize();
 
 void EnemySpawner_Update(double elapsed_time);
 
-//発生位置, id, トリガー(発生時間や発生する位置など) , 発生間隔, 個数
+//発生位置, エネミーid, 発生時間, 発生間隔, 個数, 右向きか
 void EnemySpawner_Create(const DirectX::XMFLOAT2& position, EnemyTypeID id, double spawn_time, double spawn_rate, int spawn_count, bool gotoright = false);
 
 

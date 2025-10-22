@@ -25,7 +25,6 @@ void DrawLayer(int tex_id, const std::vector<uint32_t>& map_layer, int mx, int m
 	const DirectX::XMFLOAT2& local_offset,
 	const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
 
-//マップにアニメーションを入れる場合アップデートを入れる
 void Map_Draw();
 
 void Map_SetWorldOffset(const DirectX::XMFLOAT2& world_offset);

@@ -80,6 +80,7 @@ static int expl_count = 0;
 
 static float explosion_alpha = 0.0f;
 
+//ボスの存在可能範囲
 static constexpr XMINT2 Boss_minPoint{ 185 * MAPCHIP_WIDTH,48 * MAPCHIP_HEIGHT };
 static constexpr XMINT2 Boss_maxPoint{ 293 * MAPCHIP_WIDTH,88 * MAPCHIP_HEIGHT };
 
@@ -196,22 +197,23 @@ void Boss_Update(double elapsed_time) {
 	case BOSS_MOVE: {
 		g_Boss.isFacingRight = playerPosition.x > g_Boss.position.x + (float)(BOSS_WIDTH / 2);
 
+		//プレイヤーを追従するように移動
 		XMFLOAT2 playerPos = Runner_GetPosition();
 		float dirx = (playerPos.x > g_Boss.position.x) ? 1.0f : -1.0f;
 		float horizontal_move = g_Boss.position.x + dirx * 300.0f * (float)elapsed_time;
-		if (horizontal_move > Boss_minPoint.x && horizontal_move < Boss_maxPoint.x) {
-			g_Boss.position.x = horizontal_move;
-		}
-
 		float diry = (playerPos.y > g_Boss.position.y) ? 1.0f : -1.0f;
 		float vertical_move = g_Boss.position.y + diry * 100.0f * (float)elapsed_time;
+
+		//範囲外へ行かないように
+		if (horizontal_move > Boss_minPoint.x && horizontal_move < Boss_maxPoint.x) {
+			g_Boss.position.x = horizontal_move;
+		}	
 		if (vertical_move > Boss_minPoint.y && vertical_move < Boss_maxPoint.y) {
 			g_Boss.position.y = vertical_move;
 		}
 
 		float BossSTimer = g_Boss.isReinforce ? 1.0f : 2.0f;
 		if (g_Boss.stateTimer > BossSTimer) {
-
 			//攻撃or魔法or召喚
 			ChangeBossState(Choose_BossAttack(g_Boss.prev_AttackState));
 		}
@@ -219,15 +221,17 @@ void Boss_Update(double elapsed_time) {
 	}
 
 	case BOSS_WARP_BEFORE:
+		//段々ボスを透明にする
 		g_Boss.alpha = 1.0f - g_Boss.stateTimer * 2.0f;
 		if (g_Boss.alpha < 0.0f) g_Boss.alpha = 0.0f;
+
+		//完全に消えたらワープ
 		if (g_Boss.alpha <= 0.0f) {
 			ChangeBossState(BOSS_WARP);
 		}
 		break;
 
-	case BOSS_WARP:
-	{
+	case BOSS_WARP: {
 		XMFLOAT2 WarpForwardPos;
 
 		//通常ワープ
@@ -257,7 +261,7 @@ void Boss_Update(double elapsed_time) {
 			WarpForwardPos.x = PlayerPosX + dirx * 900.0f;
 			WarpForwardPos.y = Runner_GetPosition().y - BOSS_HEIGHT;
 
-			//壁にめり込んでいたら逆の位置にする
+			//ワープ先が壁にめり込んでいたら逆の位置にする
 			//y座標はプレイヤーの位置で固定のため調べない
 			if (WarpForwardPos.x < Boss_minPoint.x) {
 				WarpForwardPos.x = PlayerPosX + 1000.0f;
@@ -299,7 +303,7 @@ void Boss_Update(double elapsed_time) {
 			g_BossWantAttack = true;
 			ChangeBossState(BOSS_WARP_BEFORE);
 		}
-		//突進
+		//突進攻撃
 		else {
 			if (!g_Boss.isReinforce) {
 				g_Boss.position.x += g_BossAttackDirection * 1000.0f * (float)elapsed_time;
@@ -521,15 +525,11 @@ void Boss_Draw() {
 			float explosion_y = Get_KingsExplosionPosition().y - offset.y - 800.0f + RUNNER_HEIGHT / 2.0f;
 
 			Sprite_Draw(g_KingsDropRangeTexId, explosion_x, explosion_y, 1600.0f, 1600.0f, { 1.0f,0.1f,0.1f,explosion_alpha});
-
 		}
 	
 		break;
 
 	case BOSS_KINGS_EXPLOSION:
-#if defined(DEBUG)||defined(_DEBUG)
-		//Collision_DebugDraw(BossKingsDrop_GetCollision(),{1.0f,0.0f,0.0f,1.0f});
-#endif
 		SpriteAnim_Draw(PlayId_BossStandby, screen_x, screen_y, BOSS_DISPLAY_WIDTH, BOSS_DISPLAY_HEIGHT, g_Boss.isFacingRight);
 		break;
 
@@ -539,10 +539,6 @@ void Boss_Draw() {
 	default:
 		break;
 	}
-
-#if defined(DEBUG)||defined(_DEBUG)
-	//Collision_DebugDraw(Boss_GetBoxCollision());
-#endif
 }
 
 

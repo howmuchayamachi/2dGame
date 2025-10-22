@@ -30,9 +30,6 @@
     <ClCompile Include="collision.cpp">
       <Filter>ソースファイル\リソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="debug_font.cpp">
-      <Filter>ソースファイル\リソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="debug_ostream.cpp">
       <Filter>ソースファイル\リソースファイル</Filter>
     </ClCompile>
@@ -146,9 +143,6 @@
     <ClInclude Include="collision.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="debug_font.h">
-      <Filter>ソースファイル\ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="debug_ostream.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
@@ -156,9 +150,6 @@
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="direct3d.h">
-      <Filter>ソースファイル\ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXTex.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="effect.h">
@@ -177,9 +168,6 @@
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="game_window.h">
-      <Filter>ソースファイル\ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="json.hpp">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="key_logger.h">
@@ -234,6 +222,9 @@
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="WICTextureLoader11.h">
+      <Filter>ソースファイル\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

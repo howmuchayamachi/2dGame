@@ -16,6 +16,9 @@
 static constexpr float RUNNER_WIDTH = 128.0f;
 static constexpr float RUNNER_HEIGHT = 128.0f;
 
+static constexpr float RUNNER_MAXHP = 10;
+static constexpr float RUNNER_MAXMP = 10;
+
 
 void Runner_Initialize(const DirectX::XMFLOAT2& position);
 void Runnner_Finalize();
@@ -42,11 +45,6 @@ enum PLAYER_STATE {
 };
 
 DirectX::XMFLOAT2 Runner_GetPosition();
-
-//HP
-static constexpr float RUNNER_MAXHP = 10;
-//MP
-static constexpr float RUNNER_MAXMP = 10;
 
 void Runner_Damage(float damage);
 float Runner_GetHp();

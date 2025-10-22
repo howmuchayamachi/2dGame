@@ -10,7 +10,6 @@
 #include "direct3d.h"
 #include "texture.h"
 #include "shader.h"
-#include "DirectXTex.h"
 using namespace DirectX;
 #include "map.h"
 #include <algorithm>

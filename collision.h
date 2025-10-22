@@ -24,6 +24,7 @@ struct Box {
 	float half_height; //”¼•ª‚Ì‚‚³
 };
 
+//‰ñ“]‚·‚éBox
 struct OBB {
 	DirectX::XMFLOAT2 center; //’†SÀ•W
 	DirectX::XMFLOAT2 half_extent; //Še²•ûŒü‚Ì”¼•ª‚Ì’·‚³

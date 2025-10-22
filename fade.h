@@ -20,7 +20,7 @@ void Fade_Start(double time, bool IsFadeOut, DirectX::XMFLOAT3 color = { 0.0f,0.
 
 enum FadeState : int
 {
-	FADE_STATE_NONE, //何もしてない
+	FADE_STATE_NONE, //何もしていない
 	FADE_STATE_FINISHED_IN, //フェードイン終了状態
 	FADE_STATE_FINISHED_OUT, //フェードアウト終了状態
 	FADE_STATE_IN, //フェードイン中

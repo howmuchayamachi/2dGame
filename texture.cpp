@@ -20,7 +20,7 @@ static constexpr int TEXTURE_MAX = 512;
 
 struct Texture {
 	std::wstring filename;
-	ID3D11ShaderResourceView* pTexture; //テクスチャ //static消した
+	ID3D11ShaderResourceView* pTexture; 
 	unsigned int width;
 	unsigned int height;
 };
@@ -28,7 +28,6 @@ struct Texture {
 static Texture g_Textures[TEXTURE_MAX]{};
 static int g_SetTextureIndex = -1;
 
-// 注意！初期化で外部から設定されるもの。Release不要。
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;
 
@@ -63,6 +62,7 @@ int Texture_Load(const wchar_t* pFilename){
 		if (g_Textures[i].pTexture) {
 			continue;
 		}
+
 		//テクスチャの読み込み
 		TexMetadata metadata;
 		ScratchImage image;
