@@ -140,7 +140,7 @@ void Scene_Push(Scene scene){
 	case SCENE_TITLE:
 		Title_Initialize();
 		Game_SetCheckPoint(false);
-		Game_SetRunnerPosition({ 10.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT });
+		Game_SetPlayerPosition({ 10.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT });
 		break;
 
 	case SCENE_VOLUME:

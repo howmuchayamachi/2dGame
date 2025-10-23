@@ -14,7 +14,7 @@ using namespace DirectX;
 #include "sprite.h"
 #include "collision.h"
 #include "map.h"
-#include "runner.h"
+#include "Player.h"
 #include "particle.h"
 #include "boss.h"
 
@@ -22,7 +22,7 @@ struct Bullet {
 	XMFLOAT2 position;
 	double LifeTime; //存在時間
 	bool isEnable; //使っているかどうか
-	bool isGoingRight;
+	bool isGoingRight; //右向きか
 	Circle collision;
 	float angle;
 
@@ -37,10 +37,10 @@ struct EnemyBullet {
 	XMFLOAT2 position;
 	double LifeTime; //存在時間
 	bool isEnable; //使っているかどうか
-	bool isGoingRight;
+	bool isGoingRight; //右向きか
 	Circle collision;
 	float angle;
-	bool willExplosion;
+	bool willExplosion; //ボスの必殺技か
 
 	//ベジェ曲線用変数
 	double duration; //着弾までの時間
@@ -161,7 +161,6 @@ void Bullet_Update(double elapsed_time) {
 void Bullet_Draw() {
 	Direct3D_SetAlphaBlendAdd();
 
-	int i = 0;
 	XMFLOAT2 offset = Map_GetWorldOffset();
 
 	for (Bullet& b : g_Bullets) {
@@ -172,12 +171,6 @@ void Bullet_Draw() {
 		float screen_y = b.position.y - offset.y;
 
 		Sprite_Draw(g_BulletTexId1, screen_x, screen_y, 128.0f, 128.0f, 0, 0, 2048, 2048, b.angle);
-
-
-#if defined(DEBUG)||defined(_DEBUG)
-		i++;
-		//Collision_DebugDraw(Bullet_GetCollision(i - 1));
-#endif
 	}
 
 	Direct3D_SetAlphaBlendTransparent();
@@ -186,7 +179,6 @@ void Bullet_Draw() {
 void EnemyBullet_Draw() {
 	Direct3D_SetAlphaBlendAdd();
 
-	int i = 0;
 	XMFLOAT2 offset = Map_GetWorldOffset();
 
 	for (EnemyBullet& eb : g_EnemyBullets) {
@@ -203,11 +195,6 @@ void EnemyBullet_Draw() {
 			Sprite_Draw(g_EnemyBulletTexId1, screen_x, screen_y,
 				128.0f, 128.0f, 0, 0, 1024, 1024, eb.angle, { 0.5f,0.1f,1.0f,1.0f });
 		}
-
-#if defined(DEBUG)||defined(_DEBUG)
-		i++;
-		//Collision_DebugDraw(EnemyBullet_GetCollision(i - 1));
-#endif
 	}
 
 	Direct3D_SetAlphaBlendTransparent();

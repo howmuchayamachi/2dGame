@@ -14,7 +14,7 @@ using namespace DirectX;
 #include "map.h"
 #include <stdlib.h>
 #include <time.h>
-#include "runner.h"
+#include "Player.h"
 
 
 struct Particle {
@@ -255,7 +255,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 				p.velocity = { 0.0f,0.0f };
 				p.color = { 0.5f,0.5f,1.0f,1.0f };
 
-				p.targetPosition = Runner_GetPosition();
+				p.targetPosition = Player_GetPosition();
 				break;
 
 			case ParticleType::KINGS_EXPLOSION: {

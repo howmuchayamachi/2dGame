@@ -13,7 +13,7 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 #include "map.h"
-#include "runner.h"
+#include "Player.h"
 #include <stdlib.h>
 #include <time.h>
 #include "bullet.h"
@@ -179,7 +179,7 @@ void Boss_Update(double elapsed_time) {
 
 	g_Boss.stateTimer += (float)elapsed_time;
 
-	XMFLOAT2 playerPosition = Runner_GetPosition();
+	XMFLOAT2 playerPosition = Player_GetPosition();
 
 	switch (g_Boss.state) {
 	case BOSS_STANDBY: {
@@ -198,7 +198,7 @@ void Boss_Update(double elapsed_time) {
 		g_Boss.isFacingRight = playerPosition.x > g_Boss.position.x + (float)(BOSS_WIDTH / 2);
 
 		//プレイヤーを追従するように移動
-		XMFLOAT2 playerPos = Runner_GetPosition();
+		XMFLOAT2 playerPos = Player_GetPosition();
 		float dirx = (playerPos.x > g_Boss.position.x) ? 1.0f : -1.0f;
 		float horizontal_move = g_Boss.position.x + dirx * 300.0f * (float)elapsed_time;
 		float diry = (playerPos.y > g_Boss.position.y) ? 1.0f : -1.0f;
@@ -236,8 +236,8 @@ void Boss_Update(double elapsed_time) {
 
 		//通常ワープ
 		if (!g_BossWantAttack) {
-			WarpForwardPos.x = Runner_GetPosition().x + (float)((rand() % 800) - 400);
-			WarpForwardPos.y = Runner_GetPosition().y - (float)(rand() % 600);
+			WarpForwardPos.x = Player_GetPosition().x + (float)((rand() % 800) - 400);
+			WarpForwardPos.y = Player_GetPosition().y - (float)(rand() % 600);
 
 			//壁にめり込まないように
 			if (WarpForwardPos.x < Boss_minPoint.x) {
@@ -256,10 +256,10 @@ void Boss_Update(double elapsed_time) {
 		//突進攻撃時ワープ
 		else {
 			//プレイヤーの左右どちらかにワープする
-			float PlayerPosX = Runner_GetPosition().x;
+			float PlayerPosX = Player_GetPosition().x;
 			int dirx = rand() % 2 == 1 ? 1 : -1;
 			WarpForwardPos.x = PlayerPosX + dirx * 900.0f;
-			WarpForwardPos.y = Runner_GetPosition().y - BOSS_HEIGHT;
+			WarpForwardPos.y = Player_GetPosition().y - BOSS_HEIGHT;
 
 			//ワープ先が壁にめり込んでいたら逆の位置にする
 			//y座標はプレイヤーの位置で固定のため調べない
@@ -342,8 +342,8 @@ void Boss_Update(double elapsed_time) {
 		g_ShotTimer -= (float)elapsed_time;
 		if (g_ShotTimer <= 0.0f) {
 			PlayAudio(g_BossBulletSEId);
-			if (g_Boss.isFacingRight) EnemyBullet_Create({ g_Boss.position.x + BOSS_DISPLAY_WIDTH / 2.0f,g_Boss.position.y }, Runner_GetPosition(), g_Boss.isReinforce);
-			else EnemyBullet_Create(g_Boss.position, Runner_GetPosition(), g_Boss.isReinforce);
+			if (g_Boss.isFacingRight) EnemyBullet_Create({ g_Boss.position.x + BOSS_DISPLAY_WIDTH / 2.0f,g_Boss.position.y }, Player_GetPosition(), g_Boss.isReinforce);
+			else EnemyBullet_Create(g_Boss.position, Player_GetPosition(), g_Boss.isReinforce);
 
 			g_ShotTimer = g_ShotRate;
 		}
@@ -401,7 +401,7 @@ void Boss_Update(double elapsed_time) {
 		if (g_Boss.stateTimer > 1.0 && !g_Boss.isDroppedKingsdrop) {
 			PlayAudio(g_BossKingsDropSEId);
 			g_Boss.isDroppedKingsdrop = true;
-			Set_KingsExplosionPosition(Runner_GetPosition()); 
+			Set_KingsExplosionPosition(Player_GetPosition()); 
 			if (!g_Boss.isFacingRight) EnemyBullet_Create({ g_Boss.position.x,g_Boss.position.y }, Get_KingsExplosionPosition(), true, true);
 			else EnemyBullet_Create({ g_Boss.position.x + BOSS_DISPLAY_WIDTH / 2.0f,g_Boss.position.y }, Get_KingsExplosionPosition(), true, true);
 		}
@@ -521,8 +521,8 @@ void Boss_Draw() {
 
 		//危険範囲表示
 		if (g_Boss.isDroppedKingsdrop) {
-			float explosion_x = Get_KingsExplosionPosition().x - offset.x - 800.0f + RUNNER_WIDTH / 2.0f;
-			float explosion_y = Get_KingsExplosionPosition().y - offset.y - 800.0f + RUNNER_HEIGHT / 2.0f;
+			float explosion_x = Get_KingsExplosionPosition().x - offset.x - 800.0f + Player_WIDTH / 2.0f;
+			float explosion_y = Get_KingsExplosionPosition().y - offset.y - 800.0f + Player_HEIGHT / 2.0f;
 
 			Sprite_Draw(g_KingsDropRangeTexId, explosion_x, explosion_y, 1600.0f, 1600.0f, { 1.0f,0.1f,0.1f,explosion_alpha});
 		}
@@ -638,5 +638,5 @@ XMFLOAT2 Get_KingsExplosionPosition() {
 }
 
 Circle BossKingsDrop_GetCollision() {
-	return { {g_KingsExplosionPosition.x + RUNNER_WIDTH / 2.0f,g_KingsExplosionPosition.y + RUNNER_HEIGHT / 2.0f},800.0f };
+	return { {g_KingsExplosionPosition.x + Player_WIDTH / 2.0f,g_KingsExplosionPosition.y + Player_HEIGHT / 2.0f},800.0f };
 }

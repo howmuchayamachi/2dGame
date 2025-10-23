@@ -162,7 +162,7 @@
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="player_ui.cpp" />
     <ClCompile Include="result.cpp" />
-    <ClCompile Include="runner.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -200,7 +200,7 @@
     <ClInclude Include="pause.h" />
     <ClInclude Include="player_ui.h" />
     <ClInclude Include="result.h" />
-    <ClInclude Include="runner.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sprite.h" />

@@ -16,7 +16,7 @@ using namespace DirectX;
 #include "effect.h"
 #include "bullet.h"
 #include "map.h"
-#include "runner.h"
+#include "Player.h"
 #include "boss.h"
 #include <cmath>
 #include "direct3d.h"
@@ -117,7 +117,7 @@ void Enemy_Finalize() {
 void Enemy_Update(double elapsed_time) {
 
 	//プレイヤーの位置を取得
-	XMFLOAT2 player_pos_float2 = Runner_GetPosition();
+	XMFLOAT2 player_pos_float2 = Player_GetPosition();
 	XMVECTOR player_position = XMLoadFloat2(&player_pos_float2);
 
 	for (int i = 0; i < ENEMY_MAX; i++) {
@@ -187,7 +187,7 @@ void Enemy_Update(double elapsed_time) {
 				}
 
 				if (e.TimetoFire > 3) {
-					EnemyBullet_Create({ e.position.x,e.position.y }, Runner_GetPosition());
+					EnemyBullet_Create({ e.position.x,e.position.y }, Player_GetPosition());
 					e.TimetoFire = 0.0;
 				}
 
@@ -411,7 +411,7 @@ void Enemy_Destroy(int index) {
 
 //ダメージを決めたかったら引数にダメージを入れるなどする
 void Enemy_Damage(int index) {
-	if (Runner_GetState() == STATE_STRONGATTACKEND) g_Enemys[index].hp -= 3; //hpを1減らす
+	if (Player_GetState() == STATE_STRONGATTACKEND) g_Enemys[index].hp -= 3; //hpを1減らす
 	else g_Enemys[index].hp--;
 
 	g_Enemys[index].isDamage = true;
@@ -419,7 +419,7 @@ void Enemy_Damage(int index) {
 	g_Enemys[index].KnockbackTimer = 0.3f;
 
 	XMFLOAT2 KnockBackPower;
-	KnockBackPower.x = Runner_GetPosition().x > g_Enemys[index].position.x ? -300.0f : 300.0f;
+	KnockBackPower.x = Player_GetPosition().x > g_Enemys[index].position.x ? -300.0f : 300.0f;
 	KnockBackPower.y = -300.0f;
 
 	g_Enemys[index].velocity = KnockBackPower;
@@ -474,7 +474,7 @@ XMFLOAT2 Get_NearestTargetPosision(const DirectX::XMFLOAT2& player_position) {
 	if (nearestDistSq != FLT_MAX) return nearestEnemy;
 	else {
 		//敵がいなかったら一定の距離を返す
-		if (Runner_IsFacingRight()) return{ player_position.x + 800.0f,player_position.y }; 
+		if (Player_IsFacingRight()) return{ player_position.x + 800.0f,player_position.y }; 
 		else return{ player_position.x - 800.0f,player_position.y };
 	}
 }

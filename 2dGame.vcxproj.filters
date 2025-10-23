@@ -84,7 +84,7 @@
     <ClCompile Include="result.cpp">
       <Filter>ソースファイル\リソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="runner.cpp">
+    <ClCompile Include="player.cpp">
       <Filter>ソースファイル\リソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="scene.cpp">
@@ -194,7 +194,7 @@
     <ClInclude Include="result.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="runner.h">
+    <ClInclude Include="player.h">
       <Filter>ソースファイル\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="scene.h">

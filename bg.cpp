@@ -21,6 +21,7 @@ static int g_BG04TexId = -1;
 static int g_BG05TexId = -1;
 
 static float g_BgPositionX = 0.0f; // ”wŒi‚Ì•\¦ˆÊ’u
+//è‘O‚Ì”wŒi‚Í‘¬‚­A‰œ‚Ì”wŒi‚Í’x‚­“®‚©‚·
 static const float PARALLAX_SCALE_SKY = 0.2f;
 static const float PARALLAX_SCALE_FOREST_BACK = 0.4f;
 static const float PARALLAX_SCALE_FOREST_MID = 0.6f;
@@ -49,6 +50,7 @@ void BG_Draw(){
 	unsigned int screen_width = Direct3D_GetBackBufferWidth();
 	unsigned int screen_height = Direct3D_GetBackBufferHeight();
 
+	//‰œ‚©‚ç‡‚É•\¦
 	Sprite_Draw(g_BG01TexId, 0.0f, 0.0f, (int)(g_BgPositionX * PARALLAX_SCALE_SKY), 0, screen_width, screen_height);
 	Sprite_Draw(g_BG02TexId, 0.0f, 0.0f, (int)(g_BgPositionX * PARALLAX_SCALE_GROUND), 0, screen_width, screen_height);
 	Sprite_Draw(g_BG03TexId, 0.0f, 0.0f, (int)(g_BgPositionX * PARALLAX_SCALE_FOREST_BACK), 0, screen_width, screen_height,{0.1f,0.1f,0.1f,1.0f});

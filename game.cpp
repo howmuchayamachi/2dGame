@@ -8,7 +8,7 @@
 ==============================================================================*/
 #include "game.h"
 #include "bg.h"
-#include "runner.h"
+#include "Player.h"
 #include "bullet.h"
 #include "enemy.h"
 #include "enemy_spawner.h"
@@ -48,7 +48,7 @@ static bool g_IsBossBattle = false;
 static bool g_IsCheckpoint = false;
 
 //前回死んだ位置を保存(初期位置は左上)
-static XMFLOAT2 g_PrevRunner_position = { 10.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT };
+static XMFLOAT2 g_PrevPlayer_position = { 10.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT };
 
 void Game_Initialize(){
 	Fade_Start(1.0, false);
@@ -74,13 +74,13 @@ void Game_Initialize(){
 
 	//コンティニューだったら前回死んだ位置で初期化
 	if (!g_IsCheckpoint) {
-		Runner_Initialize(g_PrevRunner_position);
+		Player_Initialize(g_PrevPlayer_position);
 	}
 	//ボス戦からだったらボス戦直前からスタート
 	else {
-		Runner_Initialize({ 260.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT });
+		Player_Initialize({ 260.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT });
 	}
-	//Runner_Initialize({ 260.0f * MAPCHIP_WIDTH,25.0f * MAPCHIP_HEIGHT });
+	//Player_Initialize({ 260.0f * MAPCHIP_WIDTH,25.0f * MAPCHIP_HEIGHT });
 
 	PlayerUI_Initialize();
 	BossUI_Initialize();
@@ -135,9 +135,9 @@ void Game_Update(double elapsed_time){
 		}
 
 		BG_Update();
-		Runner_Update(elapsed_time);
+		Player_Update(elapsed_time);
 		Bullet_Update(elapsed_time);
-		Map_UpdateCamera(Runner_GetPosition() , elapsed_time);
+		Map_UpdateCamera(Player_GetPosition() , elapsed_time);
 		
 		EnemySpawner_Update(elapsed_time);
 		Enemy_Update(elapsed_time);
@@ -205,12 +205,12 @@ void Game_Update(double elapsed_time){
 
 
 		//プレイヤーのHPチェック
-		if (!g_GameEnd && Runner_IsDead()) {
-			Runner_Destroy();
-			Particle_Create(ParticleType::PLAYER_DEATH, { Runner_GetPosition().x + RUNNER_WIDTH / 2.0f,Runner_GetPosition().y + RUNNER_HEIGHT / 2.0f });
+		if (!g_GameEnd && Player_IsDead()) {
+			Player_Destroy();
+			Particle_Create(ParticleType::PLAYER_DEATH, { Player_GetPosition().x + Player_WIDTH / 2.0f,Player_GetPosition().y + Player_HEIGHT / 2.0f });
 
 			//死んだ座標を保存
-			Game_SetRunnerPosition(Runner_GetPosition());
+			Game_SetPlayerPosition(Player_GetPosition());
 
 			Fade_Start(1.0, true);
 			g_GameEnd = true;
@@ -232,7 +232,7 @@ void Game_Update(double elapsed_time){
 void Game_Draw(){
 	BG_Draw();
 	Enemy_Draw();
-	Runner_Draw();
+	Player_Draw();
 	Map_Draw();
 	Particle_Draw();
 	EnemyBullet_Draw();
@@ -248,7 +248,7 @@ void Game_Draw(){
 }
 
 bool CheckEnemyTriggerArea(int min_x, int max_x, int min_y, int max_y){
-	XMFLOAT2 player_position = Runner_GetPosition();
+	XMFLOAT2 player_position = Player_GetPosition();
 	if (player_position.x >= (float)min_x && player_position.x <= (float)max_x &&
 		player_position.y >= (float)min_y && player_position.y <= (float)max_y) return true;
 
@@ -259,8 +259,8 @@ void Game_SetCheckPoint(bool isCheckpoint){
 	g_IsCheckpoint = isCheckpoint;
 }
 
-void Game_SetRunnerPosition(const XMFLOAT2& position) {
-	g_PrevRunner_position = position;
+void Game_SetPlayerPosition(const XMFLOAT2& position) {
+	g_PrevPlayer_position = position;
 }
 
 
@@ -287,15 +287,15 @@ void hitJudgementBulletVSEnemy(){
 }
 
 void hitJudgementPlayerVSEnemy(){
-	if (!Runner_IsEnable()) return;
+	if (!Player_IsEnable()) return;
 
 	//プレイヤーと全てのエネミーと当たり判定を見る
 	for (int ei = 0;ei < ENEMY_MAX;ei++) {
 		if (!Enemy_IsEnable(ei)) continue;
-		if (Collision_IsOverlapCircle(Runner_GetCollision(), Enemy_GetCollision(ei))) {
+		if (Collision_IsOverlapCircle(Player_GetCollision(), Enemy_GetCollision(ei))) {
 			//当たっていたら
 			if (Get_EnemyHp(ei) >= 0.0f) {
-				Runner_Damage(1.0f);
+				Player_Damage(1.0f);
 				Enemy_Destroy(ei);
 			}
 		}
@@ -304,7 +304,7 @@ void hitJudgementPlayerVSEnemy(){
 
 void hitJudgementPlayerVSEnemyBullet(){
 	
-	if (!Runner_IsEnable()) return;
+	if (!Player_IsEnable()) return;
 
 	//プレイヤーと全てのエネミーの弾と当たり判定を見る
 	for (int eb = 0;eb < BULLET_MAX;eb++) {
@@ -312,9 +312,9 @@ void hitJudgementPlayerVSEnemyBullet(){
 
 		if (!EnemyBullet_IsEnable(eb)) continue;
 
-		if (Collision_IsOverlapCircle(Runner_GetCollision(), EnemyBullet_GetCollision(eb))) {
+		if (Collision_IsOverlapCircle(Player_GetCollision(), EnemyBullet_GetCollision(eb))) {
 			//当たっていたら
-			Boss_IsReinforced() ? Runner_Damage(2.0f) : Runner_Damage(1.0f);
+			Boss_IsReinforced() ? Player_Damage(2.0f) : Player_Damage(1.0f);
 			EnemyBullet_Destroy(eb);
 		}
 	}
@@ -322,7 +322,7 @@ void hitJudgementPlayerVSEnemyBullet(){
 }
 
 void hitJudgementAttackVSEnemy(){
-	OBB attack_obb = Runner_GetAttackCollision();
+	OBB attack_obb = Player_GetAttackCollision();
 	if (attack_obb.half_extent.x <= 0) return;
 
 	for (int ei = 0; ei < ENEMY_MAX; ei++) {
@@ -360,9 +360,9 @@ void hitJudgementBulletVSMap(){
 void hitJudgementPlayerVSBoss(){
 	if (!Boss_IsAlive()) return;
 
-	if (Collision_IsOverlapCircleVSBox(Boss_GetBoxCollision(), Runner_GetCollision())) {
-		if (Boss_IsReinforced()) Get_BossState() == BOSS_ATTACK ? Runner_Damage(2.0f) : Runner_Damage(1.0f);
-		else Runner_Damage(1.0f);
+	if (Collision_IsOverlapCircleVSBox(Boss_GetBoxCollision(), Player_GetCollision())) {
+		if (Boss_IsReinforced()) Get_BossState() == BOSS_ATTACK ? Player_Damage(2.0f) : Player_Damage(1.0f);
+		else Player_Damage(1.0f);
 	}
 }
 
@@ -385,14 +385,14 @@ void hitJudgementBulletVSBoss(){
 void hitJudgementAttackVSBoss(){
 	if (!Boss_IsAlive()) return;
 
-	OBB attack_obb = Runner_GetAttackCollision();
+	OBB attack_obb = Player_GetAttackCollision();
 	if (attack_obb.half_extent.x <= 0) return;
 
 	if (Get_BossInvincibleTime() > 0.0f) return;
 
 	if (Collision_IsOverlapOBBVSBox(attack_obb, Boss_GetBoxCollision())) {
 		PlayAudio(g_SwordHitSEId);
-		if (Runner_GetState() == STATE_STRONGATTACKEND)Boss_Damage(3);
+		if (Player_GetState() == STATE_STRONGATTACKEND)Boss_Damage(3);
 		else Boss_Damage(1);
 	}
 }
@@ -400,7 +400,7 @@ void hitJudgementAttackVSBoss(){
 void hitJudgementPlayerVSKingsDrop(){
 	if (Get_BossState() != BOSS_KINGS_EXPLOSION) return;
 
-	if (Collision_IsOverlapCircle(Runner_GetCollision(), BossKingsDrop_GetCollision())) {
-		Runner_Damage(5.0f);
+	if (Collision_IsOverlapCircle(Player_GetCollision(), BossKingsDrop_GetCollision())) {
+		Player_Damage(5.0f);
 	}
 }

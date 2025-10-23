@@ -1,12 +1,12 @@
 /*==============================================================================
 
-   マップ移動キャラクター制御 [runner.cpp]
+   マップ移動キャラクター制御 [player.cpp]
 														 Author : Harada Ren
 														 Date   : 2025/07/17
 --------------------------------------------------------------------------------
 
 ==============================================================================*/
-#include "runner.h"
+#include "player.h"
 #include "DirectXMath.h"
 using namespace DirectX;
 #include "texture.h"
@@ -24,7 +24,7 @@ using namespace DirectX;
 #include "player_ui.h"
 #include "particle.h"
 
-static int g_RunnerTexId = -1;
+static int g_PlayerTexId = -1;
 static int AnimId_Player = -1;
 static int PlayId_Player = -1;
 
@@ -41,16 +41,16 @@ static int AnimId_StrongAttackEnd = -1;
 static int PlayId_StrongAttackEnd = -1;
 
 
-static XMFLOAT2 g_RunnerPosition{}; //world座標
-static XMFLOAT2 g_RunnerVelocity{}; //速度
+static XMFLOAT2 g_PlayerPosition{}; //world座標
+static XMFLOAT2 g_PlayerVelocity{}; //速度
 
-static XMFLOAT2 g_PrevRunnerPosition{}; //前のフレームの位置を記憶する
+static XMFLOAT2 g_PrevPlayerPosition{}; //前のフレームの位置を記憶する
 
-static Circle g_RunnerCollision{ {60.0f,60.0f},40.0f };
-static bool g_RunnerEnable = true;
+static Circle g_PlayerCollision{ {60.0f,60.0f},40.0f };
+static bool g_PlayerEnable = true;
 
 //右を向いていたらtrue 左だったらfalse
-static bool g_IsRunnerFacingRight = true;
+static bool g_IsPlayerFacingRight = true;
 
 static int g_GunSoundId = -1;
 
@@ -68,10 +68,10 @@ static int g_BladeAudioId = -1;
 static int g_ChargeAudioId = -1;
 static int g_DamageSEId = -1;
 
-static float g_RunnerHp = RUNNER_MAXHP;
-static float g_RunnerInvincibleTime = 0.0f;
+static float g_PlayerHp = Player_MAXHP;
+static float g_PlayerInvincibleTime = 0.0f;
 
-static float g_RunnerMp = RUNNER_MAXMP;
+static float g_PlayerMp = Player_MAXMP;
 
 static double g_StrongAttackTimer = 0.0;
 
@@ -82,13 +82,13 @@ static constexpr double SHOT_INTERVAL = 0.15;
 
 static OBB g_AttackCollisions[6];
 
-void Runner_Initialize(const XMFLOAT2& position) {
-	g_RunnerTexId = Texture_Load(L"resource/texture/player/hal_chang_anim.png");
+void Player_Initialize(const XMFLOAT2& position) {
+	g_PlayerTexId = Texture_Load(L"resource/texture/player/hal_chang_anim.png");
 	g_AttackTexId = Texture_Load(L"resource/texture/player/hal_chang_attack_anim.png");
 	g_AttackEndTexId = Texture_Load(L"resource/texture/player/hal_chang_attack_end_anim.png");
 	g_StrongAttackEndTexId = Texture_Load(L"resource/texture/player/hal_chang_strongattack_end_anim.png");
 
-	AnimId_Player = SpriteAnim_RegisterPattern(g_RunnerTexId, 16, 8, 0.07, { 1024,1024 }, { 0,0 });
+	AnimId_Player = SpriteAnim_RegisterPattern(g_PlayerTexId, 16, 8, 0.07, { 1024,1024 }, { 0,0 });
 	PlayId_Player = SpriteAnim_CreatePlayer(AnimId_Player);
 
 	AnimId_Attack = SpriteAnim_RegisterPattern(g_AttackTexId, 4, 4, 0.03, { 2048,2048 }, { 0,0 }, false);
@@ -100,22 +100,21 @@ void Runner_Initialize(const XMFLOAT2& position) {
 	AnimId_StrongAttackEnd = SpriteAnim_RegisterPattern(g_StrongAttackEndTexId, 9, 5, 0.05, { 2048,2048 }, { 0,0 }, false);
 	PlayId_StrongAttackEnd = SpriteAnim_CreatePlayer(AnimId_StrongAttackEnd);
 
-	g_RunnerPosition = position;
-	g_RunnerVelocity = { 0.0f,0.0f };
-	g_RunnerEnable = true;
+	g_PlayerPosition = position;
+	g_PlayerVelocity = { 0.0f,0.0f };
+	g_PlayerEnable = true;
 
 	g_PlayerState = STATE_STOP;
 
-	g_IsRunnerFacingRight = true;
+	g_IsPlayerFacingRight = true;
 
 	g_BladeAudioId = LoadAudio("resource/audio/blade1.wav");
 	g_ChargeAudioId = LoadAudio("resource/audio/charge.wav");
 	g_DamageSEId = LoadAudio("resource/audio/damage.wav");
 
-	g_RunnerHp = RUNNER_MAXHP;
-	g_RunnerInvincibleTime = 0.0f;
-
-	g_RunnerMp = RUNNER_MAXMP;
+	g_PlayerHp = Player_MAXHP;
+	g_PlayerMp = Player_MAXMP;
+	g_PlayerInvincibleTime = 0.0f;
 
 	g_OnewayIgnoreTimer = 0.0;
 	g_coyoteTimer = 0.0;
@@ -136,12 +135,12 @@ void Runner_Initialize(const XMFLOAT2& position) {
 void Runnner_Finalize() {
 }
 
-void Runner_Update(double elapsed_time) {
-	if (!g_RunnerEnable) return;
+void Player_Update(double elapsed_time) {
+	if (!g_PlayerEnable) return;
 
-	//時間経過処理
-	if (g_RunnerInvincibleTime > 0.0f) {
-		g_RunnerInvincibleTime -= (float)elapsed_time;
+	//-----時間経過処理-----
+	if (g_PlayerInvincibleTime > 0.0f) {
+		g_PlayerInvincibleTime -= (float)elapsed_time;
 	}
 
 	if (g_coyoteTimer > 0.0) {
@@ -149,27 +148,27 @@ void Runner_Update(double elapsed_time) {
 	}
 
 	//赤ゲージがなければHP,MPを回復
-	if (g_RunnerHp<RUNNER_MAXHP && !isHpDecrease()) {
-		g_RunnerHp += 0.5f * (float)elapsed_time;
-		if (g_RunnerHp >= RUNNER_MAXHP) {
-			g_RunnerHp = RUNNER_MAXHP;
+	if (g_PlayerHp<Player_MAXHP && !isHpDecrease()) {
+		g_PlayerHp += 0.5f * (float)elapsed_time;
+		if (g_PlayerHp >= Player_MAXHP) {
+			g_PlayerHp = Player_MAXHP;
 		}
 	}
-	if (g_RunnerMp<RUNNER_MAXMP && !isMpDecrease()) {
-		g_RunnerMp += 1.0f * (float)elapsed_time;
-		if (g_RunnerMp >= RUNNER_MAXMP) {
-			g_RunnerMp = RUNNER_MAXMP;
+	if (g_PlayerMp<Player_MAXMP && !isMpDecrease()) {
+		g_PlayerMp += 1.0f * (float)elapsed_time;
+		if (g_PlayerMp >= Player_MAXMP) {
+			g_PlayerMp = Player_MAXMP;
 		}
 	}
 
 
-
+	//-----左右移動-----
 	//前の位置を保存
-	g_PrevRunnerPosition = g_RunnerPosition;
+	g_PrevPlayerPosition = g_PlayerPosition;
 
 	// 演算できる構造体に変換
-	XMVECTOR position = XMLoadFloat2(&g_RunnerPosition);
-	XMVECTOR velocity = XMLoadFloat2(&g_RunnerVelocity);
+	XMVECTOR position = XMLoadFloat2(&g_PlayerPosition);
+	XMVECTOR velocity = XMLoadFloat2(&g_PlayerVelocity);
 
 	// 地上での左右移動を速度で制御
 	if (!g_IsJump) {
@@ -181,13 +180,13 @@ void Runner_Update(double elapsed_time) {
 		if (KeyLogger_IsPressed(KK_D)) {
 			velocity = XMVectorSetX(velocity, move_speed);
 			if (g_PlayerState != STATE_ATTACKEND && g_PlayerState != STATE_STRONGATTACKEND) {
-				g_IsRunnerFacingRight = true;
+				g_IsPlayerFacingRight = true;
 			}
 		}
 		else if (KeyLogger_IsPressed(KK_A)) {
 			velocity = XMVectorSetX(velocity, -move_speed);
 			if (g_PlayerState != STATE_ATTACKEND && g_PlayerState != STATE_STRONGATTACKEND) {
-				g_IsRunnerFacingRight = false;
+				g_IsPlayerFacingRight = false;
 			}
 		}
 		else {
@@ -206,13 +205,13 @@ void Runner_Update(double elapsed_time) {
 		if (KeyLogger_IsPressed(KK_D)) {
 			velocity += XMVectorSet(aerial_control_force * (float)elapsed_time, 0.0f, 0.0f, 0.0f);
 			if (g_PlayerState != STATE_ATTACKEND && g_PlayerState != STATE_STRONGATTACKEND) {
-				g_IsRunnerFacingRight = true;
+				g_IsPlayerFacingRight = true;
 			}
 		}
 		if (KeyLogger_IsPressed(KK_A)) {
 			velocity -= XMVectorSet(aerial_control_force * (float)elapsed_time, 0.0f, 0.0f, 0.0f);
 			if (g_PlayerState != STATE_ATTACKEND && g_PlayerState != STATE_STRONGATTACKEND) {
-				g_IsRunnerFacingRight = false;
+				g_IsPlayerFacingRight = false;
 			}
 		}
 
@@ -239,7 +238,7 @@ void Runner_Update(double elapsed_time) {
 
 
 
-	// ジャンプ
+	// -----ジャンプ-----
 	// コヨーテタイム以内だったらジャンプ可能
 	if (KeyLogger_IsTrigger(KK_SPACE) && g_coyoteTimer>0.0) {
 		float jump_power = -1000.0f; // Y方向のジャンプ力
@@ -256,16 +255,16 @@ void Runner_Update(double elapsed_time) {
 
 
 
-	// 当たり判定
+	// -----当たり判定-----
 	// 横方向に移動して壁との当たり判定
 	XMVECTOR horizontal_move = XMVectorSet(XMVectorGetX(velocity) * (float)elapsed_time, 0.0f, 0.0f, 0.0f);
 	position += horizontal_move;
-	XMStoreFloat2(&g_RunnerPosition, position);
+	XMStoreFloat2(&g_PlayerPosition, position);
 
-	if (Map_hitJudgementBoxVSMap(Runner_GetBoxCollision())) {
+	if (Map_hitJudgementBoxVSMap(Player_GetBoxCollision())) {
 		position -= horizontal_move; // めり込んだ分を戻す
 		velocity = XMVectorSetX(velocity, 0.0f); // 横方向の速度を0に
-		XMStoreFloat2(&g_RunnerPosition, position);
+		XMStoreFloat2(&g_PlayerPosition, position);
 	}
 	else {
 		if (XMVectorGetY(velocity) > 0.0f) {
@@ -276,9 +275,9 @@ void Runner_Update(double elapsed_time) {
 	// 縦方向に移動して地面/天井との当たり判定
 	XMVECTOR vertical_move = XMVectorSet(0.0f, XMVectorGetY(velocity) * (float)elapsed_time, 0.0f, 0.0f);
 	position += vertical_move;
-	XMStoreFloat2(&g_RunnerPosition, position);
+	XMStoreFloat2(&g_PlayerPosition, position);
 
-	Box player_box = Runner_GetBoxCollision();
+	Box player_box = Player_GetBoxCollision();
 
 	if (Map_hitJudgementBoxVSMap(player_box)) {
 		position -= vertical_move; // めり込んだ分を戻す
@@ -290,7 +289,7 @@ void Runner_Update(double elapsed_time) {
 		}
 
 		velocity = XMVectorSetY(velocity, 0.0f); // 天井か地面にぶつかったら縦方向の速度を0に
-		XMStoreFloat2(&g_RunnerPosition, position);
+		XMStoreFloat2(&g_PlayerPosition, position);
 	}
 	else if (g_OnewayIgnoreTimer <= 0.0) {
 		// 判定用の一時変数
@@ -304,10 +303,9 @@ void Runner_Update(double elapsed_time) {
 		foot_box.half_height = 5.0f;
 		foot_box.half_width = 10.0f;
 
-
 		if (Map_hitJudgementBoxVSOneway(foot_box)) {
 			// 落下中かつ、前フレームで足が床より上にあったら着地
-			if (XMVectorGetY(velocity) >= 0 && (g_PrevRunnerPosition.y + player_box.half_height) <= platform_top_y) {
+			if (XMVectorGetY(velocity) >= 0 && (g_PrevPlayerPosition.y + player_box.half_height) <= platform_top_y) {
 				position -= vertical_move; // めり込んだ分を戻す
 				g_IsJump = false;
 				velocity = XMVectorSetY(velocity, 0.0f);
@@ -317,14 +315,12 @@ void Runner_Update(double elapsed_time) {
 	}
 
 	// 最終的な速度と位置を保存
-	XMStoreFloat2(&g_RunnerVelocity, velocity);
-	XMStoreFloat2(&g_RunnerPosition, position);
+	XMStoreFloat2(&g_PlayerVelocity, velocity);
+	XMStoreFloat2(&g_PlayerPosition, position);
 
 
 
-
-	//プレイヤーのステート管理
-
+	//-----プレイヤーのステート管理-----
 	// 攻撃中でなければ攻撃を開始できる
 	if (KeyLogger_IsTrigger(KK_J)) {
 		if (g_PlayerState < STATE_ATTACK) {
@@ -350,7 +346,7 @@ void Runner_Update(double elapsed_time) {
 
 	//チャージ時パーティクル生成
 	if (g_PlayerState == STATE_STRONGATTACK) {
-		Particle_Create(ParticleType::CHARGE, { g_RunnerPosition.x + RUNNER_WIDTH / 2.0f, g_RunnerPosition.y + RUNNER_HEIGHT / 2.0f });
+		Particle_Create(ParticleType::CHARGE, { g_PlayerPosition.x + Player_WIDTH / 2.0f, g_PlayerPosition.y + Player_HEIGHT / 2.0f });
 	}
 
 	//攻撃ボタンが話された瞬間にどの攻撃を出すか判定
@@ -386,21 +382,21 @@ void Runner_Update(double elapsed_time) {
 		if (SpriteAnim_IsStopped(PlayId_AttackEnd)) {
 			g_PlayerState = STATE_STOP;
 
-			if (g_RunnerMp >= 1.0f) {
+			if (g_PlayerMp >= 1.0f) {
 				//弾を1発発射
 				XMFLOAT2 bullet_pos;
-				if (g_IsRunnerFacingRight) {
+				if (g_IsPlayerFacingRight) {
 					// 右向きの時はプレイヤーの右側に弾を出す
-					bullet_pos = { g_RunnerPosition.x + 80.0f, g_RunnerPosition.y - 50.0f };
+					bullet_pos = { g_PlayerPosition.x + 80.0f, g_PlayerPosition.y - 50.0f };
 				}
 				else {
 					// 左向きの時はプレイヤーの左側に弾を出す
-					bullet_pos = { g_RunnerPosition.x - 30.0f, g_RunnerPosition.y - 50.0f };
+					bullet_pos = { g_PlayerPosition.x - 30.0f, g_PlayerPosition.y - 50.0f };
 				}
 
-				Bullet_Create({ bullet_pos.x,bullet_pos.y }, Get_NearestTargetPosision(g_RunnerPosition));
+				Bullet_Create({ bullet_pos.x,bullet_pos.y }, Get_NearestTargetPosision(g_PlayerPosition));
 				
-				g_RunnerMp -= 1.0f;
+				g_PlayerMp -= 1.0f;
 			}
 
 		}
@@ -412,20 +408,20 @@ void Runner_Update(double elapsed_time) {
 		g_StrongAttackShotIntervalTimer += elapsed_time;
 
 		//弾を3発発射
-		if (g_RunnerMp >= 0.5f) {
+		if (g_PlayerMp >= 0.5f) {
 			if (g_StrongAttackShotCount < 3 && g_StrongAttackShotIntervalTimer >= SHOT_INTERVAL) {
 				//弾発射
 				XMFLOAT2 bullet_pos;
-				if (g_IsRunnerFacingRight) {
-					bullet_pos = { g_RunnerPosition.x + 60.0f + 30.0f * (float)g_StrongAttackShotCount,
-						g_RunnerPosition.y - 70.0f + 30.0f * (float)g_StrongAttackShotCount };
+				if (g_IsPlayerFacingRight) {
+					bullet_pos = { g_PlayerPosition.x + 60.0f + 30.0f * (float)g_StrongAttackShotCount,
+						g_PlayerPosition.y - 70.0f + 30.0f * (float)g_StrongAttackShotCount };
 				}
 				else {
-					bullet_pos = { g_RunnerPosition.x - 10.0f - 30.0f * (float)g_StrongAttackShotCount,
-						g_RunnerPosition.y - 70.0f + 30.0f * (float)g_StrongAttackShotCount };
+					bullet_pos = { g_PlayerPosition.x - 10.0f - 30.0f * (float)g_StrongAttackShotCount,
+						g_PlayerPosition.y - 70.0f + 30.0f * (float)g_StrongAttackShotCount };
 				}
-				Bullet_Create(bullet_pos, Get_NearestTargetPosision(g_RunnerPosition));
-				g_RunnerMp -= 0.5f;
+				Bullet_Create(bullet_pos, Get_NearestTargetPosision(g_PlayerPosition));
+				g_PlayerMp -= 0.5f;
 
 				g_StrongAttackShotCount++;
 				g_StrongAttackShotIntervalTimer = 0.0;
@@ -456,38 +452,38 @@ void Runner_Update(double elapsed_time) {
 }
 
 
-void Runner_Draw() {
-	if (!g_RunnerEnable) return;
+void Player_Draw() {
+	if (!g_PlayerEnable) return;
 
 	// カメラのオフセットを取得
 	XMFLOAT2 offset = Map_GetWorldOffset();
 
 	// プレイヤーのワールド座標からスクリーン座標を計算
-	float screen_x = g_RunnerPosition.x - offset.x;
-	float screen_y = g_RunnerPosition.y - offset.y;
+	float screen_x = g_PlayerPosition.x - offset.x;
+	float screen_y = g_PlayerPosition.y - offset.y;
 
 	//無敵時間だったら点滅させる
-	if (g_RunnerInvincibleTime > 0.0f) {
-		if ((int)(g_RunnerInvincibleTime * 10.0f) % 2 == 0) {
+	if (g_PlayerInvincibleTime > 0.0f) {
+		if ((int)(g_PlayerInvincibleTime * 10.0f) % 2 == 0) {
 			return;
 		}
 	}
 
 	switch (g_PlayerState) {
 	case STATE_STOP:
-		Sprite_Draw(g_RunnerTexId, screen_x, screen_y, 128.0f, 128.0f, 0, 0, 1024, 1024, !g_IsRunnerFacingRight);
+		Sprite_Draw(g_PlayerTexId, screen_x, screen_y, 128.0f, 128.0f, 0, 0, 1024, 1024, !g_IsPlayerFacingRight);
 		break;
 
 	case STATE_WALK:
-		SpriteAnim_Draw(PlayId_Player, screen_x, screen_y, RUNNER_WIDTH, RUNNER_HEIGHT, !g_IsRunnerFacingRight);
+		SpriteAnim_Draw(PlayId_Player, screen_x, screen_y, Player_WIDTH, Player_HEIGHT, !g_IsPlayerFacingRight);
 		break;
 
 	case STATE_RUN:
-		SpriteAnim_Draw(PlayId_Player, screen_x, screen_y, RUNNER_WIDTH, RUNNER_HEIGHT, !g_IsRunnerFacingRight);
+		SpriteAnim_Draw(PlayId_Player, screen_x, screen_y, Player_WIDTH, Player_HEIGHT, !g_IsPlayerFacingRight);
 		break;
 
 	case STATE_ATTACK:
-		if (g_IsRunnerFacingRight) {
+		if (g_IsPlayerFacingRight) {
 			SpriteAnim_Draw(PlayId_Attack, screen_x, screen_y - 128.0f, 256.0f, 256.0f);
 		}
 		else {
@@ -496,7 +492,7 @@ void Runner_Draw() {
 		break;
 
 	case STATE_ATTACKEND:
-		if (g_IsRunnerFacingRight) {
+		if (g_IsPlayerFacingRight) {
 			SpriteAnim_Draw(PlayId_AttackEnd, screen_x, screen_y - 128.0f, 256.0f, 256.0f);
 		}
 		else {
@@ -505,7 +501,7 @@ void Runner_Draw() {
 		break;
 
 	case STATE_STRONGATTACK:
-		if (g_IsRunnerFacingRight) {
+		if (g_IsPlayerFacingRight) {
 			Sprite_Draw(g_StrongAttackEndTexId, screen_x, screen_y - 384.0f, 512.0f, 512.0f, 0, 0, 2048, 2048);
 		}
 		else {
@@ -515,7 +511,7 @@ void Runner_Draw() {
 		break;
 
 	case STATE_STRONGATTACKEND:
-		if (g_IsRunnerFacingRight) {
+		if (g_IsPlayerFacingRight) {
 			SpriteAnim_Draw(PlayId_StrongAttackEnd, screen_x, screen_y - 384.0f, 512.0f, 512.0f);
 		}
 		else {
@@ -528,24 +524,24 @@ void Runner_Draw() {
 	}
 }
 
-bool Runner_IsEnable(){
-	return g_RunnerEnable;
+bool Player_IsEnable(){
+	return g_PlayerEnable;
 }
 
-Circle Runner_GetCollision(){
-	float cx = g_RunnerPosition.x + (RUNNER_WIDTH * 0.5f);
-	float cy = g_RunnerPosition.y + (RUNNER_HEIGHT * 0.5f);
-	return { {cx,cy},g_RunnerCollision.radius };
+Circle Player_GetCollision(){
+	float cx = g_PlayerPosition.x + (Player_WIDTH * 0.5f);
+	float cy = g_PlayerPosition.y + (Player_HEIGHT * 0.5f);
+	return { {cx,cy},g_PlayerCollision.radius };
 }
 
-Box Runner_GetBoxCollision(){
+Box Player_GetBoxCollision(){
 	//中心座標
-	float hw = RUNNER_WIDTH * 0.5f;
-	float hh = RUNNER_HEIGHT * 0.5f;
-	return { {g_RunnerPosition.x + hw,g_RunnerPosition.y + hh + 10},hw - 30,hh - 10 };
+	float hw = Player_WIDTH * 0.5f;
+	float hh = Player_HEIGHT * 0.5f;
+	return { {g_PlayerPosition.x + hw,g_PlayerPosition.y + hh + 10},hw - 30,hh - 10 };
 }
 
-OBB Runner_GetAttackCollision(){	
+OBB Player_GetAttackCollision(){	
 	// 攻撃中以外は当たり判定なし
 	if (g_PlayerState != STATE_ATTACKEND && g_PlayerState != STATE_STRONGATTACKEND) {
 		return { {0,0}, {0,0}, {{1,0},{0,1}} };
@@ -604,7 +600,7 @@ OBB Runner_GetAttackCollision(){
 	}
 
 	// プレイヤーが左向きなら、ローカル座標と角度を反転
-	if (!g_IsRunnerFacingRight) {
+	if (!g_IsPlayerFacingRight) {
 		local_obb.center.x *= -1.0f;
 		angle *= -1.0f;
 	}
@@ -616,51 +612,51 @@ OBB Runner_GetAttackCollision(){
 	local_obb.axis[1] = { -s, c };
 
 	// ワールド座標に変換
-	local_obb.center.x += g_RunnerPosition.x + (RUNNER_WIDTH * 0.5f);
-	local_obb.center.y += g_RunnerPosition.y + (RUNNER_HEIGHT * 0.5f);
+	local_obb.center.x += g_PlayerPosition.x + (Player_WIDTH * 0.5f);
+	local_obb.center.y += g_PlayerPosition.y + (Player_HEIGHT * 0.5f);
 
 	return local_obb;
 }
 
-void Runner_Destroy() {
-	g_RunnerEnable = false;
+void Player_Destroy() {
+	g_PlayerEnable = false;
 }
 
-DirectX::XMFLOAT2 Runner_GetPosition() {
-	return g_RunnerPosition;
+DirectX::XMFLOAT2 Player_GetPosition() {
+	return g_PlayerPosition;
 }
 
 
-void Runner_Damage(float damage) {
-	if (g_RunnerInvincibleTime > 0.0f) {
+void Player_Damage(float damage) {
+	if (g_PlayerInvincibleTime > 0.0f) {
 		return;
 	}
 
-	g_RunnerHp -= damage;
-	if (g_RunnerHp < 0) {
-		g_RunnerHp = 0;
+	g_PlayerHp -= damage;
+	if (g_PlayerHp < 0) {
+		g_PlayerHp = 0;
 	}
 
 	PlayAudio(g_DamageSEId);
-	g_RunnerInvincibleTime = 1.0f;
+	g_PlayerInvincibleTime = 1.0f;
 }
 
-float Runner_GetHp() {
-	return g_RunnerHp;
+float Player_GetHp() {
+	return g_PlayerHp;
 }
 
-float Runner_GetMp(){
-	return g_RunnerMp;
+float Player_GetMp(){
+	return g_PlayerMp;
 }
 
-bool Runner_IsDead() {
-	return g_RunnerHp <= 0.0f;
+bool Player_IsDead() {
+	return g_PlayerHp <= 0.0f;
 }
 
-PLAYER_STATE Runner_GetState(){
+PLAYER_STATE Player_GetState(){
 	return g_PlayerState;
 }
 
-bool Runner_IsFacingRight(){
-	return g_IsRunnerFacingRight;
+bool Player_IsFacingRight(){
+	return g_IsPlayerFacingRight;
 }

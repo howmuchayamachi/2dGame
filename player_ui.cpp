@@ -10,7 +10,7 @@
 #include "player_ui.h"
 #include "texture.h"
 #include "sprite.h"
-#include "runner.h"
+#include "Player.h"
 #include "direct3d.h"
 #include <DirectXMath.h>
 using namespace DirectX;
@@ -114,8 +114,8 @@ void PlayerUI_Initialize(){
 	g_Explanation_Swicth_TexId = Texture_Load(L"resource/texture/Font/explanation_swicth.png");
 
 
-	g_HpRedValue = RUNNER_MAXHP;
-	g_MpRedValue = RUNNER_MAXMP;
+	g_HpRedValue = Player_MAXHP;
+	g_MpRedValue = Player_MAXMP;
 
 	g_isHpDecrease = false;
 	g_isMpDecrease = false;
@@ -128,7 +128,7 @@ void PlayerUI_Finalize(){
 
 void PlayerUI_Update(double elapsed_time){
 	//プレイヤーの現在のHPを取得
-	float current_hp = Runner_GetHp();
+	float current_hp = Player_GetHp();
 
 	//赤いHPバーが本当のHPよりも大きい場合
 	if (g_HpRedValue > current_hp) {
@@ -145,7 +145,7 @@ void PlayerUI_Update(double elapsed_time){
 		g_isHpDecrease = false;
 	}
 
-	float current_mp = (float)Runner_GetMp();
+	float current_mp = (float)Player_GetMp();
 	if (g_MpRedValue > current_mp) {
 		g_isMpDecrease = true;
 
@@ -271,18 +271,18 @@ void PlayerUI_Draw(){
 	// 右上にHPバーの枠を表示
 	Sprite_Draw(g_HpFrameTexId, screen_width - 680.0f, 10.0f, 680.0f, 160.0f);
 
-	float damage_bar_ratio = g_HpRedValue / RUNNER_MAXHP;
+	float damage_bar_ratio = g_HpRedValue / Player_MAXHP;
 	Sprite_Draw(g_HpRedTexId, screen_width - 550.0f, 20.0f, 500.0f * damage_bar_ratio, 60.0f);
 	
-	float redMp_bar_ratio = g_MpRedValue / RUNNER_MAXMP;
+	float redMp_bar_ratio = g_MpRedValue / Player_MAXMP;
 	Sprite_Draw(g_HpRedTexId, screen_width - 550.0f, 90.0f, 500.0f * redMp_bar_ratio, 60.0f);
 
 	// 現在のHPの割合を計算 (0.0～1.0)
-	float hp_ratio = Runner_GetHp() / RUNNER_MAXHP;
+	float hp_ratio = Player_GetHp() / Player_MAXHP;
 	// HPの割合に応じて、中身のバーの描画する幅を変える
 	Sprite_Draw(g_HpBarTexId, screen_width - 550.0f, 20.0f, 500.0f * hp_ratio, 60.0f);
 
-	float mp_ratio = Runner_GetMp() / RUNNER_MAXMP;
+	float mp_ratio = Player_GetMp() / Player_MAXMP;
 	Sprite_Draw(g_MpBarTexId, screen_width - 550.0f, 90.0f, 500.0f * mp_ratio, 60.0f);
 
 	//HPの文字
