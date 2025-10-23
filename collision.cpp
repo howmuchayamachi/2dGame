@@ -20,7 +20,6 @@ static constexpr int NUM_VERTEX = 5000; // 頂点数
 
 static ID3D11Buffer* g_pVertexBuffer = nullptr; // 頂点バッファ
 
-// 注意！初期化で外部から設定されるもの。Release不要。
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;
 
@@ -31,10 +30,7 @@ static int g_WhiteTex = -1;
 struct Vertex
 {
 	XMFLOAT3 position; // 頂点座標
-
-	//XMFLOAT4…FLOATの値を4つ入れられる
 	XMFLOAT4 color; //頂点カラー
-
 	XMFLOAT2 texcoord;//テクスチャ座標(UV)
 };
 
@@ -64,16 +60,16 @@ bool Collision_IsOverlapBox(const Box& a, const Box& b){
 }
 
 bool Collision_IsOverlapCircleVSBox(const Box& box, const Circle& circle){
-	// 1. 円の中心に最も近い、四角形上の点を求める
+	// 円の中心に最も近い四角形上の点を求める
 	float closest_x = std::max(box.center.x - box.half_width, std::min(circle.center.x, box.center.x + box.half_width));
 	float closest_y = std::max(box.center.y - box.half_height, std::min(circle.center.y, box.center.y + box.half_height));
 
-	// 2. 「最も近い点」と「円の中心」との距離を計算
+	// 最も近い点と円の中心との距離を計算
 	float distance_x = circle.center.x - closest_x;
 	float distance_y = circle.center.y - closest_y;
 	float distance_sq = (distance_x * distance_x) + (distance_y * distance_y); // 距離の2乗
 
-	// 3. 距離の2乗が、円の半径の2乗より小さければ衝突している
+	// 距離の2乗が円の半径の2乗より小さければ衝突している
 	return distance_sq < (circle.radius * circle.radius);
 }
 
@@ -93,19 +89,18 @@ bool Collision_IsOverlapOBBVSCircle(const OBB& obb, const Circle& circle)
 	circle_center_local.y = XMVectorGetY(XMVector2Dot(vec_to_circle, obb_axis1));
 
 
-	// OBBの辺上で、円の中心に最も近い点を求める
-	// ローカル座標系ではOBBは原点中心のAABBとして扱える
+	// OBBの辺上で円の中心に最も近い点を求める
 	float closest_x = std::max(-obb.half_extent.x, std::min(circle_center_local.x, obb.half_extent.x));
 	float closest_y = std::max(-obb.half_extent.y, std::min(circle_center_local.y, obb.half_extent.y));
 
 
-	//「最も近い点」と「円の中心」との距離を計算
+	//最も近い点と円の中心との距離を計算
 	float distance_x = circle_center_local.x - closest_x;
 	float distance_y = circle_center_local.y - closest_y;
 	float distance_sq = (distance_x * distance_x) + (distance_y * distance_y); // 距離の2乗
 
 
-	// 距離の2乗が、円の半径の2乗より小さければ衝突している
+	// 距離の2乗が円の半径の2乗より小さければ衝突している
 	return distance_sq < (circle.radius * circle.radius);
 }
 
@@ -115,7 +110,7 @@ bool Collision_IsOverlapOBBVSBox(const OBB& obb, const Box& box){
 	OBB box_as_obb;
 	box_as_obb.center = box.center;
 	box_as_obb.half_extent = { box.half_width, box.half_height };
-	//回転していないので、軸ベクトルは標準の(1,0)と(0,1)
+	//回転していないので軸ベクトルは標準の(1,0)と(0,1)
 	box_as_obb.axis[0] = { 1.0f, 0.0f };
 	box_as_obb.axis[1] = { 0.0f, 1.0f };
 
@@ -132,18 +127,17 @@ bool Collision_IsOverlapOBB(const OBB& a, const OBB& b){
 
 	for (int i = 0; i < 4; ++i) {
 		float a_min, a_max, b_min, b_max;
-		//各軸に対して、それぞれのOBBの影の範囲を計算
+		//各軸に対してそれぞれのOBBの影の範囲を計算
 		ProjectOBB(&a_min, &a_max, a, axes[i]);
 		ProjectOBB(&b_min, &b_max, b, axes[i]);
 
-		//影が完全に離れている（重なっていない）軸が一つでも見つかれば
+		//影が完全に離れている（重なっていない）軸が一つでも見つかれば衝突していない
 		if (a_max < b_min || b_max < a_min) {
-			//その時点で「衝突していない」ことが確定するので、falseを返して処理を終了
 			return false;
 		}
 	}
 
-	// 4つの軸すべてで影が重なっていた場合、「衝突している」と判断
+	// 4つの軸すべてで影が重なっていた場合衝突している
 	return true;
 }
 
@@ -151,8 +145,8 @@ static void ProjectOBB(float* min, float* max, const OBB& obb, const DirectX::XM
 	//OBBの中心点を軸に射影する
 	float p = obb.center.x * axis.x + obb.center.y * axis.y;
 
+	//中心点から影の端までの最大距離を求める
 	//OBBの2つの軸ベクトルを、判定軸にそれぞれ射影し、半分の長さを掛ける
-	//これにより、中心点から影の端までの最大距離がわかる
 	float r = obb.half_extent.x * (float)fabs(obb.axis[0].x * axis.x + obb.axis[0].y * axis.y) +
 		obb.half_extent.y * (float)fabs(obb.axis[1].x * axis.x + obb.axis[1].y * axis.y);
 
@@ -166,7 +160,6 @@ void Collision_DebugInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 	g_pDevice = pDevice;
 	g_pContext = pContext;
 	
-
 	//頂点バッファ生成
 	D3D11_BUFFER_DESC bd = {};
 	bd.Usage = D3D11_USAGE_DYNAMIC;
@@ -176,9 +169,7 @@ void Collision_DebugInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 	g_pDevice->CreateBuffer(&bd, NULL, &g_pVertexBuffer);
 
-
 	g_WhiteTex = Texture_Load(L"resource/texture/white.png");
-	
 }
 
 void Collision_DebugFinalize(){

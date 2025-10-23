@@ -123,7 +123,6 @@ void Clear_Draw(){
 	Sprite_Draw(g_GoToTitleTexture, center_x - 500.0f, center_y + 100.0f,
 		(g_CurrentSelection == CLEAR_GOTOTITLE) ? color_selected : color_normal);
 
-	// EXIT ‚Ì•`‰æ
 	Sprite_Draw(g_ExitTexture, center_x - 500.0f, center_y + 300.0f,
 		(g_CurrentSelection == CLEAR_EXIT) ? color_selected : color_normal);
 }

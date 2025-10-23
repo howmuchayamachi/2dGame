@@ -32,8 +32,6 @@ static int g_MapChipTexId_Bg_Ground = -1;
 static int g_MapChipTexId_Boss_float = -1;
 
 static XMFLOAT2 g_WorldOffset{ 0.0f,0.0f };
-//worldはゲーム世界の座標
-//localは画面の座標
 
 static int g_MapWidth = 0;
 static int g_MapHeight = 0;
@@ -202,16 +200,14 @@ void Map_Draw(){
 	DrawLayer(g_MapChipTexId_Boss_float, g_Map_Boss_Oneway, mx, my, { local_offset_x, local_offset_y });
 }
 
-void Map_SetWorldOffset(const DirectX::XMFLOAT2& world_offset)
+void Map_SetWorldOffset(const XMFLOAT2& world_offset)
 {
 	g_WorldOffset = world_offset;
 }
 
-DirectX::XMFLOAT2 Map_GetWorldOffset() {
+XMFLOAT2 Map_GetWorldOffset() {
 	return g_WorldOffset;
 }
-
-
 
 bool Map_hitJudgementBoxVSMap(const Box& collision) {
 
@@ -250,7 +246,7 @@ bool Map_hitJudgementBoxVSMap(const Box& collision) {
 }
 
 bool Map_hitJudgementCircleVSMap(const Circle& collision){
-	// 円がどの範囲のタイルに重なっている可能性があるか、大まかに計算する
+	// 円がどの範囲のタイルに重なっている可能性があるか、大まかに計算
 	int start_mx = Map_GetWorldToMapX(collision.center.x - collision.radius);
 	int end_mx = Map_GetWorldToMapX(collision.center.x + collision.radius);
 	int start_my = Map_GetWorldToMapY(collision.center.y - collision.radius);
@@ -274,7 +270,7 @@ bool Map_hitJudgementCircleVSMap(const Circle& collision){
 
 				// BoxとCircleの正確な当たり判定を行う
 				if (Collision_IsOverlapCircleVSBox(tile_box, collision)) {
-					return true; // 1つでも当たっていたら、即座にtrueを返す
+					return true; // 1つでも当たっていたらtrueを返す
 				}
 			}
 		}
@@ -284,9 +280,7 @@ bool Map_hitJudgementCircleVSMap(const Circle& collision){
 	return false;
 }
 
-bool Map_hitJudgementBoxVSOneway(const Box& collision)
-{
-	// 当たり判定に使う座標を格納する配列
+bool Map_hitJudgementBoxVSOneway(const Box& collision){
 	XMFLOAT2 check_points[8];
 
 	float left = collision.center.x - collision.half_width;
@@ -358,9 +352,9 @@ void mapChipDraw(int tex_id, uint32_t mapChipId, int mx, int my, const XMFLOAT2&
 
 	if (tileset_width_in_tiles == 0) return;
 
-	// １次元のIDを２次元の座標（タイルセットの何列目、何行目か）に変換する
-	int tile_col = mapChipId % tileset_width_in_tiles; // 列 (X)
-	int tile_row = mapChipId / tileset_width_in_tiles; // 行 (Y)
+	// １次元のIDを２次元の座標に変換
+	int tile_col = mapChipId % tileset_width_in_tiles; // 列
+	int tile_row = mapChipId / tileset_width_in_tiles; // 行
 
 	// 切り出すテクスチャの左上のピクセル座標を最終的に計算
 	int cut_x = tile_col * MAPCHIP_WIDTH;
@@ -368,7 +362,7 @@ void mapChipDraw(int tex_id, uint32_t mapChipId, int mx, int my, const XMFLOAT2&
 
 	Sprite_Draw(tex_id, px, py,
 		MAPCHIP_WIDTH, MAPCHIP_HEIGHT,  // 画面に描画するサイズ
-		cut_x, cut_y,                  // テクスチャから切り出す座標
+		cut_x, cut_y,                   // テクスチャから切り出す座標
 		MAPCHIP_WIDTH, MAPCHIP_HEIGHT,  // テクスチャから切り出すサイズ
 		is_flipped_horizontally,
 		is_flipped_vertically,
@@ -407,13 +401,13 @@ void Map_UpdateCamera(const DirectX::XMFLOAT2& player_pos, double elapsed_time) 
 		target_offset.y = player_pos.y - margin_bottom;
 	}
 
-	// スムーズに追従（イージング）
+	// スムーズに追従
 	const float CAMERA_SMOOTHING = 0.2f;
 	g_WorldOffset.x += (target_offset.x - g_WorldOffset.x) * CAMERA_SMOOTHING;
 	g_WorldOffset.y += (target_offset.y - g_WorldOffset.y) * CAMERA_SMOOTHING;
 
 
-	//カメラを揺らす
+	//カメラシェイク
 	if (g_ShakeTimer > 0.0) {
 		g_ShakeTimer -= elapsed_time;
 

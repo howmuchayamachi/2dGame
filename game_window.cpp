@@ -9,7 +9,7 @@
 ======================================================================================*/
 
 #include "game_window.h"
-#include <algorithm> //std::maxを使う
+#include <algorithm> 
 #include "keyboard.h"
 #include "mouse.h"
 #include "game.h"
@@ -21,7 +21,7 @@ static constexpr char TITLE[] = "GameWindow"; //タイトルバーのテキスト
 
 static HWND g_hWnd=NULL;
 
-//ウィンドウプロシージャ プロトタイプ宣言
+//ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
@@ -46,20 +46,14 @@ HWND GameWindow_Create(HINSTANCE hInstance)
 	RegisterClassEx(&wcex);
 
 	//メインウィンドウの作成
-	//RECT window_rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };//left,top,right,bottom (矩形)
 	int SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN);
 	int SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 	RECT window_rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
 
-	//|or  &and  ^xor  ~not
-	//↓最大化とサイズ変更ができない
 	DWORD style = WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME ^ WS_MAXIMIZEBOX;
-	//WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX ,
-	AdjustWindowRect(&window_rect, style, FALSE); //最終的なウィンドウのサイズを出してくれる
+	AdjustWindowRect(&window_rect, style, FALSE);
 
 	//デスクトップのサイズを取得
-	//※プライマリモニターの画面解像度を取得
-	//GetSystemMetrics…ハードウェアの情報が色々取れる
 	int desktop_width = GetSystemMetrics(SM_CXSCREEN);
 	int desktop_height = GetSystemMetrics(SM_CYSCREEN);
 
@@ -67,16 +61,10 @@ HWND GameWindow_Create(HINSTANCE hInstance)
 		0,
 		wcex.lpszClassName,
 		0,
-
-		// ウィンドウスタイルを WS_POPUP に変更
-		// タイトルバーや枠線のない、完全な描画領域になる
 		WS_POPUP,
-
-		//ウィンドウの位置とサイズも、画面にピッタリ合わせる
 		0, 0, // 画面の左上(0,0)に配置
 		desktop_width, // 画面全体の横幅を取得
 		desktop_height, // 画面全体の高さを取得
-
 		NULL,
 		NULL,
 		hInstance,
@@ -91,7 +79,6 @@ HWND GameWindow_GetHWND(){
 }
 
 //ウィンドウプロシージャ
-//マウス移動・クリック・ウィンドウ操作などあらゆる操作
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_ACTIVATEAPP:
@@ -119,17 +106,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	    Keyboard_ProcessMessage(message, wParam, lParam);
 	    break;
 
-	case WM_CLOSE: //×ボタンもしくはウィンドウを閉じるときに警告を出すなど(そのあとに閉じるようにして2段階方式に)
+	case WM_CLOSE:
 		if (MessageBox(hWnd, "本当に終了してよろしいですか?", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
 			DestroyWindow(hWnd);
 		}
 		break;
 
 	case WM_DESTROY: //ウィンドウの破棄メッセージ(ウィンドウを閉じる)
-		PostQuitMessage(0); //WM_QUITメッセージの送信(GetMessageに0が入って終了する)
+		PostQuitMessage(0);
 		break;
 	default:
-		//通常のメッセージ処理はこの関数に任せる
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;

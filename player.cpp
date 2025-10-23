@@ -132,7 +132,7 @@ void Player_Initialize(const XMFLOAT2& position) {
 	g_AttackCollisions[5] = { {100.0f, 40.0f}, {70.0f, 30.0f}, {{1,0}, {0,1}} };
 }
 
-void Runnner_Finalize() {
+void Player_Finalize() {
 }
 
 void Player_Update(double elapsed_time) {

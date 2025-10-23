@@ -263,13 +263,13 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 				p.size = 50.0f;
 				p.velocity = { 0.0f,0.0f };
 
-				// 0度から360度のランダムな角度を計算 (ラジアン単位)
+				// 0度から360度のランダムな角度を計算
 				float angle = ((float)rand() / RAND_MAX) * 2.0f * XM_PI;
 
-				// 900から1100の間のランダムなスピードを計算
+				// ランダムなスピードを計算
 				float speed = 1300.0f + ((float)rand() / RAND_MAX) * 200.0f;
 
-				// 角度とスピードから、X方向とY方向の初速を決定！
+				// 角度とスピードから、X方向とY方向の初速を決定
 				p.velocity.x = cosf(angle) * speed;
 				p.velocity.y = sinf(angle) * speed;
 
@@ -284,7 +284,6 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 				Particle_color.y = 0.1f;
 
 				p.color = { Particle_color.x,Particle_color.y,Particle_color.z,1.0f };
-
 			}
 				break;
 
@@ -310,7 +309,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 				// 50から250の間のランダムなスピードを計算
 				float speed = 50.0f + ((float)rand() / RAND_MAX) * 200.0f;
 
-				// 角度とスピードから、X方向とY方向の初速を決定！
+				// 角度とスピードから、X方向とY方向の初速を決定
 				p.velocity.x = cosf(angle) * speed;
 				p.velocity.y = sinf(angle) * speed;
 
@@ -328,7 +327,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 				// 400から600の間のランダムなスピードを計算
 				float speed = 400.0f + ((float)rand() / RAND_MAX) * 200.0f;
 
-				// 角度とスピードから、X方向とY方向の初速を決定！
+				// 角度とスピードから、X方向とY方向の初速を決定
 				p.velocity.x = cosf(angle) * speed;
 				p.velocity.y = sinf(angle) * speed;
 

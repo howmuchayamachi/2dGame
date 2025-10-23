@@ -18,8 +18,6 @@ using namespace DirectX;
 
 struct Effect {
 	XMFLOAT2 position;
-	//XMFLOAT2 velocity; //動くものを使いたかったら
-	//double LifeTime;
 	int sprite_anim_id;
 	bool isEnable;
 };
@@ -60,6 +58,7 @@ void Effect_Draw(){
 	for (Effect& e : g_Effects) {
 		//使っていなかったら読み飛ばす
 		if (!e.isEnable) continue;
+
 		// カメラのオフセットを取得
 		XMFLOAT2 offset = Map_GetWorldOffset();
 

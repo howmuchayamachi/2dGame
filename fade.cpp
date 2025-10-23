@@ -27,7 +27,7 @@ void Fade_Initialize(){
 	g_FadeTime=0.0;
 	g_FadeStartTime=0.0;
 	g_AccumulatedTime=0.0;
-	g_Color={ 0.0f,0.0f,0.0f }; //デフォルトは黒
+	g_Color={ 0.0f,0.0f,0.0f };
 	g_Alpha = 0.0f;
 	g_State = FADE_STATE_NONE;
 	g_FadeTexId = Texture_Load(L"resource/texture/white.png");

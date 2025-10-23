@@ -1,17 +1,13 @@
 /*==============================================================================
 
-   システムタイマー [system_timer.h]
-                                                         Author : Youhei Sato
-                                                         Date   : 2018/06/17
+   システムタイマー [system_timer.cpp]
+                                                         Author : Harada Ren
+                                                         Date   : 2025/06/17
 --------------------------------------------------------------------------------
 
 ==============================================================================*/
 #include <Windows.h>
 
-
-/*------------------------------------------------------------------------------
-   グローバル変数宣言
-------------------------------------------------------------------------------*/
 static bool g_bTimerStopped = true; // ストップフラグ
 static LONGLONG g_TicksPerSec = 0;  // １秒間の計測時間
 static LONGLONG g_StopTime;         // ストップした時間
@@ -19,16 +15,8 @@ static LONGLONG g_LastElapsedTime;  // 最後に記録した更新時間
 static LONGLONG g_BaseTime;         // 基本時間
 
 
-/*------------------------------------------------------------------------------
-   プロトタイプ宣言
-------------------------------------------------------------------------------*/
 // 停止していれば停止時間、そうでなければ現在の時間の取得
 static LARGE_INTEGER GetAdjustedCurrentTime(void);
-
-
-/*------------------------------------------------------------------------------
-   関数定義
-------------------------------------------------------------------------------*/
 
 // システムタイマーの初期化
 void SystemTimer_Initialize(void)
@@ -116,10 +104,6 @@ double SystemTimer_GetElapsedTime(void)
     double elapsed_time = (double)(time.QuadPart - g_LastElapsedTime) / (double)g_TicksPerSec;
     g_LastElapsedTime = time.QuadPart;
 
-    // タイマーが正確であることを保証するために、更新時間を０にクランプする。
-    // elapsed_timeは、プロセッサが節電モードに入るか、何らかの形で別のプロセッサにシャッフルされると、この範囲外になる可能性がある。
-    // よって、メインスレッドはSetThreadAffinityMaskを呼び出して、別のプロセッサにシャッフルされないようにする必要がある。
-    // 他のワーカースレッドはSetThreadAffinityMaskを呼び出すべきではなく、メインスレッドから収集されたタイマーデータの共有コピーを使用すること。
     if( elapsed_time < 0.0 ) {
         elapsed_time = 0.0;
     }
@@ -138,16 +122,12 @@ void LimitThreadAffinityToCurrentProc(void)
 {
     HANDLE hCurrentProcess = GetCurrentProcess();
 
-    // Get the processor affinity mask for this process
     DWORD_PTR dwProcessAffinityMask = 0;
     DWORD_PTR dwSystemAffinityMask = 0;
 
     if( GetProcessAffinityMask(hCurrentProcess, &dwProcessAffinityMask, &dwSystemAffinityMask) != 0 && dwProcessAffinityMask ) {
-        // Find the lowest processor that our process is allows to run against
         DWORD_PTR dwAffinityMask = (dwProcessAffinityMask & ((~dwProcessAffinityMask) + 1));
 
-        // Set this as the processor that our thread must always run against
-        // This must be a subset of the process affinity mask
         HANDLE hCurrentThread = GetCurrentThread();
         if( INVALID_HANDLE_VALUE != hCurrentThread ) {
             SetThreadAffinityMask(hCurrentThread, dwAffinityMask);

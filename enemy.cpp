@@ -24,13 +24,9 @@ using namespace DirectX;
 
 struct EnemyType {
 	int TexId;
-	//int tx, ty, tw, th; //画像を切り取る場合に使う
-	//速度など
-
 	Circle collision;
 	Box box_collision;
 	int hp;//最大HP
-	unsigned int score; //倒したときのスコア
 	int AnimId;
 };
 
@@ -44,18 +40,18 @@ struct Enemy {
 	XMFLOAT2 position;
 	XMFLOAT2 velocity;
 	float offsetY;
-	double lifeTime;
-	double TimetoFire;
+	double lifeTime; //生きた時間
+	double TimetoFire; //弾発射までの時間
 	float hp; //現在のHP
 	float hp_red;
 	bool isEnable; //使っているかどうか
 	bool isDamage; //ダメージを受けたか
 	int AnimPlayId;
 	EnemyState state;
-	bool isFacingRight;
-	float InvincibleTime;
-	bool isKnockback;
-	float KnockbackTimer;
+	bool isFacingRight; //右を向いているか
+	float InvincibleTime; //無敵時間
+	bool isKnockback; //ノックバックしているか
+	float KnockbackTimer; //ノックバックする時間
 	float ChaseTimer; //ダメージを受けた後にプレイヤーを追う時間
 };
 
@@ -124,9 +120,12 @@ void Enemy_Update(double elapsed_time) {
 		Enemy& e = g_Enemys[i];
 		//使っていなかったら読み飛ばす
 		if (!e.isEnable) continue;
+
 		//例外処理
 		if (e.typeId < 0 || e.typeId >= ENEMY_TYPE_MAX) return;
 
+
+		//-----経過時間処理-----
 		if (e.InvincibleTime > 0.0f) {
 			e.InvincibleTime -= (float)elapsed_time;
 		}
@@ -151,7 +150,7 @@ void Enemy_Update(double elapsed_time) {
 		float gravity = 9.8f * 200.0f * (float)elapsed_time;
 
 
-		//エネミーステートマシン
+		//-----エネミーステート管理-----
 		float move_speed = 100.0f;
 		float distance = XMVectorGetX(XMVector2Length(player_position - position));
 
@@ -246,8 +245,8 @@ void Enemy_Update(double elapsed_time) {
 			}
 		}
 
-		//当たり判定
 
+		//-----当たり判定-----
 		//壁との当たり判定
 		XMVECTOR horizontal_move = XMVectorSet(XMVectorGetX(velocity) * (float)elapsed_time, 0.0f, 0.0f, 0.0f);
 		position += horizontal_move;
@@ -275,11 +274,12 @@ void Enemy_Update(double elapsed_time) {
 		if (XMVectorGetX(velocity) > 0.0f) e.isFacingRight = true;
 		else if (XMVectorGetX(velocity) < 0.0f) e.isFacingRight = false;
 
+		//最終的な速度と位置を保存
 		XMStoreFloat2(&e.position, position);
 		XMStoreFloat2(&e.velocity, velocity);
 
 
-		//HP減らす処理
+		//-----HP減らす処理-----
 		if (e.hp_red > e.hp) {
 
 			//少しずつ赤いHPバーを減らす
@@ -329,11 +329,6 @@ void Enemy_Draw() {
 		Sprite_Draw(g_HpBarTexId, screen_x, screen_y, 120.0f * hp_ratio, 15.0f);
 
 		e.isDamage = false;
-
-#if defined(DEBUG)||defined(_DEBUG)
-		//Collision_DebugDraw(Enemy_GetBoxCollision(i));
-		i++;
-#endif
 	}
 
 }
@@ -404,14 +399,12 @@ void Enemy_Destroy(int index) {
 	effect_pos.y -= ENEMY_HEIGHT / 2.0f;
 	Effect_Create(effect_pos);
 	Particle_Create(ParticleType::ENEMY_DEATH, { effect_pos.x + ENEMY_WIDTH ,effect_pos.y + ENEMY_HEIGHT});
-	Particle_Create(ParticleType::ENEMY_DEATH, { effect_pos.x + ENEMY_WIDTH ,effect_pos.y + ENEMY_HEIGHT});
 
 	g_Enemys[index].isEnable = false;
 }
 
-//ダメージを決めたかったら引数にダメージを入れるなどする
 void Enemy_Damage(int index) {
-	if (Player_GetState() == STATE_STRONGATTACKEND) g_Enemys[index].hp -= 3; //hpを1減らす
+	if (Player_GetState() == STATE_STRONGATTACKEND) g_Enemys[index].hp -= 3;
 	else g_Enemys[index].hp--;
 
 	g_Enemys[index].isDamage = true;
@@ -445,6 +438,7 @@ XMFLOAT2 Get_NearestTargetPosision(const DirectX::XMFLOAT2& player_position) {
 	float nearestDistSq = FLT_MAX;
 	XMFLOAT2 nearestEnemy = { 0.0f, 0.0f };
 
+	//最もプレイヤーに近い敵を探す
 	for (Enemy& e : g_Enemys) {
 		if (!e.isEnable) continue;
 		if (e.InvincibleTime > 0.0f) continue;

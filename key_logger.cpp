@@ -25,24 +25,11 @@ void KeyLogger_Update(){
 	LPBYTE pr = (LPBYTE)&g_ReleasedState;
 
 	for (int i = 0; i < sizeof(Keyboard_State); i++) {
-		//1ƒtƒŒ[ƒ€‘O‚Æ¡‚Ìó‘Ô‚ğ”ä‚×‚é
-		/*
-		01->1
-		10->0
-		11->0
-		00->0
-		*/
 		pt[i] = (pp[i] ^ pn[i]) & pn[i];
-		/*
-		01->0
-		10->1
-		11->0
-		00->0
-		*/
 		pr[i]= (pp[i] ^ pn[i]) & pp[i];
 	}
 
-	g_PrevState = *pState; //Œ»İ‚Ì“ü—Í‚ğ‰ß‹‚Ì“ü—Í‚É‚·‚é
+	g_PrevState = *pState; //Œ»İ‚Ì“ü—Í‚ğ•Û‘¶
 }
 
 bool KeyLogger_IsPressed(Keyboard_Keys key){

@@ -17,6 +17,7 @@
 #include "map.h"
 #include "texture.h"
 
+//スタック
 static std::vector<Scene> g_SceneStack;
 
 void Scene_Initialize(){

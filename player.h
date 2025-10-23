@@ -21,7 +21,7 @@ static constexpr float Player_MAXMP = 10;
 
 
 void Player_Initialize(const DirectX::XMFLOAT2& position);
-void Runnner_Finalize();
+void Player_Finalize();
 
 void Player_Update(double elapsed_time);
 void Player_Draw();

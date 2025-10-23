@@ -1,19 +1,14 @@
-//--------------------------------------------------------------------------------------
-// File: mouse.h
-//
-// 便利なマウスモジュール
-//
-//--------------------------------------------------------------------------------------
-// 2020/02/11
-//     DirectXTKより、なんちゃってC言語用にシェイプアップ改変
-//
-// Licensed under the MIT License.
-//
-// http://go.microsoft.com/fwlink/?LinkId=248929
-// http://go.microsoft.com/fwlink/?LinkID=615561
-//--------------------------------------------------------------------------------------
-#ifndef HAL_YOUHEI_MOUSE_H
-#define HAL_YOUHEI_MOUSE_H
+/*====================================================================================
+
+マウス入力の記録[mouse.h]
+
+                                                                Author	: Harada Ren
+                                                                Date	: 2025/06/27
+--------------------------------------------------------------------------------------
+
+======================================================================================*/
+#ifndef MOUSE_H
+#define MOUSE_H
 #pragma once
 
 
@@ -71,37 +66,5 @@ void Mouse_SetVisible(bool visible);
 // マウス制御のためのウィンドウメッセージプロシージャフック関数
 void Mouse_ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
-
-// 導入方法
-//
-// 対象のウィンドウが生成されたらそのウィンドウハンドルを引数に初期化関数を呼ぶ
-//
-// Mouse_Initialize(hwnd);
-//
-// ウィンドウメッセージプロシージャからマウス制御用フック関数を呼び出す
-//
-// LResult CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-// {
-//     switch (message)
-//     {
-//     case WM_ACTIVATEAPP:
-//     case WM_INPUT:
-//     case WM_MOUSEMOVE:
-//     case WM_LBUTTONDOWN:
-//     case WM_LBUTTONUP:
-//     case WM_RBUTTONDOWN:
-//     case WM_RBUTTONUP:
-//     case WM_MBUTTONDOWN:
-//     case WM_MBUTTONUP:
-//     case WM_MOUSEWHEEL:
-//     case WM_XBUTTONDOWN:
-//     case WM_XBUTTONUP:
-//     case WM_MOUSEHOVER:
-//         Mouse_ProcessMessage(message, wParam, lParam);
-//         break;
-//
-//     }
-// }
-//
 
 #endif // MOUSE_H

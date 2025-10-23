@@ -80,7 +80,6 @@ void Game_Initialize(){
 	else {
 		Player_Initialize({ 260.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT });
 	}
-	//Player_Initialize({ 260.0f * MAPCHIP_WIDTH,25.0f * MAPCHIP_HEIGHT });
 
 	PlayerUI_Initialize();
 	BossUI_Initialize();
@@ -100,9 +99,7 @@ void Game_Initialize(){
 void Game_Finalize(){
 	StopAllAudio();
 	UnloadAllAudio();
-
 	SpriteAnim_Finalize();
-
 	BossUI_Finalize();
 	Boss_Finalize();
 	PlayerUI_Finalize();
@@ -111,7 +108,7 @@ void Game_Finalize(){
 	EnemySpawner_Finalize();
 	Enemy_Finalize();
 	Bullet_Finalize();
-	Runnner_Finalize();
+	Player_Finalize();
 	Map_Finalize();
 	BG_Finalize();
 }
@@ -196,7 +193,6 @@ void Game_Update(double elapsed_time){
 		hitJudgementPlayerVSEnemy();
 		hitJudgementBulletVSEnemy();
 		hitJudgementPlayerVSEnemyBullet();
-		//hitJudgementBulletVSMap();
 
 		hitJudgementPlayerVSBoss();
 		hitJudgementBulletVSBoss();
@@ -289,11 +285,9 @@ void hitJudgementBulletVSEnemy(){
 void hitJudgementPlayerVSEnemy(){
 	if (!Player_IsEnable()) return;
 
-	//プレイヤーと全てのエネミーと当たり判定を見る
 	for (int ei = 0;ei < ENEMY_MAX;ei++) {
 		if (!Enemy_IsEnable(ei)) continue;
 		if (Collision_IsOverlapCircle(Player_GetCollision(), Enemy_GetCollision(ei))) {
-			//当たっていたら
 			if (Get_EnemyHp(ei) >= 0.0f) {
 				Player_Damage(1.0f);
 				Enemy_Destroy(ei);
@@ -306,14 +300,12 @@ void hitJudgementPlayerVSEnemyBullet(){
 	
 	if (!Player_IsEnable()) return;
 
-	//プレイヤーと全てのエネミーの弾と当たり判定を見る
 	for (int eb = 0;eb < BULLET_MAX;eb++) {
 		if (Bullet_WillExplosion(eb)) continue;
 
 		if (!EnemyBullet_IsEnable(eb)) continue;
 
 		if (Collision_IsOverlapCircle(Player_GetCollision(), EnemyBullet_GetCollision(eb))) {
-			//当たっていたら
 			Boss_IsReinforced() ? Player_Damage(2.0f) : Player_Damage(1.0f);
 			EnemyBullet_Destroy(eb);
 		}

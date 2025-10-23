@@ -20,7 +20,7 @@ struct AnimPatternData {
 	int m_HPatternMax = 0; //横のパターン最大数
 	XMUINT2 m_StartPosition{ 0,0 }; //アニメーションのスタート座標
 	XMUINT2 m_PatternSize{ 0,0 }; //1パターンの幅と高さ
-	double m_seconds_per_pattern = 0.1; //パターン一個を何秒表示するか(何秒で切り替えるか)
+	double m_seconds_per_pattern = 0.1; //パターン一個を何秒表示するか
 	bool m_IsLooped = true; //ループするか(動き続けるか)
 };
 
@@ -41,7 +41,7 @@ static AnimPlayData g_AnimPlay[ANIM_PLAY_MAX];
 
 
 void SpriteAnim_Initialize() {
-	//アニメーションパターン管理情報を初期化(全て利用していない状況に)する
+	//アニメーションパターン管理情報を初期化
 	for (AnimPatternData& data : g_AnimPattern) {
 		data.m_TextureId = -1; //テクスチャidが-1だったら使われていない判定
 	}

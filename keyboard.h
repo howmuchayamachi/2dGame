@@ -1,20 +1,14 @@
-//--------------------------------------------------------------------------------------
-// File: Keyboard.h
-//
-// キーボードモジュール
-//
-//--------------------------------------------------------------------------------------
-// 2020/06/07
-//     DirectXTKより、なんちゃってC言語用にシェイプアップ改変
-//
-// Licensed under the MIT License.
-//
-// http://go.microsoft.com/fwlink/?LinkId=248929
-// http://go.microsoft.com/fwlink/?LinkID=615561
-//--------------------------------------------------------------------------------------
-#ifndef HAL_YOUHEI_KEYBOARD_H
-#define HAL_YOUHEI_KEYBOARD_H
-#pragma once
+/*====================================================================================
+
+キーボード入力の記録[keyboard.h]
+
+                                                                Author	: Harada Ren
+                                                                Date	: 2025/06/27
+--------------------------------------------------------------------------------------
+
+======================================================================================*/
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
 
 
 #include <windows.h>
@@ -414,25 +408,4 @@ void Keyboard_Reset(void);
 void Keyboard_ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 
-//
-// For a Win32 desktop application, call this function from your Window Message Procedure
-//
-// LResult CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-// {
-//     switch (message)
-//     {
-//
-//     case WM_ACTIVATEAPP:
-//     case WM_KEYDOWN:
-//     case WM_SYSKEYDOWN:
-//     case WM_KEYUP:
-//     case WM_SYSKEYUP:
-//         Keyboard_ProcessMessage(message, wParam, lParam);
-//         break;
-//
-//     }
-// }
-//
-
-
-#endif // HAL_YOUHEI_KEYBOARD_H
+#endif //KEYBOARD_H

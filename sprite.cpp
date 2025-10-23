@@ -24,7 +24,6 @@ static constexpr int NUM_VERTEX = 4; // 頂点数
 static ID3D11Buffer* g_pVertexBuffer = nullptr; // 頂点バッファ
 static ID3D11ShaderResourceView* g_pTexture = nullptr; //テクスチャ
 
-// 注意！初期化で外部から設定されるもの。Release不要。
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;
 
@@ -33,7 +32,6 @@ static ID3D11DeviceContext* g_pContext = nullptr;
 struct Vertex {
 	XMFLOAT3 position; // 頂点座標
 
-	//XMFLOAT4…FLOATの値を4つ入れられる
 	XMFLOAT4 color; //頂点カラー
 
 	XMFLOAT2 texcoord;//テクスチャ座標(UV)
@@ -124,13 +122,6 @@ void Sprite_Draw(int texid, float dx, float dy, const XMFLOAT4& color) {
 
 
 	// プリミティブトポロジ設定
-	//POINTLIST…点を描く
-	//LINELIST…頂点2個につき1本
-	//LINESTRIP…線がすべてつながる
-	//TRIANGLELIST…頂点3個で三角形表示
-	// 　ポリゴンには裏表があり
-	// 　右回りに頂点を配置しないと表にならない(表示されない)
-	//TRIANGLESTRIP…帯を描く(Z字orN字に頂点を書く)
 	g_pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	//テクスチャセット
@@ -384,7 +375,7 @@ void Sprite_Draw(int texid, float dx, float dy, float dw, float dh, int px, int 
 	XMMATRIX scale = XMMatrixScaling(dw, dh, 1.0f);//拡大
 	XMMATRIX rotation = XMMatrixRotationZ(angle);//回転
 	XMMATRIX translation = XMMatrixTranslation(dx + dw * 0.5f, dy + dh * 0.5f, 0.0f);//平行移動
-	Shader_SetWorldMatrix(scale * rotation * translation); //合成(掛け算じゃない)
+	Shader_SetWorldMatrix(scale * rotation * translation); //合成
 
 	// 頂点バッファを描画パイプラインに設定
 	UINT stride = sizeof(Vertex);

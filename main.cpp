@@ -8,7 +8,7 @@
 
 ======================================================================================*/
 #include <SDKDDKVer.h>
-#define WIN32_LEAN_AND_MEAN //コンパイル時間が早くなる(古いプログラムを使わない)
+#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include "game_window.h"
 #include "direct3d.h"
@@ -49,7 +49,8 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 	InitAudio();
 
 	Direct3D_Initialize(hWnd); //ダイレクト3Dの初期化
-	Shader_Initialize(Direct3D_GetDevice(), Direct3D_GetContext()); //↓ダイレクト3Dの初期化の後に初期化
+
+	Shader_Initialize(Direct3D_GetDevice(), Direct3D_GetContext());
 	Texture_Initialize(Direct3D_GetDevice(), Direct3D_GetContext());
 	Sprite_Initialize(Direct3D_GetDevice(), Direct3D_GetContext());
 	Fade_Initialize();
@@ -59,9 +60,9 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 	hal::DebugText dt(Direct3D_GetDevice(), Direct3D_GetContext(),
 		L"resource/texture/consolab_ascii_512.png",
 		Direct3D_GetBackBufferWidth(), Direct3D_GetBackBufferHeight(),
-		0.0f, 0.0f, //調整
+		0.0f, 0.0f,
 		0, 0,
-		0.0f, 16.0f); //調整
+		0.0f, 16.0f);
 
 	Collision_DebugInitialize(Direct3D_GetDevice(), Direct3D_GetContext());
 #endif
@@ -79,7 +80,6 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 	//ゲームループ&メッセージループ
 	MSG msg;
 
-	//ウィンドウプログラムの中心	
 	do {
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) { //ウィンドウメッセージが来ていたら
 			TranslateMessage(&msg);
@@ -97,10 +97,8 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 				frame_count = 0; //カウントをクリア
 			}
 
-			//1/60秒ごとに実行
 			elapsed_time = current_time - exec_last_time;
-			//if(elapsed_time>=(1.0/60.0)){ //60fpsに固定
-			if (true) { //どんなfps値でもアニメーションの動きは固定
+			if (true) { 
 				exec_last_time = current_time; //処理した時刻を保存
 
 				//ゲームの更新
@@ -116,22 +114,10 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 				Fade_Update(elapsed_time);
 
 				//ゲームの描画
-				//画面のクリア
 				Direct3D_Clear();
 				Sprite_Begin();				
 				Scene_Draw();
 				Fade_Draw();
-
-#if defined(DEBUG)||defined(_DEBUG)//デバッグの時だけ有効
-				std::stringstream ss;
-				//ss << "fps:" << fps << std::endl;
-
-				dt.SetText(ss.str().c_str());
-				//dt.SetText("debug!\nwatashidayo! \n nye!!", { 0.0f,0.0f,1.0f,1.0f });
-
-				dt.Draw();
-				dt.Clear();
-#endif
 
 				//画面のスワップ
 				Direct3D_Present();
@@ -141,10 +127,6 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 		}
 	} while (msg.message != WM_QUIT);
 
-	
-#if defined(DEBUG)||defined(_DEBUG)
-	Collision_DebugFinalize();
-#endif
 
 	//初期化と逆順に後片付け
 	Scene_Finalize();

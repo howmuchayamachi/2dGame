@@ -10,7 +10,6 @@
 #include "direct3d.h"
 #include "debug_ostream.h"
 
-//プロパティのリンカーの入力のところに入れて書かなくてもいい
 #pragma comment(lib, "d3d11.lib") //ライブラリをリンクする命令
 // #pragma comment(lib, "dxgi.lib")
 #if defined(DEBUG) || defined(_DEBUG)
@@ -45,9 +44,6 @@ bool Direct3D_Initialize(HWND hWnd)
     DXGI_SWAP_CHAIN_DESC swap_chain_desc{};
     swap_chain_desc.Windowed = TRUE;
     swap_chain_desc.BufferCount = 2;
-    // swap_chain_desc.BufferDesc.Width = 0;
-    // swap_chain_desc.BufferDesc.Height = 0;
-	// ⇒ ウィンドウサイズに合わせて自動的に設定される
     swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     swap_chain_desc.SampleDesc.Count = 1;
@@ -95,19 +91,11 @@ bool Direct3D_Initialize(HWND hWnd)
 	}
 
 	// ブレンドステート設定
-	//αブレンド
-	//RGBA A…好きに使っていい値。基本は透明の表現に使う
 	D3D11_BLEND_DESC bd = {};
 	bd.AlphaToCoverageEnable = FALSE;
 	bd.IndependentBlendEnable = FALSE;
 
-	//どういう計算でRGBの値を使うか
-	//ポリゴンはあるが、後ろの絵とどうするか
 	bd.RenderTarget[0].BlendEnable = TRUE; //αブレンドする/しない
-
-
-	//src…ソース(今から描く絵(色))  dest…すでに描かれた絵(色)
-	
 
 	//--------透過ブレンドの設定---------
 	//RGB
@@ -125,12 +113,11 @@ bool Direct3D_Initialize(HWND hWnd)
 	
 	bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-	g_pDevice->CreateBlendState(&bd, &g_pBlendStateMultiply); //クリエイトしたらリリースする
+	g_pDevice->CreateBlendState(&bd, &g_pBlendStateMultiply);
 
-	//----------------
 
 	//--------加算ブレンド----------
-		//RGB
+	//RGB
 	bd.RenderTarget[0].DestBlend = D3D11_BLEND_ONE; //DestRGB * (1-SrcA)
 	//SrcRGB * SrcA + DestRGB * (1-SrcA)
 	
@@ -139,8 +126,6 @@ bool Direct3D_Initialize(HWND hWnd)
 	bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	g_pDevice->CreateBlendState(&bd, &g_pBlendStateAdd); //クリエイトしたらリリースする
-	//--------------
-
 
 	Direct3D_SetAlphaBlendTransparent();//デフォルトのブレンドステート
 
@@ -154,11 +139,6 @@ bool Direct3D_Initialize(HWND hWnd)
 
 	g_pDevice->CreateDepthStencilState(&dsd, &g_pDepthStencilStateDepthDisable);
 
-	//↓3Dで使う
-	// dsd.DepthEnable = TRUE;
-	// dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	// g_pDevice->CreateDepthStencilState(&dsd, &g_pDepthStencilStateDepthEnable);
-
 	g_pDeviceContext->OMSetDepthStencilState(g_pDepthStencilStateDepthDisable, NULL);
 
     return true;
@@ -166,8 +146,6 @@ bool Direct3D_Initialize(HWND hWnd)
 
 void Direct3D_Finalize()
 {
-	//最後に借りたものからリリースしていく
-
 	SAFE_RELEASE(g_pDepthStencilStateDepthDisable);
 
 	SAFE_RELEASE(g_pBlendStateMultiply);
@@ -195,7 +173,7 @@ void Direct3D_Clear()
 void Direct3D_Present()
 {
 	// スワップチェーンの表示
-	g_pSwapChain->Present(1, 0); //(0,0)で垂直同期無視(ベンチマークテスト用)
+	g_pSwapChain->Present(1, 0); //(0,0)で垂直同期無視
 }
 
 unsigned int Direct3D_GetBackBufferWidth()
@@ -291,9 +269,6 @@ bool configureBackBuffer()
 	}
 
 
-	// ビューポートの設定
-	//画用紙の区切り方
-	//画用紙のどの部分に絵を描くか
 	// ビューポートの設定
 	g_Viewport.TopLeftX = 0.0f;
 	g_Viewport.TopLeftY = 0.0f;

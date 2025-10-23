@@ -20,7 +20,7 @@ struct EnemySpawn {
 	double spawnTime; //スポーンした時間
 	int spawnCount; //実際にスポーンした数
 	bool isEnded; //表示し終わったか判定
-	bool GotoRight;
+	bool GotoRight; //右向きか
 };
 
 static constexpr unsigned int ENEMY_SPAWNER_MAX = 100;

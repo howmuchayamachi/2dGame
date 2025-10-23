@@ -175,7 +175,7 @@ void PlayerUI_Draw(){
 	float expl_ui_top = key_ui_top + 5.0f;
 
 	if (g_isDisplay) {
-		//左に操作方法表示
+		//左上に操作方法表示
 		//グレーの枠
 		Sprite_Draw(g_WhiteTexId, KEY_FARLEFT_WIDTH, KEY_TOP_HEIGHT, 300.0f, 400.0f, { 0.5f,0.5f,0.5f,0.8f });
 
