@@ -10,25 +10,24 @@
 // 定数バッファ
 cbuffer VS_CONSTANT_BUFFER : register(b0)
 {
-    float4x4 proj; //4*4行列
+    float4x4 proj;
 };
 
 cbuffer VS_CONSTANT_BUFFER : register(b1)
 {
-    float4x4 world; //4*4行列
+    float4x4 world;
 };
 
    
 
 struct VS_IN{
-    //:~ セマンティクス
-    float4 posL : POSITION0; //System Value SV_Position
+    float4 posL : POSITION0;
     float4 color: COLOR0; 
     float2 uv   : TEXCOORD0; 
 };
 
 struct VS_OUT{
-    float4 posH : SV_POSITION; //System Value SV_Position
+    float4 posH : SV_POSITION;
     float4 color: COLOR0;
     float2 uv   : TEXCOORD0; 
 };
