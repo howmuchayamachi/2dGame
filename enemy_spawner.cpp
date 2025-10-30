@@ -29,15 +29,15 @@ static int g_Spawner_Count = 0;
 static double g_Time = 0.0;
 
 
-void EnemySpawner_Initialize(){
+void EnemySpawner_Initialize() {
 	g_Spawner_Count = 0;
 	g_Time = 0.0;
 }
 
-void EnemySpawner_Finalize(){
+void EnemySpawner_Finalize() {
 }
 
-void EnemySpawner_Update(double elapsed_time){
+void EnemySpawner_Update(double elapsed_time) {
 	g_Time += elapsed_time;
 
 	for (int i = 0; i < g_Spawner_Count;i++) {
@@ -46,7 +46,7 @@ void EnemySpawner_Update(double elapsed_time){
 
 		//1体目を出すための代入
 		if (g_EnemySpawners[i].spawnCount == 0) {
-			g_EnemySpawners[i].spawnTime = g_Time - g_EnemySpawners[i].rate - 0.00001; 
+			g_EnemySpawners[i].spawnTime = g_Time - g_EnemySpawners[i].rate - 0.00001;
 		}
 
 		//現在の時間から前回スポーンした時間を引いた値が、発生間隔を超えていたら発生させる
@@ -62,7 +62,7 @@ void EnemySpawner_Update(double elapsed_time){
 	}
 }
 
-void EnemySpawner_Create(const XMFLOAT2& position, EnemyTypeID id, double spawn_time, double spawn_rate, int spawn_count, bool gotoright){
+void EnemySpawner_Create(const XMFLOAT2& position, EnemyTypeID id, double spawn_time, double spawn_rate, int spawn_count, bool gotoright) {
 	if (g_Spawner_Count >= ENEMY_SPAWNER_MAX) return;
 	EnemySpawn* pEs = &g_EnemySpawners[g_Spawner_Count];
 	pEs->position = position;

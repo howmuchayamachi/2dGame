@@ -19,15 +19,14 @@
 static constexpr char WINDOW_CLASS[] = "GameWindow"; //メインウィンドウクラス名
 static constexpr char TITLE[] = "GameWindow"; //タイトルバーのテキスト
 
-static HWND g_hWnd=NULL;
+static HWND g_hWnd = NULL;
 
 //ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
 
-HWND GameWindow_Create(HINSTANCE hInstance)
-{
+HWND GameWindow_Create(HINSTANCE hInstance){
 	//ウィンドウクラスの登録
 	WNDCLASSEX wcex{};
 
@@ -48,7 +47,7 @@ HWND GameWindow_Create(HINSTANCE hInstance)
 	//メインウィンドウの作成
 	int SCREEN_WIDTH = GetSystemMetrics(SM_CXSCREEN);
 	int SCREEN_HEIGHT = GetSystemMetrics(SM_CYSCREEN);
-	RECT window_rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
+	RECT window_rect{ 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
 
 	DWORD style = WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME ^ WS_MAXIMIZEBOX;
 	AdjustWindowRect(&window_rect, style, FALSE);
@@ -74,7 +73,7 @@ HWND GameWindow_Create(HINSTANCE hInstance)
 	return g_hWnd;
 }
 
-HWND GameWindow_GetHWND(){
+HWND GameWindow_GetHWND() {
 	return g_hWnd;
 }
 
@@ -85,26 +84,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		Keyboard_ProcessMessage(message, wParam, lParam);
 		Mouse_ProcessMessage(message, wParam, lParam);
 		break;
-    case WM_INPUT:
-    case WM_MOUSEMOVE:
-    case WM_LBUTTONDOWN:
-    case WM_LBUTTONUP:
-    case WM_RBUTTONDOWN:
-    case WM_RBUTTONUP:
-    case WM_MBUTTONDOWN:
-    case WM_MBUTTONUP:
-    case WM_MOUSEWHEEL:
-    case WM_XBUTTONDOWN:
-    case WM_XBUTTONUP:
-    case WM_MOUSEHOVER:
-         Mouse_ProcessMessage(message, wParam, lParam);
-         break;
-	case WM_KEYDOWN:	
+	case WM_INPUT:
+	case WM_MOUSEMOVE:
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MOUSEWHEEL:
+	case WM_XBUTTONDOWN:
+	case WM_XBUTTONUP:
+	case WM_MOUSEHOVER:
+		Mouse_ProcessMessage(message, wParam, lParam);
+		break;
+	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
-	    Keyboard_ProcessMessage(message, wParam, lParam);
-	    break;
+		Keyboard_ProcessMessage(message, wParam, lParam);
+		break;
 
 	case WM_CLOSE:
 		if (MessageBox(hWnd, "本当に終了してよろしいですか?", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {

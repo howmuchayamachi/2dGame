@@ -35,7 +35,7 @@ static double g_accumulated_time = 0.0;
 
 static bool g_IsGamePaused = false;
 
-void Pause_Initialize(){
+void Pause_Initialize() {
 	g_CurrentSelection = PAUSE_BACKTOGAME;
 
 	g_BackTexture = Texture_Load(L"resource/texture/white.png");
@@ -51,10 +51,10 @@ void Pause_Initialize(){
 	g_accumulated_time = 0.0;
 }
 
-void Pause_Finalize(){
+void Pause_Finalize() {
 }
 
-void Pause_Update(){
+void Pause_Update() {
 	if (Fade_GetState() != FADE_STATE_OUT) {
 		if (KeyLogger_IsTrigger(KK_W) || KeyLogger_IsTrigger(KK_UP)) {
 			g_CurrentSelection--;
@@ -108,7 +108,7 @@ void Pause_Update(){
 	}
 }
 
-void Pause_Draw(){
+void Pause_Draw() {
 	// âÊñ ÇÃíÜâõç¿ïWÇéÊìæ
 	float center_x = Direct3D_GetBackBufferWidth() / 2.0f;
 	float center_y = Direct3D_GetBackBufferHeight() / 2.0f;
@@ -120,10 +120,9 @@ void Pause_Draw(){
 	//îºìßñæÇ»îwåi
 	Sprite_Draw(g_BackTexture, 0.0f, 0.0f, (float)Direct3D_GetBackBufferWidth(), (float)Direct3D_GetBackBufferHeight(), { 1.0f,1.0f,1.0f,0.8f });
 
-	
 	Sprite_Draw(g_PauseTexture, center_x - 550.0f, center_y - 400.0f, 1000.0f, 250.0f);
 
-	Sprite_Draw(g_BackToGameTexture, center_x - 550.0f, center_y-100.0f,
+	Sprite_Draw(g_BackToGameTexture, center_x - 550.0f, center_y - 100.0f,
 		(g_CurrentSelection == PAUSE_BACKTOGAME) ? color_selected : color_normal);
 
 	Sprite_Draw(g_VolumeTexture, center_x - 500, center_y + 100,

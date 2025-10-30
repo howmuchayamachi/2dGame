@@ -33,13 +33,13 @@ static int g_CurrentSelection = CLEAR_GOTOTITLE;
 static bool g_ClearStart = false;
 static bool g_ClearEnd = false;
 
-void Clear_Initialize(){
+void Clear_Initialize() {
 	g_ClearBackGroundTexture = Texture_Load(L"resource/texture/bg/house_inforest.png");
 
 	g_GameClearTexture = Texture_Load(L"resource/texture/Font/congratulations.png");
 	g_GoToTitleTexture = Texture_Load(L"resource/texture/Font/gototitle.png");
 	g_ExitTexture = Texture_Load(L"resource/texture/Font/exit.png");
-	
+
 	g_ClearBGMId = LoadAudio("resource/audio/bgm/gameclear.wav");
 	g_SelectAudioId = LoadAudio("resource/audio/select1.wav");
 	g_EnterAudioId = LoadAudio("resource/audio/enter1.wav");
@@ -53,14 +53,14 @@ void Clear_Initialize(){
 	Fade_Start(1.0, false, { 1.0f,1.0f,1.0f });
 }
 
-void Clear_Finalize(){
+void Clear_Finalize() {
 	StopAllAudio();
 	UnloadAllAudio();
 }
 
-void Clear_Update(){
+void Clear_Update() {
 	if (!g_ClearStart && Fade_GetState() == FADE_STATE_FINISHED_IN) {
-		g_ClearStart = true;		
+		g_ClearStart = true;
 	}
 
 	if (g_ClearStart && Fade_GetState() != FADE_STATE_OUT) {
@@ -104,7 +104,7 @@ void Clear_Update(){
 	}
 }
 
-void Clear_Draw(){
+void Clear_Draw() {
 	float screen_width = (float)Direct3D_GetBackBufferWidth();
 	float screen_height = (float)Direct3D_GetBackBufferHeight();
 
@@ -115,7 +115,7 @@ void Clear_Draw(){
 	float center_y = screen_height / 2.0f;
 
 	// 通常の色と、選択されている時の色を定義
-	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.1f }; 
+	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.1f };
 	XMFLOAT4 color_selected = { 1.0f, 1.0f, 0.1f, 1.0f };
 
 	Sprite_Draw(g_GameClearTexture, center_x - 800.0f, center_y - 300.0f, 1500.0f, 300.0f);

@@ -20,13 +20,13 @@
 //スタック
 static std::vector<Scene> g_SceneStack;
 
-void Scene_Initialize(){
+void Scene_Initialize() {
 	g_SceneStack.clear();
 	g_SceneStack.push_back(SCENE_TITLE);
 	Title_Initialize();
 }
 
-void Scene_Finalize(){
+void Scene_Finalize() {
 	switch (GetCurrentScene()) {
 	case SCENE_TITLE:
 		Title_Finalize();
@@ -57,7 +57,7 @@ void Scene_Finalize(){
 	}
 }
 
-void Scene_Update(double elapsed_time){
+void Scene_Update(double elapsed_time) {
 	switch (GetCurrentScene()) {
 	case SCENE_TITLE:
 		Title_Update();
@@ -88,7 +88,7 @@ void Scene_Update(double elapsed_time){
 	}
 }
 
-void Scene_Draw(){
+void Scene_Draw() {
 	for (Scene scene : g_SceneStack) {
 		switch (scene) {
 		case SCENE_TITLE:
@@ -126,7 +126,7 @@ Scene GetCurrentScene() {
 	return g_SceneStack.back(); //vectorの末尾
 }
 
-void Scene_Change(Scene scene){
+void Scene_Change(Scene scene) {
 	//スタックをすべてクリアして新しいシーンを追加
 	while (!g_SceneStack.empty()) {
 		Scene_Pop();
@@ -134,10 +134,10 @@ void Scene_Change(Scene scene){
 	Scene_Push(scene);
 }
 
-void Scene_Push(Scene scene){
+void Scene_Push(Scene scene) {
 	g_SceneStack.push_back(scene);
 
-	switch (GetCurrentScene()){
+	switch (GetCurrentScene()) {
 	case SCENE_TITLE:
 		Title_Initialize();
 		Game_SetCheckPoint(false);
@@ -169,7 +169,7 @@ void Scene_Push(Scene scene){
 	}
 }
 
-void Scene_Pop(){
+void Scene_Pop() {
 	if (g_SceneStack.empty()) return;
 
 	Scene_Finalize();

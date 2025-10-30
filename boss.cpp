@@ -199,15 +199,15 @@ void Boss_Update(double elapsed_time) {
 
 		//プレイヤーを追従するように移動
 		XMFLOAT2 playerPos = Player_GetPosition();
-		float dirx = (playerPos.x > g_Boss.position.x) ? 1.0f : -1.0f;
+		float dirx = (playerPosition.x > g_Boss.position.x) ? 1.0f : -1.0f;
 		float horizontal_move = g_Boss.position.x + dirx * 300.0f * (float)elapsed_time;
-		float diry = (playerPos.y > g_Boss.position.y) ? 1.0f : -1.0f;
+		float diry = (playerPosition.y > g_Boss.position.y) ? 1.0f : -1.0f;
 		float vertical_move = g_Boss.position.y + diry * 100.0f * (float)elapsed_time;
 
 		//範囲外へ行かないように
 		if (horizontal_move > Boss_minPoint.x && horizontal_move < Boss_maxPoint.x) {
 			g_Boss.position.x = horizontal_move;
-		}	
+		}
 		if (vertical_move > Boss_minPoint.y && vertical_move < Boss_maxPoint.y) {
 			g_Boss.position.y = vertical_move;
 		}
@@ -236,8 +236,8 @@ void Boss_Update(double elapsed_time) {
 
 		//通常ワープ
 		if (!g_BossWantAttack) {
-			WarpForwardPos.x = Player_GetPosition().x + (float)((rand() % 800) - 400);
-			WarpForwardPos.y = Player_GetPosition().y - (float)(rand() % 600);
+			WarpForwardPos.x = playerPosition.x + (float)((rand() % 800) - 400);
+			WarpForwardPos.y = playerPosition.y - (float)(rand() % 600);
 
 			//壁にめり込まないように
 			if (WarpForwardPos.x < Boss_minPoint.x) {
@@ -256,18 +256,17 @@ void Boss_Update(double elapsed_time) {
 		//突進攻撃時ワープ
 		else {
 			//プレイヤーの左右どちらかにワープする
-			float PlayerPosX = Player_GetPosition().x;
 			int dirx = rand() % 2 == 1 ? 1 : -1;
-			WarpForwardPos.x = PlayerPosX + dirx * 900.0f;
-			WarpForwardPos.y = Player_GetPosition().y - BOSS_HEIGHT;
+			WarpForwardPos.x = playerPosition.x + dirx * 900.0f;
+			WarpForwardPos.y = playerPosition.y - BOSS_HEIGHT;
 
 			//ワープ先が壁にめり込んでいたら逆の位置にする
 			//y座標はプレイヤーの位置で固定のため調べない
 			if (WarpForwardPos.x < Boss_minPoint.x) {
-				WarpForwardPos.x = PlayerPosX + 1000.0f;
+				WarpForwardPos.x = playerPosition.x + 1000.0f;
 			}
 			if (WarpForwardPos.x > Boss_maxPoint.x) {
-				WarpForwardPos.x = PlayerPosX - 1000.0f;
+				WarpForwardPos.x = playerPosition.x - 1000.0f;
 			}
 		}
 
@@ -277,7 +276,7 @@ void Boss_Update(double elapsed_time) {
 
 		g_Boss.isFacingRight = playerPosition.x > g_Boss.position.x + (float)(BOSS_WIDTH / 2);
 	}
-	break;
+				  break;
 
 	case BOSS_WARP_AFTER:
 		g_Boss.alpha = g_Boss.stateTimer * 2.0f;
@@ -285,7 +284,7 @@ void Boss_Update(double elapsed_time) {
 
 		if (g_Boss.alpha >= 1.0f) {
 			if (!g_BossWantAttack) {
-				
+
 				//攻撃or魔法or召喚
 				ChangeBossState(Choose_BossAttack(g_Boss.prev_AttackState));
 			}
@@ -389,8 +388,8 @@ void Boss_Update(double elapsed_time) {
 		break;
 
 	case BOSS_CHARGE:
-		if (!g_Boss.isFacingRight) Particle_Create(ParticleType::GATHERING_POWER, { g_Boss.position.x,g_Boss.position.y + BOSS_HEIGHT });
-		else Particle_Create(ParticleType::GATHERING_POWER, { g_Boss.position.x + BOSS_DISPLAY_WIDTH / 2.0f,g_Boss.position.y + BOSS_HEIGHT });
+		if (!g_Boss.isFacingRight) Particle_Create(GATHERING_POWER, { g_Boss.position.x,g_Boss.position.y + BOSS_HEIGHT });
+		else Particle_Create(GATHERING_POWER, { g_Boss.position.x + BOSS_DISPLAY_WIDTH / 2.0f,g_Boss.position.y + BOSS_HEIGHT });
 
 		if (g_Boss.stateTimer > 3.0) {
 			ChangeBossState(BOSS_KINGS_DROP);
@@ -401,7 +400,7 @@ void Boss_Update(double elapsed_time) {
 		if (g_Boss.stateTimer > 1.0 && !g_Boss.isDroppedKingsdrop) {
 			PlayAudio(g_BossKingsDropSEId);
 			g_Boss.isDroppedKingsdrop = true;
-			Set_KingsExplosionPosition(Player_GetPosition()); 
+			Set_KingsExplosionPosition(Player_GetPosition());
 			if (!g_Boss.isFacingRight) EnemyBullet_Create({ g_Boss.position.x,g_Boss.position.y }, Get_KingsExplosionPosition(), true, true);
 			else EnemyBullet_Create({ g_Boss.position.x + BOSS_DISPLAY_WIDTH / 2.0f,g_Boss.position.y }, Get_KingsExplosionPosition(), true, true);
 		}
@@ -420,7 +419,7 @@ void Boss_Update(double elapsed_time) {
 		break;
 
 	case BOSS_KINGS_EXPLOSION:
-		Particle_Create(ParticleType::KINGS_EXPLOSION, g_KingsExplosionPosition);
+		Particle_Create(KINGS_EXPLOSION, g_KingsExplosionPosition);
 
 		if (g_Boss.stateTimer > 1.0) {
 			g_Boss.InvincibleTime = 0.0f;
@@ -441,7 +440,7 @@ void Boss_Update(double elapsed_time) {
 			explosion_pos.y += (float)((rand() % (int)BOSS_DISPLAY_HEIGHT) - (int)(BOSS_DISPLAY_HEIGHT / 2.0f));
 
 			Effect_Create(explosion_pos);
-			Particle_Create(ParticleType::BOSS_DEATH, { explosion_pos.x + BOSS_DISPLAY_WIDTH / 2.0f,explosion_pos.y + BOSS_DISPLAY_HEIGHT / 2.0f });
+			Particle_Create(BOSS_DEATH, { explosion_pos.x + BOSS_DISPLAY_WIDTH / 2.0f,explosion_pos.y + BOSS_DISPLAY_HEIGHT / 2.0f });
 			PlayAudio(g_ExplosionAudioId);
 
 			expl_count++;
@@ -524,9 +523,9 @@ void Boss_Draw() {
 			float explosion_x = Get_KingsExplosionPosition().x - offset.x - 800.0f + Player_WIDTH / 2.0f;
 			float explosion_y = Get_KingsExplosionPosition().y - offset.y - 800.0f + Player_HEIGHT / 2.0f;
 
-			Sprite_Draw(g_KingsDropRangeTexId, explosion_x, explosion_y, 1600.0f, 1600.0f, { 1.0f,0.1f,0.1f,explosion_alpha});
+			Sprite_Draw(g_KingsDropRangeTexId, explosion_x, explosion_y, 1600.0f, 1600.0f, { 1.0f,0.1f,0.1f,explosion_alpha });
 		}
-	
+
 		break;
 
 	case BOSS_KINGS_EXPLOSION:
@@ -622,7 +621,7 @@ BossState Get_BossState() {
 	return g_Boss.state;
 }
 
-BossState Choose_BossAttack(BossState prev_attack){
+BossState Choose_BossAttack(BossState prev_attack) {
 	if (prev_attack == BOSS_ATTACK) return BOSS_SPELL;
 	else if (prev_attack == BOSS_SPELL) return BOSS_SUMMON;
 	else if (prev_attack == BOSS_SUMMON) return BOSS_ATTACK;

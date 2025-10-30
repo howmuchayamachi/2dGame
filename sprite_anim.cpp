@@ -63,16 +63,12 @@ void SpriteAnim_Finalize() {
 
 void SpriteAnim_Update(double elapsed_time) {
 	for (int i = 0; i < ANIM_PLAY_MAX; i++) {
-		if (g_AnimPlay[i].m_PatternId < 0) {
-			continue;
-		}
+		if (g_AnimPlay[i].m_PatternId < 0) continue;
 
 		AnimPatternData* pAnimPatternData = &g_AnimPattern[g_AnimPlay[i].m_PatternId];
 
 		if (g_AnimPlay[i].m_accumulated_time >= pAnimPatternData->m_seconds_per_pattern) {
 			g_AnimPlay[i].m_PatternNum++;
-
-
 
 			if (g_AnimPlay[i].m_PatternNum >= pAnimPatternData->m_PatternMax) {
 
@@ -92,7 +88,7 @@ void SpriteAnim_Update(double elapsed_time) {
 	}
 }
 
-void SpriteAnim_Draw(int playid, float dx, float dy, float dw, float dh,bool IsFlipped,const XMFLOAT4 color) {
+void SpriteAnim_Draw(int playid, float dx, float dy, float dw, float dh, bool IsFlipped, const XMFLOAT4 color) {
 
 	int anim_pattern_id = g_AnimPlay[playid].m_PatternId;
 	AnimPatternData* pAnimPatternData = &g_AnimPattern[anim_pattern_id];
@@ -146,12 +142,12 @@ int SpriteAnim_CreatePlayer(int anim_pattern_id) {
 	return -1;
 }
 
-bool SpriteAnim_IsStopped(int index){
+bool SpriteAnim_IsStopped(int index) {
 	return g_AnimPlay[index].m_IsStopped;
 }
 
-void SpriteAnim_DestroyPlayer(int index){
-	g_AnimPlay[index].m_PatternId = -1; 
+void SpriteAnim_DestroyPlayer(int index) {
+	g_AnimPlay[index].m_PatternId = -1;
 }
 
 int SpriteAnim_GetPatternNum(int playid)

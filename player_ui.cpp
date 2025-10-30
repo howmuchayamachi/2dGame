@@ -73,7 +73,7 @@ static bool g_isMpDecrease = false;
 
 static bool g_isDisplay = true;
 
-void PlayerUI_Initialize(){
+void PlayerUI_Initialize() {
 	g_HpBarTexId = Texture_Load(L"resource/texture/ui/hp.png");
 	g_HpRedTexId = Texture_Load(L"resource/texture/ui/hp_red.png");
 	g_HpFrameTexId = Texture_Load(L"resource/texture/ui/hp_frame.png");
@@ -82,7 +82,7 @@ void PlayerUI_Initialize(){
 	g_HpCharTexId = Texture_Load(L"resource/texture/Font/HP.png");
 	g_MpCharTexId = Texture_Load(L"resource/texture/Font/MP.png");
 
-	g_WhiteTexId= Texture_Load(L"resource/texture/white.png");
+	g_WhiteTexId = Texture_Load(L"resource/texture/white.png");
 
 	g_KeyAbefore_TexId = Texture_Load(L"resource/texture/ui/button_A_bef.png");
 	g_KeyAafter_TexId = Texture_Load(L"resource/texture/ui/button_A_aft.png");
@@ -95,7 +95,7 @@ void PlayerUI_Initialize(){
 	g_KeySPACEbefore_TexId = Texture_Load(L"resource/texture/ui/button_Space_bef.png");
 	g_KeySPACEafter_TexId = Texture_Load(L"resource/texture/ui/button_Space_aft.png");
 	g_KeyPLUSbefore_TexId = Texture_Load(L"resource/texture/ui/button_Plus_bef.png");
-	g_KeyESCAPEbefore_TexId= Texture_Load(L"resource/texture/ui/button_Escape_bef.png");
+	g_KeyESCAPEbefore_TexId = Texture_Load(L"resource/texture/ui/button_Escape_bef.png");
 	g_KeySHIFTbefore_TexId = Texture_Load(L"resource/texture/ui/button_Shift_bef.png");
 	g_KeySHIFTafter_TexId = Texture_Load(L"resource/texture/ui/button_Shift_aft.png");
 	g_KeyTABbefore_TexId = Texture_Load(L"resource/texture/ui/button_Tab_bef.png");
@@ -123,10 +123,10 @@ void PlayerUI_Initialize(){
 	g_isDisplay = true;
 }
 
-void PlayerUI_Finalize(){
+void PlayerUI_Finalize() {
 }
 
-void PlayerUI_Update(double elapsed_time){
+void PlayerUI_Update(double elapsed_time) {
 	//プレイヤーの現在のHPを取得
 	float current_hp = Player_GetHp();
 
@@ -165,7 +165,7 @@ void PlayerUI_Update(double elapsed_time){
 
 }
 
-void PlayerUI_Draw(){
+void PlayerUI_Draw() {
 	float screen_width = (float)Direct3D_GetBackBufferWidth();
 
 	float key_ui_left = KEY_FARLEFT_WIDTH + 10.0f;
@@ -180,7 +180,7 @@ void PlayerUI_Draw(){
 		Sprite_Draw(g_WhiteTexId, KEY_FARLEFT_WIDTH, KEY_TOP_HEIGHT, 300.0f, 400.0f, { 0.5f,0.5f,0.5f,0.8f });
 
 		//操作説明表示切替
-		Sprite_Draw(g_KeyTABbefore_TexId, key_ui_left-3.0f, key_ui_top-7.0f, KEY_WIDTH * 1.5f, KEY_HEIGHT * 1.5f);
+		Sprite_Draw(g_KeyTABbefore_TexId, key_ui_left - 3.0f, key_ui_top - 7.0f, KEY_WIDTH * 1.5f, KEY_HEIGHT * 1.5f);
 		Sprite_Draw(g_Explanation_Swicth_TexId, expl_ui_left, expl_ui_top, EXPLANATION_HEIGHT * 7.0f, EXPLANATION_HEIGHT);
 
 		//左右操作ボタン
@@ -273,7 +273,7 @@ void PlayerUI_Draw(){
 
 	float damage_bar_ratio = g_HpRedValue / Player_MAXHP;
 	Sprite_Draw(g_HpRedTexId, screen_width - 550.0f, 20.0f, 500.0f * damage_bar_ratio, 60.0f);
-	
+
 	float redMp_bar_ratio = g_MpRedValue / Player_MAXMP;
 	Sprite_Draw(g_HpRedTexId, screen_width - 550.0f, 90.0f, 500.0f * redMp_bar_ratio, 60.0f);
 
@@ -291,14 +291,14 @@ void PlayerUI_Draw(){
 	Sprite_Draw(g_MpCharTexId, screen_width - 660.0f, 90.0f, 120.0f, 60.0f);
 }
 
-bool isHpDecrease(){
+bool isHpDecrease() {
 	return g_isHpDecrease;
 }
 
-bool isMpDecrease(){
+bool isMpDecrease() {
 	return g_isMpDecrease;
 }
 
-void PlayerUI_Switch(){
+void PlayerUI_Switch() {
 	g_isDisplay = !g_isDisplay;
 }

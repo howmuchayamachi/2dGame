@@ -47,9 +47,10 @@ bool Collision_IsOverlapOBB(const OBB& a, const OBB& b);
 //分離軸の定理で使用する
 static void ProjectOBB(float* min, float* max, const OBB& obb, const DirectX::XMFLOAT2& axis);
 
+//デバッグ表示
 void Collision_DebugInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 void Collision_DebugFinalize();
-void Collision_DebugDraw(const Circle& circle, const DirectX::XMFLOAT4& color={1.0f,1.0f,1.0f,1.0f});
+void Collision_DebugDraw(const Circle& circle, const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
 void Collision_DebugDraw(const Box& box, const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
 void Collision_DebugDraw(const OBB& obb, const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
 

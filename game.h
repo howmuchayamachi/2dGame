@@ -21,7 +21,7 @@ bool CheckEnemyTriggerArea(int min_x, int max_x, int min_y, int max_y);
 
 void Game_SetCheckPoint(bool isCheckpoint);
 
-void Game_SetPlayerPosition(const DirectX:: XMFLOAT2& position);
+void Game_SetPlayerPosition(const DirectX::XMFLOAT2& position);
 
 void hitJudgementBulletVSEnemy();
 void hitJudgementPlayerVSEnemy();

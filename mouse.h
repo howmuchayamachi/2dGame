@@ -2,8 +2,8 @@
 
 マウス入力の記録[mouse.h]
 
-                                                                Author	: Harada Ren
-                                                                Date	: 2025/06/27
+																Author	: Harada Ren
+																Date	: 2025/06/27
 --------------------------------------------------------------------------------------
 
 ======================================================================================*/
@@ -19,23 +19,23 @@
 // マウスモード
 typedef enum Mouse_PositionMode_tag
 {
-    MOUSE_POSITION_MODE_ABSOLUTE, // 絶対座標モード
-    MOUSE_POSITION_MODE_RELATIVE, // 相対座標モード
+	MOUSE_POSITION_MODE_ABSOLUTE, // 絶対座標モード
+	MOUSE_POSITION_MODE_RELATIVE, // 相対座標モード
 } Mouse_PositionMode;
 
 
 // マウス状態構造体
 typedef struct MouseState_tag
 {
-    bool leftButton;
-    bool middleButton;
-    bool rightButton;
-    bool xButton1;
-    bool xButton2;
-    int x;
-    int y;
-    int scrollWheelValue;
-    Mouse_PositionMode positionMode;
+	bool leftButton;
+	bool middleButton;
+	bool rightButton;
+	bool xButton1;
+	bool xButton2;
+	int x;
+	int y;
+	int scrollWheelValue;
+	Mouse_PositionMode positionMode;
 } Mouse_State;
 
 

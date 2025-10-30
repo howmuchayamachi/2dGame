@@ -25,8 +25,8 @@ void Bullet_Create(const DirectX::XMFLOAT2& position, const DirectX::XMFLOAT2 ta
 
 void EnemyBullet_Create(const DirectX::XMFLOAT2& position, const DirectX::XMFLOAT2 target_position, bool isBossReinforced = false, bool isKingsDrop = false);
 
-bool Bullet_IsEnable(int index);//—LŒø‚©
-bool EnemyBullet_IsEnable(int index);//—LŒø‚©
+bool Bullet_IsEnable(int index);
+bool EnemyBullet_IsEnable(int index);
 
 Circle Bullet_GetCollision(int index);
 

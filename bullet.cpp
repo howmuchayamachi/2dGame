@@ -103,7 +103,7 @@ void Bullet_Update(double elapsed_time) {
 		XMVECTOR current_pos = term1 + term2 + term3;
 		XMStoreFloat2(&b.position, current_pos);
 
-		Particle_Create(ParticleType::PLAYER_BULLET, b.position);
+		Particle_Create(PLAYER_BULLET, b.position);
 
 		//前の位置と今の位置へのベクトルを計算して、角度を変更
 		XMVECTOR prev_pos_vec = XMLoadFloat2(&prev_position);
@@ -144,7 +144,7 @@ void Bullet_Update(double elapsed_time) {
 		XMVECTOR current_pos = term1 + term2 + term3;
 		XMStoreFloat2(&eb.position, current_pos);
 
-		Particle_Create(ParticleType::ENEMY_BULLET, { eb.position.x + 32.0f, eb.position.y + 32.0f });
+		Particle_Create(ENEMY_BULLET, { eb.position.x + 32.0f, eb.position.y + 32.0f });
 
 		//前の位置と今の位置へのベクトルを計算して、角度を変更
 		XMVECTOR prev_pos_vec = XMLoadFloat2(&prev_position);
@@ -251,7 +251,7 @@ void EnemyBullet_Create(const DirectX::XMFLOAT2& position, const XMFLOAT2 target
 		eb.position = position;
 		eb.collision = { {64.0f,64.0f},32.0f };
 
-		if(isKingsDrop) eb.willExplosion = true;
+		if (isKingsDrop) eb.willExplosion = true;
 		else eb.willExplosion = false;
 
 		eb.P0 = eb.position;
@@ -348,6 +348,6 @@ void EnemyBullet_Destroy(int index) {
 	g_EnemyBullets[index].isEnable = false;
 }
 
-bool Bullet_WillExplosion(int index){
+bool Bullet_WillExplosion(int index) {
 	return g_EnemyBullets[index].willExplosion;
 }

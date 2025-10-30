@@ -17,8 +17,7 @@
 static IXAudio2* g_Xaudio{};
 static IXAudio2MasteringVoice* g_MasteringVoice{};
 
-struct AUDIO
-{
+struct AUDIO {
 	IXAudio2SourceVoice* SourceVoice{};
 	BYTE* SoundData{};
 
@@ -32,8 +31,7 @@ static AUDIO g_Audio[AUDIO_MAX]{};
 static IXAudio2SourceVoice* g_BGMAudio = nullptr;
 
 
-void InitAudio()
-{
+void InitAudio() {
 	// XAudioê∂ê¨
 	XAudio2Create(&g_Xaudio, 0);
 
@@ -47,7 +45,7 @@ void InitAudio()
 }
 
 
-void UninitAudio(){
+void UninitAudio() {
 	for (int i = 0; i < AUDIO_MAX; i++) {
 		if (g_Audio[i].SourceVoice) {
 			UnloadAudio(i);
@@ -59,12 +57,11 @@ void UninitAudio(){
 }
 
 
-int LoadAudio(const char *FileName)
-{
+int LoadAudio(const char* FileName) {
 	int index = -1;
 
-	for (int i = 0; i < AUDIO_MAX; i++){
-		if (g_Audio[i].SourceVoice == nullptr){
+	for (int i = 0; i < AUDIO_MAX; i++) {
+		if (g_Audio[i].SourceVoice == nullptr) {
 			index = i;
 			break;
 		}
@@ -96,10 +93,10 @@ int LoadAudio(const char *FileName)
 		mmckinfo.ckid = mmioFOURCC('f', 'm', 't', ' ');
 		mmioDescend(hmmio, &mmckinfo, &riffchunkinfo, MMIO_FINDCHUNK);
 
-		if (mmckinfo.cksize >= sizeof(WAVEFORMATEX)){
+		if (mmckinfo.cksize >= sizeof(WAVEFORMATEX)) {
 			mmioRead(hmmio, (HPSTR)&wfx, sizeof(wfx));
 		}
-		else{
+		else {
 			PCMWAVEFORMAT pcmwf = { 0 };
 			mmioRead(hmmio, (HPSTR)&pcmwf, sizeof(pcmwf));
 			memset(&wfx, 0x00, sizeof(wfx));
@@ -137,7 +134,7 @@ int LoadAudio(const char *FileName)
 
 
 
-void UnloadAudio(int Index){
+void UnloadAudio(int Index) {
 	if (Index < 0 || Index >= AUDIO_MAX || g_Audio[Index].SourceVoice == nullptr) return;
 
 	if (g_Audio[Index].SourceVoice) {
@@ -165,7 +162,7 @@ void UnloadAllAudio() {
 
 
 
-void PlayAudio(int Index, bool Loop, float volume){
+void PlayAudio(int Index, bool Loop, float volume) {
 	if (Index < 0 || Index >= AUDIO_MAX) return;
 
 	g_Audio[Index].SourceVoice->Stop();
@@ -185,7 +182,7 @@ void PlayAudio(int Index, bool Loop, float volume){
 	g_Audio[Index].SourceVoice->SetVolume(volume);
 
 	// ÉãÅ[Évê›íË
-	if (Loop){
+	if (Loop) {
 		bufinfo.LoopBegin = 0;
 		bufinfo.LoopLength = g_Audio[Index].PlayLength;
 		bufinfo.LoopCount = XAUDIO2_LOOP_INFINITE;
@@ -202,14 +199,14 @@ void PlayAudio(int Index, bool Loop, float volume){
 
 }
 
-void StopAudio(int Index){
+void StopAudio(int Index) {
 	if (g_Audio[Index].SourceVoice != nullptr) {
 		g_Audio[Index].SourceVoice->Stop(0);
 		g_Audio[Index].SourceVoice->FlushSourceBuffers();
 	}
 }
 
-void StopAllAudio(){
+void StopAllAudio() {
 	for (int i = 0; i < AUDIO_MAX; i++) {
 		StopAudio(i);
 	}

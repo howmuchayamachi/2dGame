@@ -26,7 +26,7 @@ enum EnemyTypeID {
 	ENEMY_TYPE_BIRD, //’¹
 	ENEMY_TYPE_MAX
 };
-void Enemy_Create(EnemyTypeID id,const DirectX::XMFLOAT2& position, bool GotoRight);
+void Enemy_Create(EnemyTypeID id, const DirectX::XMFLOAT2& position, bool GotoRight);
 
 bool Enemy_IsEnable(int index); //—LŒø‚©
 

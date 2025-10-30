@@ -183,7 +183,7 @@ namespace hal
 			m_pDevice->CreatePixelShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, m_pPixelShader.GetAddressOf());
 		}
 
-		if( !m_pSamplerState) {
+		if (!m_pSamplerState) {
 			// サンプラーステートの作成
 			D3D11_SAMPLER_DESC sampler_desc = {};
 			sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
@@ -202,18 +202,18 @@ namespace hal
 		// テクスチャとテクスチャビューを解放
 		if (m_pTextureView) {
 			m_pTexture->Release();
-			if(!m_pTextureView->Release()) {
+			if (!m_pTextureView->Release()) {
 				m_TextureMap.erase(m_TextureMap.find(m_FileName));
 			}
 		}
 	}
 
 	void DebugText::SetText(const char* pText, XMFLOAT4 color)
-	{		
+	{
 		m_TextLines.back().strings.emplace_back(color); // 新しい文字列を追加
 
-		for(; *pText; pText++) {
-	
+		for (; *pText; pText++) {
+
 			if (*pText == '\n') {
 				m_TextLines.emplace_back(); // 行を増やす
 				m_TextLines.back().strings.emplace_back(color); // 新しい文字列を追加
@@ -254,7 +254,7 @@ namespace hal
 
 		int last_line_count = m_TextLines.back().characterCount ? 0 : -1;
 
-		while(m_MaxLine && m_TextLines.size() + last_line_count > m_MaxLine) {
+		while (m_MaxLine && m_TextLines.size() + last_line_count > m_MaxLine) {
 			ULONG remove_character_count = m_TextLines.front().characterCount - m_TextLines.front().spaceCount;
 			m_CharacterCount -= remove_character_count; // 古い行の文字数を減らす
 			m_TextLines.pop_front(); // 古い行を削除
@@ -263,7 +263,7 @@ namespace hal
 
 	void DebugText::Draw()
 	{
-		if( !m_CharacterCount){
+		if (!m_CharacterCount) {
 			return; // 描画する文字がない場合は何もしない
 		}
 
@@ -354,7 +354,7 @@ namespace hal
 
 		// インデックスバッファを描画パイプラインに設定
 		m_pContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-		
+
 		// 頂点シェーダーを描画パイプラインに設定
 		m_pContext->VSSetShader(m_pVertexShader.Get(), nullptr, 0);
 

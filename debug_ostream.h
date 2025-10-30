@@ -13,7 +13,7 @@ debug ostream‚ğì‚Á‚Äg‚¤[debug_ostream.h]
 #include <sstream>
 
 namespace hal {
-	class debugbuf : public std::basic_stringbuf<char, std::char_traits<char>>{
+	class debugbuf : public std::basic_stringbuf<char, std::char_traits<char>> {
 	public:
 		virtual ~debugbuf() {
 			sync();
@@ -27,12 +27,12 @@ namespace hal {
 		}
 	};
 
-	class debug_ostream :public std::basic_ostream<char, std::char_traits<char>>{
+	class debug_ostream :public std::basic_ostream<char, std::char_traits<char>> {
 	public:
 		debug_ostream()
 			:std::basic_ostream<char, std::char_traits<char>>(new debugbuf()) {}
 		~debug_ostream() { delete rdbuf(); }
-	
+
 	};
 
 	extern debug_ostream dout;

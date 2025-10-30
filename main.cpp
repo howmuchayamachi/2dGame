@@ -98,7 +98,7 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 			}
 
 			elapsed_time = current_time - exec_last_time;
-			if (true) { 
+			if (true) {
 				exec_last_time = current_time; //処理した時刻を保存
 
 				//ゲームの更新
@@ -107,15 +107,15 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _
 				Mouse_State ms{};
 				Mouse_GetState(&ms); //マウスの状態取得
 
-				
+
 				Scene_Update(elapsed_time);
-				
+
 				SpriteAnim_Update(elapsed_time);//経過時間でゲームを作る
 				Fade_Update(elapsed_time);
 
 				//ゲームの描画
 				Direct3D_Clear();
-				Sprite_Begin();				
+				Sprite_Begin();
 				Scene_Draw();
 				Fade_Draw();
 

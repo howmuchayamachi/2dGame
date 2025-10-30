@@ -50,14 +50,14 @@ static bool g_IsCheckpoint = false;
 //前回死んだ位置を保存(初期位置は左上)
 static XMFLOAT2 g_PrevPlayer_position = { 10.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT };
 
-void Game_Initialize(){
+void Game_Initialize() {
 	Fade_Start(1.0, false);
 
 	g_IsBossBattle = false;
 
 	g_BgmId = LoadAudio("resource/audio/bgm/mainBGM.wav");
-	g_BossBgmId= LoadAudio("resource/audio/bgm/bossBGM.wav");
-	
+	g_BossBgmId = LoadAudio("resource/audio/bgm/bossBGM.wav");
+
 	g_BulletHitSEId = LoadAudio("resource/audio/bullet_hit.wav");
 	g_SwordHitSEId = LoadAudio("resource/audio/sword_hit.wav");
 	g_MenuSEId = LoadAudio("resource/audio/menu.wav");
@@ -93,10 +93,10 @@ void Game_Initialize(){
 	g_GameStart = false;
 	g_GameEnd = false;
 
-	
+
 }
 
-void Game_Finalize(){
+void Game_Finalize() {
 	StopAllAudio();
 	UnloadAllAudio();
 	SpriteAnim_Finalize();
@@ -113,7 +113,7 @@ void Game_Finalize(){
 	BG_Finalize();
 }
 
-void Game_Update(double elapsed_time){
+void Game_Update(double elapsed_time) {
 	if (!g_GameStart && Fade_GetState() == FADE_STATE_FINISHED_IN) {
 		g_GameStart = true;
 	}
@@ -134,8 +134,8 @@ void Game_Update(double elapsed_time){
 		BG_Update();
 		Player_Update(elapsed_time);
 		Bullet_Update(elapsed_time);
-		Map_UpdateCamera(Player_GetPosition() , elapsed_time);
-		
+		Map_UpdateCamera(Player_GetPosition(), elapsed_time);
+
 		EnemySpawner_Update(elapsed_time);
 		Enemy_Update(elapsed_time);
 
@@ -148,14 +148,14 @@ void Game_Update(double elapsed_time){
 			EnemySpawner_Create({ 50.0f * MAPCHIP_WIDTH,85.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_ORANGE, 0.0, 0.5, 3);
 			g_IsSpawned[1] = true;
 		}
-		if (!g_IsSpawned[2] && CheckEnemyTriggerArea(86 * MAPCHIP_WIDTH,  90* MAPCHIP_WIDTH, 65 * MAPCHIP_HEIGHT, 91 * MAPCHIP_HEIGHT)) {
+		if (!g_IsSpawned[2] && CheckEnemyTriggerArea(86 * MAPCHIP_WIDTH, 90 * MAPCHIP_WIDTH, 65 * MAPCHIP_HEIGHT, 91 * MAPCHIP_HEIGHT)) {
 			EnemySpawner_Create({ 150.0f * MAPCHIP_WIDTH,80.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_BIRD, 0.0, 1.0, 3);
 
 			g_IsSpawned[2] = true;
 		}
 		if (!g_IsSpawned[3] && CheckEnemyTriggerArea(145 * MAPCHIP_WIDTH, 151 * MAPCHIP_WIDTH, 40 * MAPCHIP_HEIGHT, 63 * MAPCHIP_HEIGHT)) {
-			EnemySpawner_Create({ 110.0f * MAPCHIP_WIDTH,55.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_GREEN, 0.0, 0.5, 3,true);
-			EnemySpawner_Create({ 108.0f * MAPCHIP_WIDTH,55.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_ORANGE, 0.0, 0.5, 3,true);
+			EnemySpawner_Create({ 110.0f * MAPCHIP_WIDTH,55.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_GREEN, 0.0, 0.5, 3, true);
+			EnemySpawner_Create({ 108.0f * MAPCHIP_WIDTH,55.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_ORANGE, 0.0, 0.5, 3, true);
 			g_IsSpawned[3] = true;
 		}
 		if (!g_IsSpawned[4] && CheckEnemyTriggerArea(119 * MAPCHIP_WIDTH, 127 * MAPCHIP_WIDTH, 0 * MAPCHIP_HEIGHT, 32 * MAPCHIP_HEIGHT)) {
@@ -169,16 +169,16 @@ void Game_Update(double elapsed_time){
 			EnemySpawner_Create({ 262.0f * MAPCHIP_WIDTH,20.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_ORANGE, 0.0, 0.5, 5);
 			EnemySpawner_Create({ 262.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_BIRD, 0.0, 0.5, 5);
 
-			EnemySpawner_Create({ 180.0f * MAPCHIP_WIDTH,20.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_GREEN, 0.0, 0.5, 5,true);
-			EnemySpawner_Create({ 180.0f * MAPCHIP_WIDTH,20.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_ORANGE, 0.0, 0.5, 5,true);
-			EnemySpawner_Create({ 180.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_BIRD, 0.0, 0.5, 5,true);
+			EnemySpawner_Create({ 180.0f * MAPCHIP_WIDTH,20.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_GREEN, 0.0, 0.5, 5, true);
+			EnemySpawner_Create({ 180.0f * MAPCHIP_WIDTH,20.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_SLIME_ORANGE, 0.0, 0.5, 5, true);
+			EnemySpawner_Create({ 180.0f * MAPCHIP_WIDTH,15.0f * MAPCHIP_HEIGHT }, ENEMY_TYPE_BIRD, 0.0, 0.5, 5, true);
 			g_IsSpawned[5] = true;
 		}
 
 		//ボス戦スタート
 		if (!g_IsBossBattle && CheckEnemyTriggerArea(279 * MAPCHIP_WIDTH, 298 * MAPCHIP_WIDTH, 32 * MAPCHIP_HEIGHT, 40 * MAPCHIP_HEIGHT)) {
 			Boss_ActiveSwitch();
-			g_IsBossBattle=true;
+			g_IsBossBattle = true;
 			g_IsCheckpoint = true;
 
 			BossUI_StartAnim();
@@ -225,7 +225,7 @@ void Game_Update(double elapsed_time){
 	}
 }
 
-void Game_Draw(){
+void Game_Draw() {
 	BG_Draw();
 	Enemy_Draw();
 	Player_Draw();
@@ -243,7 +243,7 @@ void Game_Draw(){
 	}
 }
 
-bool CheckEnemyTriggerArea(int min_x, int max_x, int min_y, int max_y){
+bool CheckEnemyTriggerArea(int min_x, int max_x, int min_y, int max_y) {
 	XMFLOAT2 player_position = Player_GetPosition();
 	if (player_position.x >= (float)min_x && player_position.x <= (float)max_x &&
 		player_position.y >= (float)min_y && player_position.y <= (float)max_y) return true;
@@ -251,7 +251,7 @@ bool CheckEnemyTriggerArea(int min_x, int max_x, int min_y, int max_y){
 	return false;
 }
 
-void Game_SetCheckPoint(bool isCheckpoint){
+void Game_SetCheckPoint(bool isCheckpoint) {
 	g_IsCheckpoint = isCheckpoint;
 }
 
@@ -260,9 +260,9 @@ void Game_SetPlayerPosition(const XMFLOAT2& position) {
 }
 
 
-void hitJudgementBulletVSEnemy(){
+void hitJudgementBulletVSEnemy() {
 	for (int bi = 0; bi < BULLET_MAX;bi++) {
-		
+
 		if (!Bullet_IsEnable(bi)) continue;
 
 		//弾一発につき全てのエネミーと当たり判定を見る
@@ -282,7 +282,7 @@ void hitJudgementBulletVSEnemy(){
 	}
 }
 
-void hitJudgementPlayerVSEnemy(){
+void hitJudgementPlayerVSEnemy() {
 	if (!Player_IsEnable()) return;
 
 	for (int ei = 0;ei < ENEMY_MAX;ei++) {
@@ -296,8 +296,8 @@ void hitJudgementPlayerVSEnemy(){
 	}
 }
 
-void hitJudgementPlayerVSEnemyBullet(){
-	
+void hitJudgementPlayerVSEnemyBullet() {
+
 	if (!Player_IsEnable()) return;
 
 	for (int eb = 0;eb < BULLET_MAX;eb++) {
@@ -310,10 +310,10 @@ void hitJudgementPlayerVSEnemyBullet(){
 			EnemyBullet_Destroy(eb);
 		}
 	}
-	
+
 }
 
-void hitJudgementAttackVSEnemy(){
+void hitJudgementAttackVSEnemy() {
 	OBB attack_obb = Player_GetAttackCollision();
 	if (attack_obb.half_extent.x <= 0) return;
 
@@ -330,7 +330,7 @@ void hitJudgementAttackVSEnemy(){
 	}
 }
 
-void hitJudgementBulletVSMap(){
+void hitJudgementBulletVSMap() {
 	for (int bi = 0; bi < BULLET_MAX; bi++) {
 
 		if (!Bullet_IsEnable(bi)) continue;
@@ -349,7 +349,7 @@ void hitJudgementBulletVSMap(){
 	}
 }
 
-void hitJudgementPlayerVSBoss(){
+void hitJudgementPlayerVSBoss() {
 	if (!Boss_IsAlive()) return;
 
 	if (Collision_IsOverlapCircleVSBox(Boss_GetBoxCollision(), Player_GetCollision())) {
@@ -358,7 +358,7 @@ void hitJudgementPlayerVSBoss(){
 	}
 }
 
-void hitJudgementBulletVSBoss(){
+void hitJudgementBulletVSBoss() {
 	if (!Boss_IsAlive()) return;
 
 	if (Get_BossInvincibleTime() > 0.0f) return;
@@ -374,7 +374,7 @@ void hitJudgementBulletVSBoss(){
 	}
 }
 
-void hitJudgementAttackVSBoss(){
+void hitJudgementAttackVSBoss() {
 	if (!Boss_IsAlive()) return;
 
 	OBB attack_obb = Player_GetAttackCollision();
@@ -389,7 +389,7 @@ void hitJudgementAttackVSBoss(){
 	}
 }
 
-void hitJudgementPlayerVSKingsDrop(){
+void hitJudgementPlayerVSKingsDrop() {
 	if (Get_BossState() != BOSS_KINGS_EXPLOSION) return;
 
 	if (Collision_IsOverlapCircle(Player_GetCollision(), BossKingsDrop_GetCollision())) {

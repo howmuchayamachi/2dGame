@@ -11,7 +11,7 @@
 
 #include <DirectXMath.h>
 
-enum class ParticleType {
+enum ParticleType {
 	PLAYER_BULLET,
 	ENEMY_BULLET,
 	CHARGE, //Œ•ƒ`ƒƒ[ƒW

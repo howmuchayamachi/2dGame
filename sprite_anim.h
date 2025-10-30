@@ -17,12 +17,12 @@ void SpriteAnim_Initialize();
 void SpriteAnim_Finalize();
 
 void SpriteAnim_Update(double elapsed_time);
-void SpriteAnim_Draw(int playid,float dx, float dy, float dw, float dh, bool IsFlipped = false,const DirectX::XMFLOAT4 color={1.0f,1.0f,1.0f,1.0f});
+void SpriteAnim_Draw(int playid, float dx, float dy, float dw, float dh, bool IsFlipped = false, const DirectX::XMFLOAT4 color = { 1.0f,1.0f,1.0f,1.0f });
 
 int SpriteAnim_RegisterPattern(int texid, int pattern_max, int h_pattern_max,
 	double m_seconds_per_pattern,
-	const DirectX::XMUINT2& pattern_size, const DirectX::XMUINT2& start_position, 
-	bool is_looped=true);
+	const DirectX::XMUINT2& pattern_size, const DirectX::XMUINT2& start_position,
+	bool is_looped = true);
 
 int SpriteAnim_CreatePlayer(int anim_pattern_id);
 
@@ -32,4 +32,4 @@ void SpriteAnim_DestroyPlayer(int index);
 
 int SpriteAnim_GetPatternNum(int playid);
 
-#endif //SPRITE_ANIM
+#endif //SPRITE_ANIM_H

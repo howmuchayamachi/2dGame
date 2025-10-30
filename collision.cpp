@@ -36,16 +36,16 @@ struct Vertex
 
 
 //円の当たり判定
-bool Collision_IsOverlapCircle(const Circle& a, const Circle& b){
+bool Collision_IsOverlapCircle(const Circle& a, const Circle& b) {
 	//aを基準として距離を測る
 	float x1 = b.center.x - a.center.x;
 	float y1 = b.center.y - a.center.y;
-	
+
 	return (a.radius + b.radius) * (a.radius + b.radius) > (x1 * x1 + y1 * y1);
 }
 
 //四角の当たり判定
-bool Collision_IsOverlapBox(const Box& a, const Box& b){
+bool Collision_IsOverlapBox(const Box& a, const Box& b) {
 	float at = a.center.y - a.half_height; //top
 	float ab = a.center.y + a.half_height; //bottom
 	float al = a.center.x - a.half_width; //left
@@ -59,7 +59,7 @@ bool Collision_IsOverlapBox(const Box& a, const Box& b){
 	return al<br && ar>bl && at<bb && ab>bt;
 }
 
-bool Collision_IsOverlapCircleVSBox(const Box& box, const Circle& circle){
+bool Collision_IsOverlapCircleVSBox(const Box& box, const Circle& circle) {
 	// 円の中心に最も近い四角形上の点を求める
 	float closest_x = std::max(box.center.x - box.half_width, std::min(circle.center.x, box.center.x + box.half_width));
 	float closest_y = std::max(box.center.y - box.half_height, std::min(circle.center.y, box.center.y + box.half_height));
@@ -104,7 +104,7 @@ bool Collision_IsOverlapOBBVSCircle(const OBB& obb, const Circle& circle)
 	return distance_sq < (circle.radius * circle.radius);
 }
 
-bool Collision_IsOverlapOBBVSBox(const OBB& obb, const Box& box){
+bool Collision_IsOverlapOBBVSBox(const OBB& obb, const Box& box) {
 	//BoxをOBBとみなしてOBBどうしの当たり判定を見る
 	//BoxをOBBに変換する
 	OBB box_as_obb;
@@ -118,7 +118,7 @@ bool Collision_IsOverlapOBBVSBox(const OBB& obb, const Box& box){
 	return Collision_IsOverlapOBB(obb, box_as_obb);
 }
 
-bool Collision_IsOverlapOBB(const OBB& a, const OBB& b){
+bool Collision_IsOverlapOBB(const OBB& a, const OBB& b) {
 	//チェックする必要がある4つの軸（お互いのX軸とY軸）
 	DirectX::XMFLOAT2 axes[4] = {
 		a.axis[0], a.axis[1],
@@ -141,7 +141,7 @@ bool Collision_IsOverlapOBB(const OBB& a, const OBB& b){
 	return true;
 }
 
-static void ProjectOBB(float* min, float* max, const OBB& obb, const DirectX::XMFLOAT2& axis){
+static void ProjectOBB(float* min, float* max, const OBB& obb, const DirectX::XMFLOAT2& axis) {
 	//OBBの中心点を軸に射影する
 	float p = obb.center.x * axis.x + obb.center.y * axis.y;
 
@@ -155,11 +155,11 @@ static void ProjectOBB(float* min, float* max, const OBB& obb, const DirectX::XM
 	*max = p + r;
 }
 
-void Collision_DebugInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext){
+void Collision_DebugInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext) {
 	//デバイスとデバイスコンテキストの保存
 	g_pDevice = pDevice;
 	g_pContext = pContext;
-	
+
 	//頂点バッファ生成
 	D3D11_BUFFER_DESC bd = {};
 	bd.Usage = D3D11_USAGE_DYNAMIC;
@@ -172,11 +172,11 @@ void Collision_DebugInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 	g_WhiteTex = Texture_Load(L"resource/texture/white.png");
 }
 
-void Collision_DebugFinalize(){
+void Collision_DebugFinalize() {
 	SAFE_RELEASE(g_pVertexBuffer);
 }
 
-void Collision_DebugDraw(const Circle& circle, const DirectX::XMFLOAT4& color){
+void Collision_DebugDraw(const Circle& circle, const DirectX::XMFLOAT4& color) {
 	//点の数を算出
 	int NumVertex = (int)(circle.radius * 2.0f + XM_PI + 1);
 
@@ -230,7 +230,7 @@ void Collision_DebugDraw(const Circle& circle, const DirectX::XMFLOAT4& color){
 
 }
 
-void Collision_DebugDraw(const Box& box, const DirectX::XMFLOAT4& color){
+void Collision_DebugDraw(const Box& box, const DirectX::XMFLOAT4& color) {
 	//シェーダーを描画パイプラインに設定
 	Shader_Begin();
 

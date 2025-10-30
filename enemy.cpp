@@ -111,7 +111,6 @@ void Enemy_Finalize() {
 }
 
 void Enemy_Update(double elapsed_time) {
-
 	//プレイヤーの位置を取得
 	XMFLOAT2 player_pos_float2 = Player_GetPosition();
 	XMVECTOR player_position = XMLoadFloat2(&player_pos_float2);
@@ -219,22 +218,20 @@ void Enemy_Update(double elapsed_time) {
 			case CHASE:
 				e.TimetoFire += elapsed_time;
 				move_speed *= 1.5f;
-				{			
-					//鳥はX方向とY方向両方
-					if (e.typeId == ENEMY_TYPE_BIRD) {
-						XMVECTOR direction = player_position - position;
-						direction = XMVector2Normalize(direction);
-						velocity = direction * move_speed;
-					}
-					//鳥以外はX方向のみ
-					else {
-						float directionX = (XMVectorGetX(player_position) > XMVectorGetX(position)) ? 1.0f : -1.0f;
-						velocity = XMVectorSetX(velocity, move_speed * directionX);
-					}
+				//鳥はX方向とY方向両方
+				if (e.typeId == ENEMY_TYPE_BIRD) {
+					XMVECTOR direction = player_position - position;
+					direction = XMVector2Normalize(direction);
+					velocity = direction * move_speed;
+				}
+				//鳥以外はX方向のみ
+				else {
+					float directionX = (XMVectorGetX(player_position) > XMVectorGetX(position)) ? 1.0f : -1.0f;
+					velocity = XMVectorSetX(velocity, move_speed * directionX);
 				}
 
 				//プレイヤーとの距離が一定距離離れたらPATROLに移行
-				if (distance > 700.0f && e.ChaseTimer<=0.0f) {
+				if (distance > 700.0f && e.ChaseTimer <= 0.0f) {
 					e.state = PATROL;
 					e.TimetoFire = 0.0;
 				}
@@ -295,7 +292,6 @@ void Enemy_Update(double elapsed_time) {
 }
 
 void Enemy_Draw() {
-	int i = 0;
 	XMFLOAT2 offset = Map_GetWorldOffset();
 
 	for (Enemy& e : g_Enemys) {
@@ -304,9 +300,7 @@ void Enemy_Draw() {
 
 		//無敵時間だったら点滅させる
 		if (e.InvincibleTime > 0.0f) {
-			if ((int)(e.InvincibleTime * 10.0f) % 2 == 0) {
-				continue;
-			}
+			if ((int)(e.InvincibleTime * 10.0f) % 2 == 0) continue;
 		}
 
 		float screen_x = e.position.x - offset.x;;
@@ -364,7 +358,7 @@ void Enemy_Create(EnemyTypeID id, const DirectX::XMFLOAT2& position, bool GotoRi
 	}
 }
 
-bool Enemy_IsEnable(int index){
+bool Enemy_IsEnable(int index) {
 	return g_Enemys[index].isEnable;
 }
 
@@ -385,20 +379,20 @@ Box Enemy_GetBoxCollision(int index)
 	float cx = g_Enemys[index].position.x + g_EnemyTypes[id].collision.center.x;
 	float cy = g_Enemys[index].position.y + g_EnemyTypes[id].collision.center.y;
 
-	return { {cx,cy},ENEMY_WIDTH *0.4f,ENEMY_HEIGHT * 0.4f };
+	return { {cx,cy},ENEMY_WIDTH * 0.4f,ENEMY_HEIGHT * 0.4f };
 }
 
-XMFLOAT2 Get_EnemyPosition(int index){
+XMFLOAT2 Get_EnemyPosition(int index) {
 	return g_Enemys[index].position;
 }
 
 void Enemy_Destroy(int index) {
-	XMFLOAT2 EnemyPos= Get_EnemyPosition(index);
+	XMFLOAT2 EnemyPos = Get_EnemyPosition(index);
 	XMFLOAT2 effect_pos = EnemyPos;
 	effect_pos.x -= ENEMY_WIDTH / 2.0f;
 	effect_pos.y -= ENEMY_HEIGHT / 2.0f;
 	Effect_Create(effect_pos);
-	Particle_Create(ParticleType::ENEMY_DEATH, { effect_pos.x + ENEMY_WIDTH ,effect_pos.y + ENEMY_HEIGHT});
+	Particle_Create(ParticleType::ENEMY_DEATH, { effect_pos.x + ENEMY_WIDTH ,effect_pos.y + ENEMY_HEIGHT });
 
 	g_Enemys[index].isEnable = false;
 }
@@ -430,7 +424,7 @@ float Get_EnemyInvincibleTime(int index) {
 	return g_Enemys[index].InvincibleTime;
 }
 
-float Get_EnemyHp(int index){
+float Get_EnemyHp(int index) {
 	return g_Enemys[index].hp;
 }
 
@@ -468,7 +462,7 @@ XMFLOAT2 Get_NearestTargetPosision(const DirectX::XMFLOAT2& player_position) {
 	if (nearestDistSq != FLT_MAX) return nearestEnemy;
 	else {
 		//敵がいなかったら一定の距離を返す
-		if (Player_IsFacingRight()) return{ player_position.x + 800.0f,player_position.y }; 
+		if (Player_IsFacingRight()) return{ player_position.x + 800.0f,player_position.y };
 		else return{ player_position.x - 800.0f,player_position.y };
 	}
 }

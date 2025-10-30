@@ -31,10 +31,8 @@ static ID3D11DeviceContext* g_pContext = nullptr;
 // 頂点構造体
 struct Vertex {
 	XMFLOAT3 position; // 頂点座標
-
 	XMFLOAT4 color; //頂点カラー
-
-	XMFLOAT2 texcoord;//テクスチャ座標(UV)
+	XMFLOAT2 texcoord; //テクスチャ座標(UV)
 };
 
 

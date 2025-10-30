@@ -33,9 +33,9 @@ void Sprite_Draw(int texid, float dx, float dy, float dw, float dh, const Direct
 void Sprite_Draw(int texid, float dx, float dy, int px, int py, int pw, int ph, const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
 
 //UVカット(表示サイズ変更)
-void Sprite_Draw(int texid, float dx, float dy, float dw, float dh, int px, int py, int pw, int ph, bool isVFlipped = false, bool isHflipped=false, const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
+void Sprite_Draw(int texid, float dx, float dy, float dw, float dh, int px, int py, int pw, int ph, bool isVFlipped = false, bool isHflipped = false, const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
 
 //UVカット(表示サイズ変更)・回転
 void Sprite_Draw(int texid, float dx, float dy, float dw, float dh, int px, int py, int pw, int ph, float angle, const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
 
-#endif //SPRETE_H
+#endif //SPRITE_H

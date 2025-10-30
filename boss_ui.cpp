@@ -31,7 +31,7 @@ static float g_BossHpAnimValue = 0.0f;
 static bool g_IsHpBarAnim = false;
 
 
-void BossUI_Initialize(){
+void BossUI_Initialize() {
 	g_BossNameTexId = Texture_Load(L"resource/texture/Font/boss_name.png");
 	g_BossHpBarTexId = Texture_Load(L"resource/texture/ui/boss_hp.png");
 	g_BossHpRedTexId = Texture_Load(L"resource/texture/ui/hp_red.png");
@@ -45,10 +45,10 @@ void BossUI_Initialize(){
 	g_IsHpBarAnim = false;
 }
 
-void BossUI_Finalize(){
+void BossUI_Finalize() {
 }
 
-void BossUI_Update(double elapsed_time){
+void BossUI_Update(double elapsed_time) {
 	if (!Boss_IsAlive()) return;
 
 	if (g_IsHpBarAnim) {
@@ -74,18 +74,18 @@ void BossUI_Update(double elapsed_time){
 	}
 }
 
-void BossUI_Draw(){
+void BossUI_Draw() {
 	if (!Boss_IsAlive()) return;
 
 	float screen_width = (float)Direct3D_GetBackBufferWidth();
-	float screen_height= (float)Direct3D_GetBackBufferHeight();
+	float screen_height = (float)Direct3D_GetBackBufferHeight();
 	// âEè„Ç…HPÉoÅ[ÇÃògÇï\é¶
-	Sprite_Draw(g_BossHpFrameTexId, screen_width - 1480.0f, screen_height-120.0f, 1600.0f, 100.0f);
+	Sprite_Draw(g_BossHpFrameTexId, screen_width - 1480.0f, screen_height - 120.0f, 1600.0f, 100.0f);
 
 	//ìoèÍéûââèoÇ©Ç«Ç§Ç©
 	float hp_disp = g_IsHpBarAnim ? g_BossHpAnimValue : g_BossHpRedValue;
 	float damage_bar_ratio = hp_disp / (float)(BOSS_MAXHP);
-	Sprite_Draw(g_BossHpRedTexId, screen_width - 1150.0f, screen_height-110.0f, 1100.0f * damage_bar_ratio, 80.0f);
+	Sprite_Draw(g_BossHpRedTexId, screen_width - 1150.0f, screen_height - 110.0f, 1100.0f * damage_bar_ratio, 80.0f);
 
 	// åªç›ÇÃHPÇÃäÑçáÇåvéZ (0.0Å`1.0)
 	hp_disp = g_IsHpBarAnim ? g_BossHpAnimValue : (float)Boss_GetHp();
@@ -98,8 +98,8 @@ void BossUI_Draw(){
 	Sprite_Draw(g_BossNameTexId, screen_width - 1460.0f, screen_height - 110.0f, 300.0f, 75.0f);
 }
 
-void BossUI_StartAnim(){
+void BossUI_StartAnim() {
 	g_BossHpAnimValue = 0.0f;
 	g_IsHpBarAnim = true;
-	PlayAudio(g_BossGageAudioId,false, 0.5f);
+	PlayAudio(g_BossGageAudioId, false, 0.5f);
 }

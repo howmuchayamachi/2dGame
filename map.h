@@ -45,11 +45,11 @@ int Map_GetMapChipFromLayer(const std::vector<uint32_t>& map_layer, int mx, int 
 DirectX::XMFLOAT2 Map_GetWorldOffset();
 
 //mxはマップチップの幅 myは高さ
-static void mapChipDraw(int tex_id, uint32_t mapChipId, int mx, int my, 
+static void mapChipDraw(int tex_id, uint32_t mapChipId, int mx, int my,
 	const DirectX::XMFLOAT2& local_offset, int tileset_width_in_tiles,
 	const DirectX::XMFLOAT4& color = { 1.0f,1.0f,1.0f,1.0f });
 
-void Map_UpdateCamera(const DirectX::XMFLOAT2& player_pos , double elapsed_time);
+void Map_UpdateCamera(const DirectX::XMFLOAT2& player_pos, double elapsed_time);
 
 void Map_StartShake(float fluctuation, double duration);
 

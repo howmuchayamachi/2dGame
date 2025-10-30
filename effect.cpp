@@ -30,19 +30,19 @@ static int g_AnimPatternId = -1;
 static int g_EffectSoundId = -1;
 
 
-void Effect_Initialize(){
+void Effect_Initialize() {
 	for (Effect& e : g_Effects) {
 		e.isEnable = false;
 	}
 	g_EffectTexId = Texture_Load(L"resource/texture/explosion2.png");
 	g_EffectSoundId = LoadAudio("resource/audio/explosion01.wav");
-	g_AnimPatternId = SpriteAnim_RegisterPattern(g_EffectTexId,7,7,0.1,{300,400},{0,0},false);
+	g_AnimPatternId = SpriteAnim_RegisterPattern(g_EffectTexId, 7, 7, 0.1, { 300,400 }, { 0,0 }, false);
 }
 
-void Effect_Finalize(){
+void Effect_Finalize() {
 }
 
-void Effect_Update(){
+void Effect_Update() {
 
 	for (Effect& e : g_Effects) {
 		if (!e.isEnable) continue;
@@ -54,7 +54,7 @@ void Effect_Update(){
 	}
 }
 
-void Effect_Draw(){
+void Effect_Draw() {
 	for (Effect& e : g_Effects) {
 		//Žg‚Á‚Ä‚¢‚È‚©‚Á‚½‚ç“Ç‚Ý”ò‚Î‚·
 		if (!e.isEnable) continue;
@@ -70,7 +70,7 @@ void Effect_Draw(){
 	}
 }
 
-void Effect_Create(const DirectX::XMFLOAT2& position){
+void Effect_Create(const DirectX::XMFLOAT2& position) {
 	for (Effect& e : g_Effects) {
 		if (e.isEnable) continue;
 

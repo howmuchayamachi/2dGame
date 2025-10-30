@@ -1,13 +1,13 @@
 /*==============================================================================
 
    システムタイマー [system_timer.h]
-                                                         Author : Harada Ren
-                                                         Date   : 2025/06/17
+														 Author : Harada Ren
+														 Date   : 2025/06/17
 --------------------------------------------------------------------------------
 
 ==============================================================================*/
-#ifndef SYSTEM_TIMER_H_
-#define SYSTEM_TIMER_H_
+#ifndef SYSTEM_TIMER_H
+#define SYSTEM_TIMER_H
 
 
 // システムタイマーの初期化
@@ -40,4 +40,4 @@ bool SystemTimer_IsStoped(void);
 // 現在のスレッドを1つのプロセッサ（現在のスレッド）に制限
 void LimitThreadAffinityToCurrentProc(void);
 
-#endif // SYSTEM_TIMER_H_
+#endif // SYSTEM_TIMER_H

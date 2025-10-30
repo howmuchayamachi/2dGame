@@ -39,7 +39,7 @@ static int g_MenuEndAudioId = -1;
 
 static double g_accumulated_time = 0.0;
 
-void Volume_Initialize(){
+void Volume_Initialize() {
 	g_VolumeTexture = Texture_Load(L"resource/texture/Font/volume.png");
 	g_BackTexture = Texture_Load(L"resource/texture/white.png");
 	g_VolumeBarFrameTexture = Texture_Load(L"resource/texture/ui/hp_frame.png");
@@ -63,10 +63,10 @@ void Volume_Initialize(){
 	g_accumulated_time = 0.0;
 }
 
-void Volume_Finalize(){
+void Volume_Finalize() {
 }
 
-void Volume_Update(double elapsed_time){
+void Volume_Update(double elapsed_time) {
 	g_accumulated_time += elapsed_time;
 	float current_volume = AudioManager_GetVolume();
 	//âπó Çâ∫Ç∞ÇÈ
@@ -94,14 +94,14 @@ void Volume_Update(double elapsed_time){
 	}
 }
 
-void Volume_Draw(){
+void Volume_Draw() {
 	// âÊñ ÇÃíÜâõç¿ïWÇéÊìæ
 	float center_x = Direct3D_GetBackBufferWidth() / 2.0f;
 	float center_y = Direct3D_GetBackBufferHeight() / 2.0f;
 
 	Sprite_Draw(g_BackTexture, 0.0f, 0.0f, (float)Direct3D_GetBackBufferWidth(), (float)Direct3D_GetBackBufferHeight());
 
-	Sprite_Draw(g_VolumeTexture, center_x - 600.0f, center_y - 400.0f, 1000.0f, 250.0f,{0.0f,0.0f,0.0f,1.0f});
+	Sprite_Draw(g_VolumeTexture, center_x - 600.0f, center_y - 400.0f, 1000.0f, 250.0f, { 0.0f,0.0f,0.0f,1.0f });
 
 	Sprite_Draw(g_VolumeBarFrameTexture, center_x - 600.0f, center_y, 1000.0f, 100.0f);
 
@@ -115,8 +115,8 @@ void Volume_Draw(){
 	else {
 		Sprite_Draw(g_DownButtonAbeforeTexture, center_x - 700.0f, center_y + 100.0f, 100.0f, 100.0f);
 		Sprite_Draw(g_DownButtonArrowbeforeTexture, center_x - 600.0f, center_y + 100.0f, 100.0f, 100.0f);
-	} 
-	
+	}
+
 	if (KeyLogger_IsPressed(KK_D) || KeyLogger_IsPressed(KK_RIGHT)) {
 		Sprite_Draw(g_UpButtonDafterTexture, center_x + 300.0f, center_y + 100.0f, 100.0f, 100.0f);
 		Sprite_Draw(g_UpButtonArrowafterTexture, center_x + 400.0f, center_y + 100.0f, 100.0f, 100.0f);

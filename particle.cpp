@@ -34,7 +34,7 @@ static Particle g_Paticles[PARTICLE_MAX]{};
 static int g_ParticleTexId = -1;
 static double g_Time = 0.0;
 
-void Particle_Initialize(){
+void Particle_Initialize() {
 	for (Particle& p : g_Paticles) {
 		p.birthTime = 0.0;
 	}
@@ -45,10 +45,10 @@ void Particle_Initialize(){
 	srand((unsigned int)time(NULL));
 }
 
-void Particle_Finalize(){
+void Particle_Finalize() {
 }
 
-void Particle_Update(double elapsed_time){
+void Particle_Update(double elapsed_time) {
 	for (Particle& p : g_Paticles) {
 		if (p.birthTime == 0.0) continue;
 
@@ -59,18 +59,18 @@ void Particle_Update(double elapsed_time){
 		}
 
 		switch (p.type) {
-		case ParticleType::PLAYER_BULLET:
+		case PLAYER_BULLET:
 			break;
 
-		case ParticleType::ENEMY_BULLET:
+		case ENEMY_BULLET:
 			break;
 
-		case ParticleType::CHARGE:
+		case CHARGE:
 			p.position.x += ((float)rand() / RAND_MAX - 0.5f) * 10.0f;
 			p.position.y += ((float)rand() / RAND_MAX - 0.5f) * 10.0f;
 			break;
 
-		case ParticleType::GATHERING_POWER: {
+		case GATHERING_POWER: {
 			// 現在位置から目標地点への方向ベクトルを計算
 			XMVECTOR current_pos = XMLoadFloat2(&p.position);
 			XMVECTOR target_pos = XMLoadFloat2(&p.targetPosition);
@@ -89,25 +89,25 @@ void Particle_Update(double elapsed_time){
 		}
 			break;
 
-		case ParticleType::KINGS_DROP:
+		case KINGS_DROP:
 			break;
 
-		case ParticleType::KINGS_EXPLOSION:
+		case KINGS_EXPLOSION:
 			p.velocity.x *= 0.99f;
 			p.velocity.y *= 0.99f;
 			break;
 
-		case ParticleType::PLAYER_DEATH:
+		case PLAYER_DEATH:
 			p.velocity.y *= 0.99f; // 空気抵抗
 			p.velocity.x += sinf((float)g_Time * 5.0f + p.randomPhase) * 2.0f; // ゆらゆらさせる
 			break;
 
-		case ParticleType::ENEMY_DEATH:
+		case ENEMY_DEATH:
 			p.velocity.x *= 0.99f;
 			p.velocity.y *= 0.99f;
 			break;
 
-		case ParticleType::BOSS_DEATH:
+		case BOSS_DEATH:
 			p.velocity.x *= 0.99f;
 			p.velocity.y *= 0.99f;
 			break;
@@ -124,7 +124,7 @@ void Particle_Update(double elapsed_time){
 	g_Time += elapsed_time;
 }
 
-void Particle_Draw(){
+void Particle_Draw() {
 	Direct3D_SetAlphaBlendAdd();
 
 	XMFLOAT2 offset = Map_GetWorldOffset();
@@ -143,47 +143,47 @@ void Particle_Draw(){
 		XMFLOAT4 color = p.color;
 		color.w = p.color.w * (1.0f - time_ratio);
 
-		Sprite_Draw(g_ParticleTexId, screen_x + half_size + p.size*time_ratio, screen_y + half_size + p.size * time_ratio, size, size, color);
+		Sprite_Draw(g_ParticleTexId, screen_x + half_size + p.size * time_ratio, screen_y + half_size + p.size * time_ratio, size, size, color);
 	}
 
 	Direct3D_SetAlphaBlendTransparent();
 }
 
-void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
+void Particle_Create(ParticleType type, const DirectX::XMFLOAT2& position) {
 	int create_count = 1;
 	switch (type) {
-	case ParticleType::PLAYER_BULLET:
+	case PLAYER_BULLET:
 		//プレイヤーの弾の軌跡
 		break;
 
-	case ParticleType::ENEMY_BULLET:
+	case ENEMY_BULLET:
 		//エネミーの弾の軌跡
 		break;
 
-	case ParticleType::CHARGE:
+	case CHARGE:
 		//強攻撃時のオーラ
 		break;
 
-	case ParticleType::GATHERING_POWER:
+	case GATHERING_POWER:
 		create_count = 50;
 		break;
 
-	case ParticleType::KINGS_DROP:
+	case KINGS_DROP:
 		break;
 
-	case ParticleType::KINGS_EXPLOSION:
+	case KINGS_EXPLOSION:
 		create_count = 100;
 		break;
 
-	case ParticleType::PLAYER_DEATH:
+	case PLAYER_DEATH:
 		create_count = 30;
 		break;
 
-	case ParticleType::ENEMY_DEATH:
+	case ENEMY_DEATH:
 		create_count = 20;
 		break;
 
-	case ParticleType::BOSS_DEATH:
+	case BOSS_DEATH:
 		create_count = 100;
 		break;
 
@@ -200,25 +200,25 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 			if (p.birthTime != 0.0) continue;
 
 			p.type = type;
-			p.birthTime = g_Time;		
-			p.position = position;		
+			p.birthTime = g_Time;
+			p.position = position;
 
 			switch (type) {
-			case ParticleType::PLAYER_BULLET:
+			case PLAYER_BULLET:
 				p.lifeTime = 0.5;
 				p.size = 64.0f;
 				p.velocity = { 0.0f,0.0f };
 				p.color = { 1.0f,0.5f,0.5f,1.0f };
 				break;
 
-			case ParticleType::ENEMY_BULLET:
+			case ENEMY_BULLET:
 				p.lifeTime = 0.5;
 				p.size = 32.0f;
 				p.velocity = { 0.0f,0.0f };
 				p.color = { 0.5f,0.5f,1.0f,1.0f };
 				break;
 
-			case ParticleType::CHARGE:
+			case CHARGE:
 				p.lifeTime = 0.3f;
 				p.size = 32.0f;
 				p.velocity = { 0.0f,0.0f };
@@ -233,7 +233,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 
 				break;
 
-			case ParticleType::GATHERING_POWER: {
+			case GATHERING_POWER: {
 				p.lifeTime = 0.8f;
 				p.size = 32.0f;
 				p.velocity = { 0.0f,0.0f };
@@ -249,7 +249,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 			}
 				break;
 
-			case ParticleType::KINGS_DROP:
+			case KINGS_DROP:
 				p.lifeTime = 3.0f;
 				p.size = 64.0f;
 				p.velocity = { 0.0f,0.0f };
@@ -258,7 +258,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 				p.targetPosition = Player_GetPosition();
 				break;
 
-			case ParticleType::KINGS_EXPLOSION: {
+			case KINGS_EXPLOSION: {
 				p.lifeTime = 1.0f;
 				p.size = 50.0f;
 				p.velocity = { 0.0f,0.0f };
@@ -287,7 +287,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 			}
 				break;
 
-			case ParticleType::PLAYER_DEATH:
+			case PLAYER_DEATH:
 				p.lifeTime = 1.0f;
 				p.size = 32.0f;
 				//-50~50
@@ -299,7 +299,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 				p.randomPhase = ((float)rand() / RAND_MAX) * 10.0f;
 				break;
 
-			case ParticleType::ENEMY_DEATH: {
+			case ENEMY_DEATH: {
 				p.lifeTime = 1.5f;
 				p.size = 16.0f;
 
@@ -317,7 +317,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 			}
 				break;
 
-			case ParticleType::BOSS_DEATH: {
+			case BOSS_DEATH: {
 				p.lifeTime = 2.0f;
 				p.size = 32.0f;
 
@@ -337,7 +337,7 @@ void Particle_Create(ParticleType type,const DirectX::XMFLOAT2& position){
 				p.color = { Particle_color.x,Particle_color.y,Particle_color.z,1.0f };
 			}
 				break;
-			
+
 			default:
 				break;
 			}

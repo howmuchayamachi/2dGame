@@ -36,7 +36,7 @@ static bool g_ResultStart = false;
 static bool g_ResultEnd = false;
 
 
-void Result_Initialize(){
+void Result_Initialize() {
 	g_ResultBgTexture = Texture_Load(L"resource/texture/bg/dark_forest.png");
 
 	g_GameOverTexture = Texture_Load(L"resource/texture/Font/gameover.png");
@@ -57,12 +57,12 @@ void Result_Initialize(){
 	Fade_Start(0.5, false);
 }
 
-void Result_Finalize(){
+void Result_Finalize() {
 	StopAllAudio();
 	UnloadAllAudio();
 }
 
-void Result_Update(){
+void Result_Update() {
 	if (!g_ResultStart && Fade_GetState() == FADE_STATE_FINISHED_IN) {
 		g_ResultStart = true;
 	}
@@ -114,11 +114,11 @@ void Result_Update(){
 	}
 }
 
-void Result_Draw(){
+void Result_Draw() {
 	float screen_width = (float)Direct3D_GetBackBufferWidth();
 	float screen_height = (float)Direct3D_GetBackBufferHeight();
 
-	Sprite_Draw(g_ResultBgTexture,0.0f,0.0f, screen_width, screen_height);
+	Sprite_Draw(g_ResultBgTexture, 0.0f, 0.0f, screen_width, screen_height);
 
 	// 画面の中央座標を取得
 	float center_x = screen_width / 2.0f;
@@ -126,11 +126,11 @@ void Result_Draw(){
 
 	// 通常の色と、選択されている時の色を定義
 	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.2f };
-	XMFLOAT4 color_selected = { 1.0f, 1.0f, 1.0f, 1.0f }; 
+	XMFLOAT4 color_selected = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	Sprite_Draw(g_GameOverTexture, center_x - 600.0f, center_y - 400.0f, 1000.0f, 250.0f);
 
-	Sprite_Draw(g_ContinueTexture, center_x - 500.0f, center_y-100.0f,
+	Sprite_Draw(g_ContinueTexture, center_x - 500.0f, center_y - 100.0f,
 		(g_CurrentSelection == RESULT_CONTINUE) ? color_selected : color_normal);
 
 	Sprite_Draw(g_GoToTitleTexture, center_x - 500.0f, center_y + 100.0f,

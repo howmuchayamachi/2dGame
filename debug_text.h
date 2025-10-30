@@ -34,9 +34,9 @@ namespace hal
 		float m_LineSpacing{ 0.0f }; // 行間隔
 		float m_CharacterSpacing{ 0.0f }; // 文字間隔
 
-		struct Characters { 
+		struct Characters {
 			Characters(const DirectX::XMFLOAT4& color) : color(color) {}
-			std::string characters; 
+			std::string characters;
 			DirectX::XMFLOAT4 color{ 1.0f, 1.0f, 1.0f, 1.0f };
 		};
 
@@ -86,7 +86,7 @@ namespace hal
 		void Clear(); // 登録されているテキストをクリア
 
 	private:
-		
+
 		struct Vertex
 		{
 			DirectX::XMFLOAT3 position; // 座標

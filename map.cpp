@@ -64,7 +64,7 @@ struct TileData {
 
 
 // CSVファイルを読み込んで、g_Mapにデータを格納する
-std::vector<uint32_t> LoadMapFromCSV(const char* filename,int* width, int* height) {
+std::vector<uint32_t> LoadMapFromCSV(const char* filename, int* width, int* height) {
 	std::vector<uint32_t> map_data;
 
 	*width = 0;
@@ -78,7 +78,7 @@ std::vector<uint32_t> LoadMapFromCSV(const char* filename,int* width, int* heigh
 
 	std::string line;
 	while (std::getline(file, line)) {
-		if (line.empty() || line=="\r") continue;
+		if (line.empty() || line == "\r") continue;
 
 		//行数をカウント
 		(*height)++;
@@ -111,11 +111,11 @@ std::vector<uint32_t> LoadMapFromCSV(const char* filename,int* width, int* heigh
 
 }
 
-void Map_Initialize(){
+void Map_Initialize() {
 	g_MapChipTexId = Texture_Load(L"resource/map/MossyTileset/MossyTileSet.png");
 	g_MapChipTexId_float = Texture_Load(L"resource/map/MossyTileset/MossyFloatingPlatforms.png");
-	g_MapChipTexId_plants= Texture_Load(L"resource/map/MossyTileset/MossyHangingPlants.png");
-	g_MapChipTexId_Bg_Ground= Texture_Load(L"resource/map/MossyTileset/MossyBackgroundDecoration.png");
+	g_MapChipTexId_plants = Texture_Load(L"resource/map/MossyTileset/MossyHangingPlants.png");
+	g_MapChipTexId_Bg_Ground = Texture_Load(L"resource/map/MossyTileset/MossyBackgroundDecoration.png");
 	g_MapChipTexId_Boss_float = Texture_Load(L"resource/map/MossyTileset/woodplatform.png");
 
 	g_ScreenMapCountH = Direct3D_GetBackBufferWidth() / MAPCHIP_WIDTH + 2;
@@ -137,14 +137,14 @@ void Map_Initialize(){
 	g_Map_Float_Ground = LoadMapFromCSV("resource/map/useTileSet/map_float_ground.csv", &dummy_width, &dummy_height);
 	g_Map_Wall = LoadMapFromCSV("resource/map/useTileSet/map_wall.csv", &dummy_width, &dummy_height);
 	g_Map_Collision = LoadMapFromCSV("resource/map/useTileSet/map_collision.csv", &dummy_width, &dummy_height);
-	g_Map_Oneway= LoadMapFromCSV("resource/map/useTileSet/map_oneway_platform.csv", &dummy_width, &dummy_height);
+	g_Map_Oneway = LoadMapFromCSV("resource/map/useTileSet/map_oneway_platform.csv", &dummy_width, &dummy_height);
 	g_Map_Oneway_Collision = LoadMapFromCSV("resource/map/useTileSet/map_oneway_collision.csv", &dummy_width, &dummy_height);
 	g_Map_Bg_Ground = LoadMapFromCSV("resource/map/useTileSet/map_bg_ground.csv", &dummy_width, &dummy_height);
 	g_Map_Bg_Decoration = LoadMapFromCSV("resource/map/useTileSet/map_bg_decoration.csv", &dummy_width, &dummy_height);
 	g_Map_Boss_Oneway = LoadMapFromCSV("resource/map/useTileSet/map_boss_oneway_platform.csv", &dummy_width, &dummy_height);
 }
 
-void Map_Finalize(){
+void Map_Finalize() {
 	g_Map_Ground.clear();
 	g_Map_Float_Ground.clear();
 	g_Map_Wall.clear();
@@ -156,7 +156,7 @@ void Map_Finalize(){
 	g_Map_Boss_Oneway.clear();
 }
 
-void DrawLayer(int tex_id, const std::vector<uint32_t>& map_layer, int mx, int my, const XMFLOAT2& local_offset,const XMFLOAT4& color){
+void DrawLayer(int tex_id, const std::vector<uint32_t>& map_layer, int mx, int my, const XMFLOAT2& local_offset, const XMFLOAT4& color) {
 	int tileset_image_width = Texture_Width(tex_id);
 	if (tileset_image_width == 0) return;
 	int tileset_width_in_tiles = tileset_image_width / MAPCHIP_WIDTH;
@@ -173,12 +173,12 @@ void DrawLayer(int tex_id, const std::vector<uint32_t>& map_layer, int mx, int m
 			if (index < 0 || index >= map_layer.size() || map_layer[index] <= 0) {
 				continue;
 			}
-			mapChipDraw(tex_id,map_layer[index], x, y, local_offset,tileset_width_in_tiles,color);
+			mapChipDraw(tex_id, map_layer[index], x, y, local_offset, tileset_width_in_tiles, color);
 		}
 	}
 }
 
-void Map_Draw(){
+void Map_Draw() {
 	//ワールド座標からマップチップのインデックスに変換
 	int mx = Map_GetWorldToMapX(g_WorldOffset.x);
 	int my = Map_GetWorldToMapY(g_WorldOffset.y);
@@ -192,7 +192,7 @@ void Map_Draw(){
 	float local_offset_y = (float)oy * -1;
 
 	// 各レイヤーごとに描画
-	DrawLayer(g_MapChipTexId_plants, g_Map_Bg_Decoration, mx, my, { local_offset_x, local_offset_y },{0.0f,1.0f,1.0f,1.0f});
+	DrawLayer(g_MapChipTexId_plants, g_Map_Bg_Decoration, mx, my, { local_offset_x, local_offset_y }, { 0.0f,1.0f,1.0f,1.0f });
 	DrawLayer(g_MapChipTexId_plants, g_Map_Oneway, mx, my, { local_offset_x, local_offset_y });
 	DrawLayer(g_MapChipTexId, g_Map_Ground, mx, my, { local_offset_x, local_offset_y });
 	DrawLayer(g_MapChipTexId, g_Map_Wall, mx, my, { local_offset_x, local_offset_y });
@@ -245,7 +245,7 @@ bool Map_hitJudgementBoxVSMap(const Box& collision) {
 	return false;
 }
 
-bool Map_hitJudgementCircleVSMap(const Circle& collision){
+bool Map_hitJudgementCircleVSMap(const Circle& collision) {
 	// 円がどの範囲のタイルに重なっている可能性があるか、大まかに計算
 	int start_mx = Map_GetWorldToMapX(collision.center.x - collision.radius);
 	int end_mx = Map_GetWorldToMapX(collision.center.x + collision.radius);
@@ -280,7 +280,7 @@ bool Map_hitJudgementCircleVSMap(const Circle& collision){
 	return false;
 }
 
-bool Map_hitJudgementBoxVSOneway(const Box& collision){
+bool Map_hitJudgementBoxVSOneway(const Box& collision) {
 	XMFLOAT2 check_points[8];
 
 	float left = collision.center.x - collision.half_width;
@@ -300,7 +300,7 @@ bool Map_hitJudgementBoxVSOneway(const Box& collision){
 	check_points[6] = { left,  mid_y };  // 左辺中央
 	check_points[7] = { right, mid_y };  // 右辺中央
 
-	
+
 	for (int i = 0; i < 8; i++) {
 		int mx = Map_GetWorldToMapX(check_points[i].x);
 		int my = Map_GetWorldToMapY(check_points[i].y);
@@ -309,22 +309,22 @@ bool Map_hitJudgementBoxVSOneway(const Box& collision){
 			return true; // 当たり
 		}
 	}
-	
+
 
 	return false;
 }
 
-int Map_GetWorldToMapX(float x){
+int Map_GetWorldToMapX(float x) {
 	//オフセットからマップ座標の算出
 	return (int)(x / MAPCHIP_WIDTH) + (x < 0 ? -1 : 0);
 }
 
-int Map_GetWorldToMapY(float y){
+int Map_GetWorldToMapY(float y) {
 	return (int)(y / MAPCHIP_HEIGHT) + (y < 0 ? -1 : 0);
 }
 
 
-int Map_GetMapChipFromLayer(const std::vector<uint32_t>& map_layer, int mx, int my){
+int Map_GetMapChipFromLayer(const std::vector<uint32_t>& map_layer, int mx, int my) {
 	if (mx < 0 || mx >= g_MapWidth || my < 0 || my >= g_MapHeight) {
 		return 0;
 	}
@@ -342,7 +342,7 @@ void mapChipDraw(int tex_id, uint32_t mapChipId, int mx, int my, const XMFLOAT2&
 
 	bool is_flipped_vertically = (mapChipId & FLIPPED_VERTICALLY_FLAG);
 
-	mapChipId= mapChipId & ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
+	mapChipId = mapChipId & ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
 
 	if (mapChipId == 0) return;
 
@@ -441,7 +441,7 @@ void Map_UpdateCamera(const DirectX::XMFLOAT2& player_pos, double elapsed_time) 
 	}
 }
 
-void Map_StartShake(float fluctuation, double duration){
+void Map_StartShake(float fluctuation, double duration) {
 	g_ShakeFluctuation = fluctuation;
 	g_ShakeTimer = duration;
 }

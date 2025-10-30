@@ -148,13 +148,13 @@ void Player_Update(double elapsed_time) {
 	}
 
 	//赤ゲージがなければHP,MPを回復
-	if (g_PlayerHp<Player_MAXHP && !isHpDecrease()) {
+	if (g_PlayerHp < Player_MAXHP && !isHpDecrease()) {
 		g_PlayerHp += 0.5f * (float)elapsed_time;
 		if (g_PlayerHp >= Player_MAXHP) {
 			g_PlayerHp = Player_MAXHP;
 		}
 	}
-	if (g_PlayerMp<Player_MAXMP && !isMpDecrease()) {
+	if (g_PlayerMp < Player_MAXMP && !isMpDecrease()) {
 		g_PlayerMp += 1.0f * (float)elapsed_time;
 		if (g_PlayerMp >= Player_MAXMP) {
 			g_PlayerMp = Player_MAXMP;
@@ -194,7 +194,7 @@ void Player_Update(double elapsed_time) {
 			velocity = XMVectorSetX(velocity, 0.0f);
 		}
 	}
-	else{
+	else {
 		// 空中での移動処理
 		float aerial_control_force = 1500.0f; // 空中で左右に加える力の大きさ
 		float max_aerial_speed = 500.0f;      // 空中での横方向の最高速度
@@ -240,7 +240,7 @@ void Player_Update(double elapsed_time) {
 
 	// -----ジャンプ-----
 	// コヨーテタイム以内だったらジャンプ可能
-	if (KeyLogger_IsTrigger(KK_SPACE) && g_coyoteTimer>0.0) {
+	if (KeyLogger_IsTrigger(KK_SPACE) && g_coyoteTimer > 0.0) {
 		float jump_power = -1000.0f; // Y方向のジャンプ力
 		// Y方向の速度をジャンプ力で上書き
 		velocity = XMVectorSetY(velocity, jump_power);
@@ -335,7 +335,7 @@ void Player_Update(double elapsed_time) {
 		if (KeyLogger_IsPressed(KK_J)) {
 			g_PlayerState = STATE_ATTACK;
 			g_AttackHoldTime += elapsed_time;
-			
+
 			//0.9秒ホールドしたら強攻撃に移行
 			if (g_AttackHoldTime > 0.9) {
 				g_PlayerState = STATE_STRONGATTACK;
@@ -395,7 +395,7 @@ void Player_Update(double elapsed_time) {
 				}
 
 				Bullet_Create({ bullet_pos.x,bullet_pos.y }, Get_NearestTargetPosision(g_PlayerPosition));
-				
+
 				g_PlayerMp -= 1.0f;
 			}
 
@@ -464,9 +464,7 @@ void Player_Draw() {
 
 	//無敵時間だったら点滅させる
 	if (g_PlayerInvincibleTime > 0.0f) {
-		if ((int)(g_PlayerInvincibleTime * 10.0f) % 2 == 0) {
-			return;
-		}
+		if ((int)(g_PlayerInvincibleTime * 10.0f) % 2 == 0) return;
 	}
 
 	switch (g_PlayerState) {
@@ -524,24 +522,24 @@ void Player_Draw() {
 	}
 }
 
-bool Player_IsEnable(){
+bool Player_IsEnable() {
 	return g_PlayerEnable;
 }
 
-Circle Player_GetCollision(){
+Circle Player_GetCollision() {
 	float cx = g_PlayerPosition.x + (Player_WIDTH * 0.5f);
 	float cy = g_PlayerPosition.y + (Player_HEIGHT * 0.5f);
 	return { {cx,cy},g_PlayerCollision.radius };
 }
 
-Box Player_GetBoxCollision(){
+Box Player_GetBoxCollision() {
 	//中心座標
 	float hw = Player_WIDTH * 0.5f;
 	float hh = Player_HEIGHT * 0.5f;
 	return { {g_PlayerPosition.x + hw,g_PlayerPosition.y + hh + 10},hw - 30,hh - 10 };
 }
 
-OBB Player_GetAttackCollision(){	
+OBB Player_GetAttackCollision() {
 	// 攻撃中以外は当たり判定なし
 	if (g_PlayerState != STATE_ATTACKEND && g_PlayerState != STATE_STRONGATTACKEND) {
 		return { {0,0}, {0,0}, {{1,0},{0,1}} };
@@ -555,7 +553,7 @@ OBB Player_GetAttackCollision(){
 		// 強攻撃用の当たり判定とアニメーションIDを使う
 		current_frame = SpriteAnim_GetPatternNum(PlayId_StrongAttackEnd);
 	}
-	
+
 	OBB local_obb = g_AttackCollisions[current_frame];
 	if (local_obb.half_extent.x == 0) return local_obb; // 当たり判定なしフレーム
 
@@ -645,7 +643,7 @@ float Player_GetHp() {
 	return g_PlayerHp;
 }
 
-float Player_GetMp(){
+float Player_GetMp() {
 	return g_PlayerMp;
 }
 
@@ -653,10 +651,10 @@ bool Player_IsDead() {
 	return g_PlayerHp <= 0.0f;
 }
 
-PLAYER_STATE Player_GetState(){
+PLAYER_STATE Player_GetState() {
 	return g_PlayerState;
 }
 
-bool Player_IsFacingRight(){
+bool Player_IsFacingRight() {
 	return g_IsPlayerFacingRight;
 }

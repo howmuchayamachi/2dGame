@@ -38,17 +38,17 @@ static int g_EnterAudioId = -1;
 
 static double g_accumulated_time = 0.0;
 
-void Title_Initialize(){
+void Title_Initialize() {
 	g_TitleBgTexture = Texture_Load(L"resource/texture/bg/title_forest.png");
 	g_TitleTexture = Texture_Load(L"resource/texture/Font/intheforest.png");
 	g_GameStartTexture = Texture_Load(L"resource/texture/Font/gamestart.png");
-	g_VolumeTexture= Texture_Load(L"resource/texture/Font/volume.png");
+	g_VolumeTexture = Texture_Load(L"resource/texture/Font/volume.png");
 	g_ExitTexture = Texture_Load(L"resource/texture/Font/exit.png");
 
 	g_TitleStart = false;
 	g_TitleEnd = false;
 
-	g_TitleBGMId= LoadAudio("resource/audio/bgm/title.wav");
+	g_TitleBGMId = LoadAudio("resource/audio/bgm/title.wav");
 	g_SelectAudioId = LoadAudio("resource/audio/select1.wav");
 	g_EnterAudioId = LoadAudio("resource/audio/enter1.wav");
 
@@ -60,12 +60,12 @@ void Title_Initialize(){
 	Fade_Start(0.5, false, { 0.0f,0.0f,0.0f });
 }
 
-void Title_Finalize(){
+void Title_Finalize() {
 	StopAllAudio();
 	UnloadAllAudio();
 }
 
-void Title_Update(){
+void Title_Update() {
 	if (!g_TitleStart && Fade_GetState() == FADE_STATE_FINISHED_IN) {
 		g_TitleStart = true;
 	}
@@ -91,7 +91,7 @@ void Title_Update(){
 			PlayAudio(g_EnterAudioId);
 			switch (g_CurrentSelection) {
 			case TITLE_GAMESTART: //ゲームスタート
-				Fade_Start(1.0, true,{1.0f,1.0f,1.0f});
+				Fade_Start(1.0, true, { 1.0f,1.0f,1.0f });
 				g_TitleEnd = true;
 				break;
 
@@ -114,7 +114,7 @@ void Title_Update(){
 	}
 }
 
-void Title_Draw(){
+void Title_Draw() {
 
 	float screen_width = (float)Direct3D_GetBackBufferWidth();
 	float screen_height = (float)Direct3D_GetBackBufferHeight();
@@ -127,18 +127,18 @@ void Title_Draw(){
 	float center_y = Direct3D_GetBackBufferHeight() / 2.0f;
 
 	//タイトル
-	Sprite_Draw(g_TitleTexture, center_x - 800, center_y - 400,1500.0f,1500.0f/4.0f);
+	Sprite_Draw(g_TitleTexture, center_x - 800, center_y - 400, 1500.0f, 1500.0f / 4.0f);
 
 	// 通常の色と、選択されている時の色を定義
 	XMFLOAT4 color_normal = { 1.0f, 1.0f, 1.0f, 0.2f };
 	XMFLOAT4 color_selected = { 1.0f, 1.0f, 0.1f, 1.0f };
 
-	Sprite_Draw(g_GameStartTexture, center_x -500.0f, center_y,
+	Sprite_Draw(g_GameStartTexture, center_x - 500.0f, center_y,
 		(g_CurrentSelection == TITLE_GAMESTART) ? color_selected : color_normal);
 
 	Sprite_Draw(g_VolumeTexture, center_x - 500.0f, center_y + 150.0f,
 		(g_CurrentSelection == TITLE_VOLUME) ? color_selected : color_normal);
 
-	Sprite_Draw(g_ExitTexture, center_x-500.0f, center_y+300.0f,
+	Sprite_Draw(g_ExitTexture, center_x - 500.0f, center_y + 300.0f,
 		(g_CurrentSelection == TITLE_EXIT) ? color_selected : color_normal);
 }
